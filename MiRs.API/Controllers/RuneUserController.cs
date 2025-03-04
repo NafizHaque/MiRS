@@ -36,5 +36,19 @@ namespace MiRs.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Test Example Controller
+        /// </summary>
+        /// <param name="testNumber">Test.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return no content.</remarks>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [HttpGet]
+        public async Task<IActionResult> GetUserStats(int testNumber)
+        {
+            _logger.LogDebug(1, "Executing ExampleMethod");
+            return NoContent();
+        }
+
     }
 }
