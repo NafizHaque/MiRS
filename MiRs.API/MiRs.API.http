@@ -1,0 +1,6 @@
+@MiRs.API_HostAddress = http://localhost:5140
+
+GET {{MiRs.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
