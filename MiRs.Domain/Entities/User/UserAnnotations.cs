@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiRs.Domain.Entities.User
 {
-    class UserAnnotations
+    public class UserAnnotations
     {
         /// <summary>
         /// Gets or sets the Id.

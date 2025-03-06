@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiRs.Domain.Entities.User
 {
-    class UserLatestSnapshot
+    public class UserLatestSnapshot
     {
         /// <summary>
         /// Gets or sets the Id.
@@ -21,17 +21,17 @@ namespace MiRs.Domain.Entities.User
         /// <summary>
         /// Gets or sets the CreatedAt.
         /// </summary>
-        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset? CreatedAt { get; set; }
 
         /// <summary>
         /// Gets or sets the CreatedAt.
         /// </summary>
-        public DateTimeOffset ImportedAt { get; set; }
+        public DateTimeOffset? ImportedAt { get; set; }
 
 
         /// <summary>
         /// Gets or sets the CreatedAt.
         /// </summary>
-        public UserMetrics Data { get; set; } = new UserMetrics();
+        public UserMetrics? Data { get; set; } = new UserMetrics();
     }
 }

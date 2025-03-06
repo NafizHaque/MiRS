@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiRs.Domain.Entities.User
+namespace MiRs.Domain.Entities.User.Skills
 {
     class UserActivities
     {

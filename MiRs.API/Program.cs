@@ -5,6 +5,8 @@ using Flurl.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using MiRs.Interactors;
+using MiRS.Gateway.RunescapeClient;
+using MiRs.RunescapeClient;
 
 namespace MiRs.API
 {
@@ -55,6 +57,8 @@ namespace MiRs.API
                     shh.SslOptions.RemoteCertificateValidationCallback = (_, _, _, _) => { return true; };
                 })
             );
+
+            builder.Services.AddScoped<IRuneClient, WOMClient>();
 
             builder.Services.AddMediatRContracts();
 
