@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace MiRs.Domain.Entities.User
 {
@@ -32,6 +28,7 @@ namespace MiRs.Domain.Entities.User
         /// <summary>
         /// Gets or sets the CreatedAt.
         /// </summary>
-        public UserMetrics? Data { get; set; } = new UserMetrics();
+        [JsonPropertyName("data")]
+        public UserMetrics? UserMetrics { get; set; } = new UserMetrics();
     }
 }

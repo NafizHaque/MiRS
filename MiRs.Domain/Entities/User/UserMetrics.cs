@@ -1,9 +1,7 @@
 ﻿using MiRs.Domain.Entities.User.Skills;
-using Newtonsoft.Json;
 
 namespace MiRs.Domain.Entities.User
 {
-
     public class UserMetrics
     {
         /// <summary>
