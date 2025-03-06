@@ -14,7 +14,7 @@ namespace MiRs.Domain.Entities.User
     /// <summary>
     /// Gets or sets the Id.
     /// </summary>
-    class User
+    public class User
     {
         /// <summary>
         /// Gets or sets the Id.
@@ -84,24 +84,24 @@ namespace MiRs.Domain.Entities.User
         /// <summary>
         /// Gets or sets the RegisteredAt.
         /// </summary>
-        public DateTimeOffset RegisteredAt { get; set; }
+        public DateTimeOffset? RegisteredAt { get; set; }
 
 
         /// <summary>
         /// Gets or sets the RegisteredAt.
         /// </summary>
-        public DateTimeOffset UpdatedAt { get; set; }
+        public DateTimeOffset? UpdatedAt { get; set; }
 
 
         /// <summary>
         /// Gets or sets the RegisteredAt.
         /// </summary>
-        public DateTimeOffset LastChangedAt { get; set; }
+        public DateTimeOffset? LastChangedAt { get; set; }
 
         /// <summary>
         /// Gets or sets the RegisteredAt.
         /// </summary>
-        public DateTimeOffset LastImportedAt { get; set; }
+        public DateTimeOffset? LastImportedAt { get; set; }
 
         /// <summary>
         /// Gets or sets the CombatLevel.
@@ -111,17 +111,17 @@ namespace MiRs.Domain.Entities.User
         /// <summary>
         /// Gets or sets the Annotations.
         /// </summary>
-        public UserAnnotations Annotations { get; set; } = new UserAnnotations();
+        //public UserAnnotations? Annotations { get; set; } = new UserAnnotations();
 
         /// <summary>
         /// Gets or sets the LatestSnapshot.
         /// </summary>
-        public UserLatestSnapshot LatestSnapshot { get; set; } = new UserLatestSnapshot();
+        public UserLatestSnapshot? LatestSnapshot { get; set; } = new UserLatestSnapshot();
 
         /// <summary>
         /// Gets or sets the UserMetrics.
         /// </summary>
         [JsonProperty(PropertyName ="data")]
-        public UserMetrics UserMetrics { get; set; } = new UserMetrics();
+        public UserMetrics? UserMetrics { get; set; } = new UserMetrics();
     }
 }

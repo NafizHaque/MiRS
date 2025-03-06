@@ -3,7 +3,8 @@ using Newtonsoft.Json;
 
 namespace MiRs.Domain.Entities.User
 {
-    class UserMetrics
+
+    public class UserMetrics
     {
         /// <summary>
         /// Gets or sets the CreatedAt.

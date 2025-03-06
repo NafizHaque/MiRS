@@ -1,6 +1,8 @@
 ﻿
 using MiRs.Mediator.Models.RuneUser;
 using MiRs.Mediator;
+using MiRS.Gateway.RunescapeClient;
+using MiRs.Domain.Entities.User;
 
 namespace MiRs.Interactors.RuneUser
 {
@@ -9,9 +11,11 @@ namespace MiRs.Interactors.RuneUser
     /// </summary>
     public class GetUserStatsInteractor : RequestHandler<GetRuneUserRequest, GetRuneUserResponse>
     {
-        public GetUserStatsInteractor()
+        private readonly IRuneClient _runeClient;
+
+        public GetUserStatsInteractor(IRuneClient runeclient)
         {
-            
+            _runeClient = runeclient;
         }
 
         /// <summary>
@@ -23,7 +27,12 @@ namespace MiRs.Interactors.RuneUser
         /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<GetRuneUserResponse> HandleRequest(GetRuneUserRequest request, GetRuneUserResponse result, CancellationToken cancellationToken)
         {
-            return new GetRuneUserResponse();
+            User response = await _runeClient.GetRuneUser(request.Username);
+
+            result.UserRetrieved = response;
+
+            return result;
+            
             
         }
     }

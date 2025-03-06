@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiRs.Domain.Entities.User.Skills.Skill_Object
 {
-    class Skill
+    public class Skill
     {
         /// <summary>
         /// Gets or sets the Metric.

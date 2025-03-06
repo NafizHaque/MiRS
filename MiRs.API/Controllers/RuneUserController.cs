@@ -3,7 +3,10 @@ using System.Security.Cryptography;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MiRs.Domain.Entities.User;
+using MiRs.Domain.Exceptions;
 using MiRs.Interactors;
+using MiRs.Mediator.Models.RuneUser;
 
 namespace MiRs.API.Controllers
 {
@@ -25,29 +28,26 @@ namespace MiRs.API.Controllers
         /// <summary>
         /// Test Example Controller
         /// </summary>
-        /// <param name="testNumber">Test.</param>
+        /// <param name="username">Test.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return no content.</remarks>
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
         [HttpGet]
-        public async Task<IActionResult> ExampleMethod(int testNumber)
+        public async Task<IActionResult> GetUserStats(string username)
         {
-            _logger.LogDebug(1, "Executing ExampleMethod");
-            return NoContent();
-        }
+            try
+            {
+               return Ok( await Mediator.Send(new GetRuneUserRequest { Username = username }));
 
-        /// <summary>
-        /// Test Example Controller
-        /// </summary>
-        /// <param name="testNumber">Test.</param>
-        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return no content.</remarks>
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [HttpGet]
-        public async Task<IActionResult> GetUserStats(int testNumber)
-        {
-            _logger.LogDebug(1, "Executing ExampleMethod");
-            return NoContent();
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
 
     }

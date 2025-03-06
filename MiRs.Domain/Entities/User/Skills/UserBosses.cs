@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MiRs.Domain.Entities.User.Skills
 {
-    class UserBosses
+    public class UserBosses
     {
         /// <summary>
         /// Gets or sets the Bos Dictionary.

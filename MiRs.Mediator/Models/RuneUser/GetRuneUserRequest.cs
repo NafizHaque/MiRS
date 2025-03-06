@@ -8,7 +8,6 @@ namespace MiRs.Mediator.Models.RuneUser
     /// </summary>
     public class GetRuneUserRequest : IRequest<GetRuneUserResponse>, IValidatable
     {
-
         /// <summary>
         /// Gets or sets the Username.
         /// </summary>

@@ -2,7 +2,7 @@
 
 namespace MiRs.Domain.Entities.User.Skills
 {
-    class UserSkills
+    public class UserSkills
     {
 
         /// <summary>

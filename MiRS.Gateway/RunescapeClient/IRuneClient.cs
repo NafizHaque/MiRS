@@ -1,7 +1,9 @@
-﻿namespace MiRS.Gateway.RunescapeClient
+﻿using MiRs.Domain.Entities.User;
+
+namespace MiRS.Gateway.RunescapeClient
 {
     public interface IRuneClient
     {
-        Task<string> GetRuneUser(string username);
+        Task<User> GetRuneUser(string username);
     }
 }
