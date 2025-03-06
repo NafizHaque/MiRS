@@ -1,12 +1,19 @@
-﻿using System;
+﻿using MiRs.Domain.Entities.User.Skills;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace MiRs.Domain.Entities.User
 {
+
+    /// <summary>
+    /// Gets or sets the Id.
+    /// </summary>
     class User
     {
         /// <summary>
@@ -102,13 +109,19 @@ namespace MiRs.Domain.Entities.User
         public int CombatLevel { get; set; }
 
         /// <summary>
-        /// Gets or sets the CombatLevel.
+        /// Gets or sets the Annotations.
         /// </summary>
         public UserAnnotations Annotations { get; set; } = new UserAnnotations();
 
         /// <summary>
-        /// Gets or sets the CombatLevel.
+        /// Gets or sets the LatestSnapshot.
         /// </summary>
         public UserLatestSnapshot LatestSnapshot { get; set; } = new UserLatestSnapshot();
+
+        /// <summary>
+        /// Gets or sets the UserMetrics.
+        /// </summary>
+        [JsonProperty(PropertyName ="data")]
+        public UserMetrics UserMetrics { get; set; } = new UserMetrics();
     }
 }

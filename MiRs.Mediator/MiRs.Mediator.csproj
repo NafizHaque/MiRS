@@ -9,13 +9,10 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.4.1" />
-    <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MiRs.Mediator\MiRs.Mediator.csproj" />
+    <ProjectReference Include="..\MiRs.Domain\MiRs.Domain.csproj" />
   </ItemGroup>
 
 </Project>
