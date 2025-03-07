@@ -1,9 +1,7 @@
 ﻿using MiRs.Domain.Entities.User.Skills;
-using Newtonsoft.Json;
 
 namespace MiRs.Domain.Entities.User
 {
-
     public class UserMetrics
     {
         /// <summary>
@@ -15,5 +13,10 @@ namespace MiRs.Domain.Entities.User
         /// Gets or sets the Bosses.
         /// </summary>
         public UserBosses Bosses { get; set; } = new UserBosses();
+
+        /// <summary>
+        /// Gets or sets the Bosses.
+        /// </summary>
+        public UserActivities Activities { get; set; } = new UserActivities();
     }
 }

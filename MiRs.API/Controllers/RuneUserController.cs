@@ -26,11 +26,11 @@ namespace MiRs.API.Controllers
         public RuneUserController(ILogger<RuneUserController> logger) => _logger = logger;
 
         /// <summary>
-        /// Test Example Controller
+        /// Get users call
         /// </summary>
         /// <param name="username">Test.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return no content.</remarks>
+        /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<IActionResult> GetUserStats(string username)

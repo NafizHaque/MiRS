@@ -1,14 +1,4 @@
-﻿using MiRs.Domain.Entities.User.Skills;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-
-namespace MiRs.Domain.Entities.User
+﻿namespace MiRs.Domain.Entities.User
 {
 
     /// <summary>
@@ -118,10 +108,5 @@ namespace MiRs.Domain.Entities.User
         /// </summary>
         public UserLatestSnapshot? LatestSnapshot { get; set; } = new UserLatestSnapshot();
 
-        /// <summary>
-        /// Gets or sets the UserMetrics.
-        /// </summary>
-        [JsonProperty(PropertyName ="data")]
-        public UserMetrics? UserMetrics { get; set; } = new UserMetrics();
     }
 }

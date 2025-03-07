@@ -7,6 +7,8 @@ using Microsoft.OpenApi.Models;
 using MiRs.Interactors;
 using MiRS.Gateway.RunescapeClient;
 using MiRs.RunescapeClient;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace MiRs.API
 {
