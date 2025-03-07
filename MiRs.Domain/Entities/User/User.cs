@@ -2,7 +2,7 @@
 {
 
     /// <summary>
-    /// Gets or sets the Id.
+    /// User record that holds data about the runescape character and metrics.
     /// </summary>
     public class User
     {

@@ -3,8 +3,8 @@ using Flurl.Http;
 using MiRs.Domain.Entities.User;
 using MiRs.Domain.Entities.User.Skills.Skill_Object;
 using System.Text.Json;
-using System.Numerics;
-using System.Text.Json.Serialization;
+using MiRs.Utils.Helpers.Instances;
+using MiRs.Utils.Helpers.Interfaces;
 
 namespace MiRs.RunescapeClient
 {
@@ -13,6 +13,12 @@ namespace MiRs.RunescapeClient
     /// </summary>
     public class WOMClient : IRuneClient
     {
+        private readonly IJsonSeraliserDefaultOptions _jsonUtils;
+
+        public WOMClient(IJsonSeraliserDefaultOptions jsonUtils)
+        {
+            _jsonUtils = jsonUtils;
+        }
 
         /// <summary>
         /// The call to get user in RS via the WOM API.
@@ -26,13 +32,7 @@ namespace MiRs.RunescapeClient
                 .AppendPathSegment($"players/{username}")
                 .GetStringAsync();
 
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-            };
-
-            var user = JsonSerializer.Deserialize<User>(jsonResponse, options);
+            var user = _jsonUtils.Deserialize<User>(jsonResponse);
 
 
             var jsonObject = JsonDocument.Parse(jsonResponse).RootElement;

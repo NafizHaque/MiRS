@@ -9,6 +9,8 @@ using MiRS.Gateway.RunescapeClient;
 using MiRs.RunescapeClient;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using MiRs.Utils.Helpers.Instances;
+using MiRs.Utils.Helpers.Interfaces;
 
 namespace MiRs.API
 {
@@ -59,6 +61,8 @@ namespace MiRs.API
                     shh.SslOptions.RemoteCertificateValidationCallback = (_, _, _, _) => { return true; };
                 })
             );
+
+            builder.Services.AddSingleton<IJsonSeraliserDefaultOptions, JsonSeraliserDefaultOptions>();
 
             builder.Services.AddScoped<IRuneClient, WOMClient>();
 

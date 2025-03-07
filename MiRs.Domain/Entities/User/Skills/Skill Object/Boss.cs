@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MiRs.Domain.Entities.User.Skills.Skill_Object
 {
+    /// <summary>
+    /// Boss metric object for Users' Bosses.
+    /// </summary>
     public class Boss
     {
         /// <summary>

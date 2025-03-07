@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MiRS.Gateway\MiRS.Gateway.csproj" />
+    <ProjectReference Include="..\MiRs.Utils\MiRs.Utils.csproj" />
   </ItemGroup>
 
 </Project>
