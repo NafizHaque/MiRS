@@ -1,5 +1,8 @@
 ﻿namespace MiRs.Domain.Entities.User.Skills.Skill_Object
 {
+    /// <summary>
+    /// Activity Metric object for Users' Activities.
+    /// </summary>
     public class Activity
     {
         /// <summary>

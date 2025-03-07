@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace MiRs.Domain.Entities.User.Skills.Skill_Object
 {
     /// <summary>
-    /// Skill metric object for Users' Skills.
+    /// Compute metric object for Users' Computed.
     /// </summary>
-    public class Skill
+    public class Compute
     {
         /// <summary>
         /// Gets or sets the Metric.
@@ -17,23 +17,13 @@ namespace MiRs.Domain.Entities.User.Skills.Skill_Object
         public string Metric { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets or sets the Experience.
+        /// Gets or sets the Kills.
         /// </summary>
-        public long Experience { get; set; }
+        public double Value { get; set; }
 
         /// <summary>
         /// Gets or sets the Rank.
         /// </summary>
         public int Rank { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Level.
-        /// </summary>
-        public int Level { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Ehp.
-        /// </summary>
-        public double Ehp { get; set; }
     }
 }

@@ -2,6 +2,9 @@
 
 namespace MiRs.Domain.Entities.User.Skills
 {
+    /// <summary>
+    /// User Skills contains data about their Runescape Skills.
+    /// </summary>
     public class UserSkills
     {
 

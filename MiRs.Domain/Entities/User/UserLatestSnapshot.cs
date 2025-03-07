@@ -2,6 +2,9 @@
 
 namespace MiRs.Domain.Entities.User
 {
+    /// <summary>
+    /// This is the Users' latest datapoint containing their user metrics
+    /// </summary>
     public class UserLatestSnapshot
     {
         /// <summary>
