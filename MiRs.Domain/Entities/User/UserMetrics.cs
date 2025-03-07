@@ -13,5 +13,10 @@ namespace MiRs.Domain.Entities.User
         /// Gets or sets the Bosses.
         /// </summary>
         public UserBosses Bosses { get; set; } = new UserBosses();
+
+        /// <summary>
+        /// Gets or sets the Bosses.
+        /// </summary>
+        public UserActivities Activities { get; set; } = new UserActivities();
     }
 }
