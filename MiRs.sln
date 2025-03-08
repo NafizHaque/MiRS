@@ -20,9 +20,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infastructure", "Infastructure", "{FF5EF375-5433-4189-9183-F27F0C884C3E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiRs.RuneClient", "MiRs.RunescapeClient\MiRs.RuneClient.csproj", "{2E396272-868F-4F8C-BEE7-DBB1F6FF2610}"
-	ProjectSection(ProjectDependencies) = postProject
-		{977E8DCC-A499-4B9D-B7C2-B19A6549D64A} = {977E8DCC-A499-4B9D-B7C2-B19A6549D64A}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiRs.Utils", "MiRs.Utils\MiRs.Utils.csproj", "{217544C8-6DDB-40E6-B39B-5D544E88C47A}"
 EndProject
