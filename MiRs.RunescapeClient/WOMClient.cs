@@ -3,8 +3,8 @@ using Flurl.Http;
 using MiRs.Domain.Entities.User;
 using MiRs.Domain.Entities.User.Skills.Skill_Object;
 using System.Text.Json;
-using MiRs.Utils.Helpers.Instances;
-using MiRs.Utils.Helpers.Interfaces;
+using MiRs.Interfaces.Helpers;
+using MiRs.Domain.Mappers;
 
 namespace MiRs.RunescapeClient
 {
@@ -15,9 +15,13 @@ namespace MiRs.RunescapeClient
     {
         private readonly IJsonSeraliserDefaultOptions _jsonUtils;
 
-        public WOMClient(IJsonSeraliserDefaultOptions jsonUtils)
+        private readonly UserMapper _mapper;
+
+
+        public WOMClient(IJsonSeraliserDefaultOptions jsonUtils, UserMapper mapper )
         {
             _jsonUtils = jsonUtils;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -32,36 +36,24 @@ namespace MiRs.RunescapeClient
                 .AppendPathSegment($"players/{username}")
                 .GetStringAsync();
 
-            var user = _jsonUtils.Deserialize<User>(jsonResponse);
+            return _mapper.Map(jsonResponse);
+        }
 
+        /// <summary>
+        /// The call to request to update and retrieve the Users latest data point.
+        /// </summary>
+        /// <param name="username">The Runescape RSN</param>
+        /// <returns>The response status.</returns>
+        public async Task<User> RequestUpdateRuneUser(string username)
+        {
+            string jsonResponse = await "https://api.wiseoldman.net/v2/"
+                .WithHeader("Content-Type", "application/json")
+                .AppendPathSegment($"players/{username}")
+                .PostAsync()
+                .ReceiveString();
 
-            var jsonObject = JsonDocument.Parse(jsonResponse).RootElement;
-            var bosses = jsonObject
-                .GetProperty("latestSnapshot")
-                .GetProperty("data")
-                .GetProperty("bosses");
+            return _mapper.Map(jsonResponse);
 
-            user.LatestSnapshot.UserMetrics.Bosses.BossDict = new Dictionary<string, Boss>();
-
-            foreach (var bossElement in bosses.EnumerateObject())
-            {
-                
-                var bossName = bossElement.Name;
-                var bossData = bossElement.Value;
-
-             
-                var boss = new Boss
-                {
-                    Metric = bossData.GetProperty("metric").GetString(),
-                    Kills = bossData.GetProperty("kills").GetInt32(),
-                    Rank = bossData.GetProperty("rank").GetInt32(),
-                    Ehb = bossData.GetProperty("ehb").GetDouble()
-                };
-
-              
-                user.LatestSnapshot.UserMetrics.Bosses.BossDict[bossData.GetProperty("metric").GetString()] = boss;
-            }
-            return user;
         }
     }
 }

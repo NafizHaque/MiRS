@@ -1,6 +1,5 @@
 ﻿namespace MiRs.Domain.Entities.User
 {
-
     /// <summary>
     /// User record that holds data about the runescape character and metrics.
     /// </summary>

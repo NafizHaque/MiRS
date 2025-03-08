@@ -1,8 +1,8 @@
-﻿using MiRs.Utils.Helpers.Interfaces;
+﻿using MiRs.Interfaces.Helpers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace MiRs.Utils.Helpers.Instances
+namespace MiRs.Utils.Helpers
 {
     public class JsonSeraliserDefaultOptions : IJsonSeraliserDefaultOptions
     {

@@ -1,11 +1,8 @@
 ﻿using System.Net;
-using System.Security.Cryptography;
 using Asp.Versioning;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MiRs.Domain.Entities.User;
 using MiRs.Domain.Exceptions;
-using MiRs.Interactors;
 using MiRs.Mediator.Models.RuneUser;
 
 namespace MiRs.API.Controllers
@@ -38,6 +35,31 @@ namespace MiRs.API.Controllers
             try
             {
                return Ok( await Mediator.Send(new GetRuneUserRequest { Username = username }));
+
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Sends a Request to the service provider to update User
+        /// </summary>
+        /// <param name="username">Test.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return user.</remarks>
+        [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+        [HttpPost]
+        public async Task<IActionResult> UpdateUserStats(string username)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new GetRuneUserRequest { Username = username }));
 
             }
             catch (BadRequestException ex)

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MiRs.Domain.Entities.User.Skills.Skill_Object
+﻿namespace MiRs.Domain.Entities.User.Skills.Skill_Object
 {
     /// <summary>
     /// Skill metric object for Users' Skills.
