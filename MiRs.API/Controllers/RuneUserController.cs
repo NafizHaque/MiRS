@@ -17,7 +17,7 @@ namespace MiRs.API.Controllers
         private readonly ILogger<RuneUserController> _logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UsersController"/> class.
+        /// Initializes a new instance of the <see cref="RuneUserController"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
         public RuneUserController(ILogger<RuneUserController> logger) => _logger = logger;

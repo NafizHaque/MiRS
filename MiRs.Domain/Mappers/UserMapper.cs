@@ -15,7 +15,7 @@ namespace MiRs.Domain.Mappers
         }
 
         /// <summary>
-        /// Maps User objects to UserTableEntity Objects.
+        /// Maps data to the User object.
         /// </summary>
         /// <param name="userData">userFileData object.</param>
         /// <returns>UserTableEntity object.</returns>
