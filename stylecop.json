@@ -1,0 +1,19 @@
+{
+    "settings": 
+    {
+        "namingRules": {
+            "allowedTypes": ["camelCase"],
+            "methodParameters": "camelCase",
+            "localVariables": "camelCase",
+            "method": "PascalCase",
+            "properties": "PascalCase",
+            "fields": "PascalCase"
+            },
+        "orderingRules": {
+            "systemUsingDirectivesFirst": false
+        },
+        "removeTrailingWhitespace": true,
+        "blankLinesBetweenMembers": true,
+        "blankLinesAfterKeywords": true
+    }
+}

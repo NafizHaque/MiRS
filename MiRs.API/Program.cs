@@ -1,16 +1,13 @@
-using System.Diagnostics;
 using System.Reflection;
 using Asp.Versioning;
 using Flurl.Http;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using MiRs.Interactors;
 using MiRS.Gateway.RunescapeClient;
 using MiRs.RunescapeClient;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using MiRs.Utils.Helpers.Instances;
-using MiRs.Utils.Helpers.Interfaces;
+using MiRs.Utils.Helpers;
+using MiRs.Interfaces.Helpers;
+using MiRs.Domain.Mappers;
 
 namespace MiRs.API
 {
@@ -63,6 +60,8 @@ namespace MiRs.API
             );
 
             builder.Services.AddSingleton<IJsonSeraliserDefaultOptions, JsonSeraliserDefaultOptions>();
+
+            builder.Services.AddScoped<UserMapper>();
 
             builder.Services.AddScoped<IRuneClient, WOMClient>();
 
