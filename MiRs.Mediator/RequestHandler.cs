@@ -1,6 +1,5 @@
 ﻿using MediatR;
 
-
 namespace MiRs.Mediator
 {
     /// <summary>
@@ -25,7 +24,7 @@ namespace MiRs.Mediator
         /// <returns>Object of TResponse which is defined on invocation of handler.</returns>
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken)
         {
-            var result = new TResponse();
+            TResponse result = new TResponse();
 
             request.Validate();
 

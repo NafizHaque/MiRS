@@ -27,11 +27,10 @@ namespace MiRs.Domain.Entities.User
         /// </summary>
         public DateTimeOffset? ImportedAt { get; set; }
 
-
         /// <summary>
         /// Gets or sets the CreatedAt.
         /// </summary>
         [JsonPropertyName("data")]
-        public UserMetrics? UserMetrics { get; set; } = new UserMetrics();
+        public UserMetrics UserMetrics { get; set; } = new UserMetrics();
     }
 }

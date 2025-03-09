@@ -24,7 +24,7 @@ namespace MiRs.RunescapeClient
         /// <returns>The Users' details and latest data point.</returns>
         public async Task<User> GetRuneUser(string username)
         {
-            var jsonResponse = await "https://api.wiseoldman.net/v2/"
+            string jsonResponse = await "https://api.wiseoldman.net/v2/"
                 .WithHeader("Content-Type", "application/json")
                 .AppendPathSegment($"players/{username}")
                 .GetStringAsync();

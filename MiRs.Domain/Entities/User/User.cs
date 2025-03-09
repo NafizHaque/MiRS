@@ -75,12 +75,10 @@
         /// </summary>
         public DateTimeOffset? RegisteredAt { get; set; }
 
-
         /// <summary>
         /// Gets or sets the RegisteredAt.
         /// </summary>
         public DateTimeOffset? UpdatedAt { get; set; }
-
 
         /// <summary>
         /// Gets or sets the RegisteredAt.
@@ -105,7 +103,7 @@
         /// <summary>
         /// Gets or sets the LatestSnapshot.
         /// </summary>
-        public UserLatestSnapshot? LatestSnapshot { get; set; } = new UserLatestSnapshot();
+        public UserLatestSnapshot LatestSnapshot { get; set; } = new UserLatestSnapshot();
 
     }
 }
