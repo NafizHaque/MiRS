@@ -1,9 +1,9 @@
-﻿using System.Net;
-using Asp.Versioning;
+﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using MiRs.Domain.Entities.User;
 using MiRs.Domain.Exceptions;
 using MiRs.Mediator.Models.RuneUser;
+using System.Net;
 
 namespace MiRs.API.Controllers
 {
@@ -17,7 +17,7 @@ namespace MiRs.API.Controllers
         private readonly ILogger<RuneUserController> _logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UsersController"/> class.
+        /// Initializes a new instance of the <see cref="RuneUserController"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
         public RuneUserController(ILogger<RuneUserController> logger) => _logger = logger;
@@ -34,7 +34,7 @@ namespace MiRs.API.Controllers
         {
             try
             {
-               return Ok( await Mediator.Send(new GetRuneUserRequest { Username = username }));
+                return Ok(await Mediator.Send(new GetRuneUserRequest { Username = username }));
 
             }
             catch (BadRequestException ex)

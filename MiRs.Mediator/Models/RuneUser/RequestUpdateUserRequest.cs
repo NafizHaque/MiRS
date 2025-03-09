@@ -1,10 +1,5 @@
 ﻿using MediatR;
 using MiRs.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiRs.Mediator.Models.RuneUser
 {
@@ -17,7 +12,6 @@ namespace MiRs.Mediator.Models.RuneUser
         /// Gets or sets the Username.
         /// </summary>
         public string Username { get; set; } = string.Empty;
-
 
         /// <summary>
         /// Validates the provided store number.

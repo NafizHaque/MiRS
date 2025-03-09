@@ -1,8 +1,8 @@
 ﻿
-using MiRs.Mediator.Models.RuneUser;
-using MiRs.Mediator;
-using MiRS.Gateway.RunescapeClient;
 using MiRs.Domain.Entities.User;
+using MiRs.Mediator;
+using MiRs.Mediator.Models.RuneUser;
+using MiRS.Gateway.RunescapeClient;
 
 namespace MiRs.Interactors.RuneUser
 {
@@ -32,8 +32,7 @@ namespace MiRs.Interactors.RuneUser
             result.UserRetrieved = response;
 
             return result;
-            
-            
+
         }
     }
 }

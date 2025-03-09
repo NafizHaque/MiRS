@@ -26,7 +26,6 @@ namespace MiRs.Domain.Entities.User.Skills
         [JsonPropertyName("bounty_hunter_rogue")]
         public Activity BountyHunterRogue { get; set; } = new Activity();
 
-
         /// <summary>
         /// Gets or sets the ClueScrollAll.
         /// </summary>
@@ -104,7 +103,6 @@ namespace MiRs.Domain.Entities.User.Skills
         /// </summary>
         [JsonPropertyName("collections_logged")]
         public Activity CollectionsLogged { get; set; } = new Activity();
-
 
     }
 }

@@ -15,40 +15,44 @@ namespace MiRs.Domain.Mappers
         }
 
         /// <summary>
-        /// Maps User objects to UserTableEntity Objects.
+        /// Maps data to the User object.
         /// </summary>
         /// <param name="userData">userFileData object.</param>
         /// <returns>UserTableEntity object.</returns>
         public User Map(string jsonresponse)
         {
-            var user = _jsonUtils.Deserialize<User>(jsonresponse);
 
+            if (string.IsNullOrEmpty(jsonresponse))
+            {
+                return new User();
+            }
+            ;
 
-            var jsonObject = JsonDocument.Parse(jsonresponse).RootElement;
-            var bosses = jsonObject
+            User user = _jsonUtils.Deserialize<User>(jsonresponse) ?? new User();
+
+            JsonElement jsonObject = JsonDocument.Parse(jsonresponse).RootElement;
+            JsonElement bosses = jsonObject
                 .GetProperty("latestSnapshot")
                 .GetProperty("data")
                 .GetProperty("bosses");
 
             user.LatestSnapshot.UserMetrics.Bosses.BossDict = new Dictionary<string, Boss>();
 
-            foreach (var bossElement in bosses.EnumerateObject())
+            foreach (JsonProperty bossElement in bosses.EnumerateObject())
             {
 
-                var bossName = bossElement.Name;
-                var bossData = bossElement.Value;
+                string bossName = bossElement.Name;
+                JsonElement bossData = bossElement.Value;
 
-
-                var boss = new Boss
+                Boss boss = new Boss
                 {
-                    Metric = bossData.GetProperty("metric").GetString(),
+                    Metric = bossData.GetProperty("metric").GetString() ?? string.Empty,
                     Kills = bossData.GetProperty("kills").GetInt32(),
                     Rank = bossData.GetProperty("rank").GetInt32(),
                     Ehb = bossData.GetProperty("ehb").GetDouble()
                 };
 
-
-                user.LatestSnapshot.UserMetrics.Bosses.BossDict[bossData.GetProperty("metric").GetString()] = boss;
+                user.LatestSnapshot.UserMetrics.Bosses.BossDict[bossData.GetProperty("metric").GetString() ?? string.Empty] = boss;
             }
             return user;
         }
