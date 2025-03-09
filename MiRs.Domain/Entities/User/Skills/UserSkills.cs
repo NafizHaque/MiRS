@@ -48,7 +48,6 @@ namespace MiRs.Domain.Entities.User.Skills
         /// </summary>
         public Skill Magic { get; set; } = new Skill();
 
-
         /// <summary>
         /// Gets or sets the Cooking.
         /// </summary>
@@ -59,18 +58,15 @@ namespace MiRs.Domain.Entities.User.Skills
         /// </summary>
         public Skill Woodcutting { get; set; } = new Skill();
 
-
         /// <summary>
         /// Gets or sets the Fletching.
         /// </summary>
         public Skill Fletching { get; set; } = new Skill();
 
-        
         /// <summary>
         /// Gets or sets the Fishing.
         /// </summary>
         public Skill Fishing { get; set; } = new Skill();
-
 
         /// <summary>
         /// Gets or sets the Firemaking.
@@ -81,7 +77,6 @@ namespace MiRs.Domain.Entities.User.Skills
         /// Gets or sets the Crafting.
         /// </summary>
         public Skill Crafting { get; set; } = new Skill();
-
 
         /// <summary>
         /// Gets or sets the Smithing.
@@ -134,6 +129,5 @@ namespace MiRs.Domain.Entities.User.Skills
         public Skill Construction { get; set; } = new Skill();
 
     }
-
 
 }

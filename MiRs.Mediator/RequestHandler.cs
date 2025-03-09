@@ -41,5 +41,5 @@ namespace MiRs.Mediator
         protected abstract Task<TResponse> HandleRequest(TRequest request, TResponse result, CancellationToken cancellationToken);
 
     }
-    
+
 }

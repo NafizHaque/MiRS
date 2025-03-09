@@ -1,7 +1,7 @@
-﻿using MiRS.Gateway.RunescapeClient;
-using Flurl.Http;
+﻿using Flurl.Http;
 using MiRs.Domain.Entities.User;
 using MiRs.Domain.Mappers;
+using MiRS.Gateway.RunescapeClient;
 
 namespace MiRs.RunescapeClient
 {
@@ -12,7 +12,7 @@ namespace MiRs.RunescapeClient
     {
         private readonly UserMapper _mapper;
 
-        public WOMClient(UserMapper mapper )
+        public WOMClient(UserMapper mapper)
         {
             _mapper = mapper;
         }

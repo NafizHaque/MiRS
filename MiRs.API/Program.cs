@@ -1,13 +1,13 @@
-using System.Reflection;
 using Asp.Versioning;
 using Flurl.Http;
 using Microsoft.OpenApi.Models;
+using MiRs.Domain.Mappers;
 using MiRs.Interactors;
-using MiRS.Gateway.RunescapeClient;
+using MiRs.Interfaces.Helpers;
 using MiRs.RunescapeClient;
 using MiRs.Utils.Helpers;
-using MiRs.Interfaces.Helpers;
-using MiRs.Domain.Mappers;
+using MiRS.Gateway.RunescapeClient;
+using System.Reflection;
 
 namespace MiRs.API
 {
@@ -43,7 +43,6 @@ namespace MiRs.API
                     Description = "Yet Another OSRS Experiance Tracker.",
                     Version = "v1.0",
                 });
-            
 
                 string xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));

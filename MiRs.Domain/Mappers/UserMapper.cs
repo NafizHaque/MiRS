@@ -1,7 +1,6 @@
 ﻿using MiRs.Domain.Entities.User;
 using MiRs.Domain.Entities.User.Skills.Skill_Object;
 using MiRs.Interfaces.Helpers;
-using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 
 namespace MiRs.Domain.Mappers
@@ -26,7 +25,8 @@ namespace MiRs.Domain.Mappers
             if (string.IsNullOrEmpty(jsonresponse))
             {
                 return new User();
-            };
+            }
+            ;
 
             User user = _jsonUtils.Deserialize<User>(jsonresponse) ?? new User();
 
