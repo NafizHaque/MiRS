@@ -5,6 +5,11 @@ using System.Text.Json;
 
 namespace MiRs.Domain.Mappers
 {
+    /// <summary>
+    /// Mapper class for Users to map various data to the User object.
+    /// </summary>
+    /// <param name="userData">userFileData object.</param>
+    /// <returns>UserTableEntity object.</returns>
     public class UserMapper
     {
         private readonly IJsonSeraliserDefaultOptions _jsonUtils;
