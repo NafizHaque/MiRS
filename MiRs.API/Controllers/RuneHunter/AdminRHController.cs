@@ -9,34 +9,29 @@ using System.Net;
 
 namespace MiRs.API.Controllers.RuneHunter
 {
-    /// <summary>
-    /// This controller contains any calls relating to users.
-    /// </summary>
-    [ApiVersion("1.0")]
-    [ApiExplorerSettings(GroupName = "v1")]
-    public class RHUserController : ApiControllerBase
+    public class AdminRHController : ApiControllerBase
     {
-        private readonly ILogger<RHUserController> _logger;
+        private readonly ILogger<AdminRHController> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RHUserController"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
-        public RHUserController(ILogger<RHUserController> logger) => _logger = logger;
+        public AdminRHController(ILogger<AdminRHController> logger) => _logger = logger;
 
         /// <summary>
-        /// Register User
+        /// User to Join a Team
         /// </summary>
         /// <param name="username">Test.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost]
-        public async Task<IActionResult> RegisterUser([FromBody] RHUser rhUser)
+        public async Task<IActionResult> CreateTeamInGuild(int guildId, string teamname)
         {
             try
             {
-                return Ok(await Mediator.Send(new RegisterUserRequest { rhUser = rhUser }));
+                return Ok(await Mediator.Send(new JoinTeamRequest { UserId = guildId, Teamname = teamname }));
 
             }
             catch (BadRequestException ex)
@@ -57,7 +52,57 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost]
-        public async Task<IActionResult> JoinTeam(int id, string teamname)
+        public async Task<IActionResult> EditTeamInGuild(int guildId, string teamname)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new JoinTeamRequest { UserId = guildId, Teamname = teamname }));
+
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// User to Join a Team
+        /// </summary>
+        /// <param name="username">Test.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return user.</remarks>
+        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
+        [HttpPost]
+        public async Task<IActionResult> DeleteTeamInGuild(int guildId, string teamname)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new JoinTeamRequest { UserId = guildId, Teamname = teamname }));
+
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// User to Join a Team
+        /// </summary>
+        /// <param name="username">Test.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return user.</remarks>
+        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
+        [HttpPost]
+        public async Task<IActionResult> ChangeUserTeamInGuild(int id, int guildId, string teamname)
         {
             try
             {
@@ -82,32 +127,7 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost]
-        public async Task<IActionResult> GetUsersInTeam(int id, string teamname)
-        {
-            try
-            {
-                return Ok(await Mediator.Send(new JoinTeamRequest { UserId = id, Teamname = teamname }));
-
-            }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(ex.CustomErrorMessage);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// User to Join a Team
-        /// </summary>
-        /// <param name="username">Test.</param>
-        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return user.</remarks>
-        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
-        [HttpPost]
-        public async Task<IActionResult> GetTeamsInGuild(int id, string teamname)
+        public async Task<IActionResult> RemoveUserTeamInGuild(int id, int guildId, string teamname)
         {
             try
             {

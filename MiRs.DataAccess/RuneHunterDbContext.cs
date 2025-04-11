@@ -16,6 +16,8 @@ namespace MiRs.DataAccess
 
         public DbSet<GuildTeams> GuildTeams{ get; set; }
 
+        public DbSet<GuildEvent> GuildEvent { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<RHUser>()
