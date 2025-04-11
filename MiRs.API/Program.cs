@@ -1,6 +1,8 @@
 using Asp.Versioning;
 using Flurl.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using MiRs.DataAccess;
 using MiRs.Domain.Mappers;
 using MiRs.Interactors;
 using MiRs.Interfaces.Helpers;
@@ -17,9 +19,12 @@ namespace MiRs.API
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.AddDbContext<RuneHunterDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // Add services to the container.
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
             builder.Services.AddApiVersioning(
@@ -68,6 +73,8 @@ namespace MiRs.API
 
             WebApplication app = builder.Build();
 
+            ApplyMigrations(app);
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -82,6 +89,21 @@ namespace MiRs.API
             app.MapControllers();
 
             app.Run();
+        }
+
+        static void ApplyMigrations(WebApplication app)
+        {
+            using (IServiceScope scope = app.Services.CreateScope())
+            {
+                RuneHunterDbContext runeHunterDbContext = scope.ServiceProvider.GetRequiredService<RuneHunterDbContext>();
+
+                // Check and apply pending migrations
+                IEnumerable<string> pendingMigrations = runeHunterDbContext.Database.GetPendingMigrations();
+                if (pendingMigrations.Any())
+                {
+                    runeHunterDbContext.Database.Migrate();
+                }
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Net;
 namespace MiRs.API.Controllers
 {
     /// <summary>
-    /// This controller contains any calls relating to users.
+    /// This controller contains any calls relating to users from WOM.
     /// </summary>
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
