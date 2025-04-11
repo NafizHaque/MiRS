@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
 	<TargetFramework>net8.0</TargetFramework>
@@ -13,11 +13,19 @@
 	<PackageReference Include="Flurl.Http" Version="4.0.2" />
 	<PackageReference Include="MediatR" Version="12.4.1" />
 	<PackageReference Include="MediatR.Contracts" Version="2.0.1" />
-	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4">
+	  <PrivateAssets>all</PrivateAssets>
+	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.4" />
 	<PackageReference Include="Swashbuckle.AspNetCore" Version="7.3.1" />
   </ItemGroup>
 
   <ItemGroup>
+	<ProjectReference Include="..\MiRs.DataAccess\MiRs.DataAccess.csproj" />
 	<ProjectReference Include="..\MiRS.Gateway\MiRS.Gateway.csproj" />
 	<ProjectReference Include="..\MiRs.Interactors\MiRs.Interactors.csproj" />
 	<ProjectReference Include="..\MiRs.Mediator\MiRs.Mediator.csproj" />
