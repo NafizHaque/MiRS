@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MiRs.Domain\MiRs.Domain.csproj" />
+    <ProjectReference Include="..\MiRS.Gateway\MiRS.Gateway.csproj" />
   </ItemGroup>
 
   <ItemGroup>
