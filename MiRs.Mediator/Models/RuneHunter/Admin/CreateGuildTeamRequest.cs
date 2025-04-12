@@ -1,17 +1,17 @@
 ﻿using MediatR;
 using MiRs.Domain.Exceptions;
 
-namespace MiRs.Mediator.Models.RuneHunter
+namespace MiRs.Mediator.Models.RuneHunter.Admin
 {
-    public class JoinTeamRequest : IRequest<JoinTeamResponse>, IValidatable
+    public class CreateGuildTeamRequest : IRequest<CreateGuildTeamResponse>, IValidatable
     {
         /// <summary>
-        /// Gets or sets the userid.
+        /// Gets or sets the GuildId.
         /// </summary>
-        public int UserId { get; set; }
+        public int GuildId { get; set; }
 
         /// <summary>
-        /// Gets or sets the teamName.
+        /// Gets or sets the TeamName.
         /// </summary>
         public string Teamname { get; set; }
 
@@ -21,14 +21,14 @@ namespace MiRs.Mediator.Models.RuneHunter
         /// <exception cref="BadRequestException"> The custom exception type for bad requests.</exception>
         public void Validate()
         {
-            if (UserId <= 0)
+            if (GuildId <= 0)
             {
-                throw new BadRequestException("Invalid Id given!");
+                throw new BadRequestException("Invalid  Guild Id given!");
             }
 
             if (string.IsNullOrEmpty(Teamname))
             {
-                throw new BadRequestException("Username is null or Empty!");
+                throw new BadRequestException("Teamname is null or Empty!");
             }
         }
     }

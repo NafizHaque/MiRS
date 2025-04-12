@@ -12,7 +12,7 @@
 
         public GuildTeam Team { get; set; }
 
-        public ICollection<GuildTeamLevelProgress> LevelProgresses { get; set; }
+        public ICollection<GuildTeamCategoryProgress> CategoryProgresses { get; set; }
 
     }
 }

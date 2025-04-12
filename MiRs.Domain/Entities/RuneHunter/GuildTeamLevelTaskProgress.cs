@@ -2,7 +2,7 @@
 
 namespace MiRs.Domain.Entities.RuneHunter
 {
-    public class GuildTeamLevelProgress
+    public class GuildTeamLevelTaskProgress
     {
         public int Id { get; set; }
 
@@ -10,17 +10,15 @@ namespace MiRs.Domain.Entities.RuneHunter
 
         public bool IsComplete { get; set; }
 
-        public bool IsActive { get; set; }
-
         public DateTimeOffset LastUpdated { get; set; }
 
-        public int GuildEventTeamId { get; set; }
+        public int CategoryLevelProcessId { get; set; }
 
-        public GuildEventTeam GuildEventTeam { get; set; }
+        public GuildTeamCategoryLevelProgress CategoryLevelProgress { get; set; }
 
-        public int LevelId { get; set; }
+        public int LevelTaskId { get; set; }
 
-        public LevelTask Level { get; set; }
+        public LevelTask LevelTask { get; set; }
 
     }
 }

@@ -12,16 +12,10 @@ namespace MiRs.Domain.Entities.RuneHunterData
 
         public string Name { get; set; } = string.Empty;
 
-        public int Level { get; set; }
-
         public int Goal { get; set; }
 
-        public int Unlock { get; set; }
+        public int LevelId { get; set; }
 
-        public string UnlockDescription { get; set; } = string.Empty;
-
-        public int CategoryId { get; set; }
-
-        public Category Category { get; set; }
+        public Level LevelParent { get; set; }
     }
 }

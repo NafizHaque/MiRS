@@ -4,6 +4,7 @@ using MiRs.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MiRs.DataAccess.Migrations
 {
     [DbContext(typeof(RuneHunterDbContext))]
-    partial class RuneHunterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250412071755_DbNormalisationOfTables")]
+    partial class DbNormalisationOfTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,7 +100,7 @@ namespace MiRs.DataAccess.Migrations
                     b.ToTable("GuildTeams");
                 });
 
-            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildTeamCategoryLevelProgress", b =>
+            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildTeamLevelProgress", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,7 +108,7 @@ namespace MiRs.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryProgressId")
+                    b.Property<int>("GuildEventTeamId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
@@ -120,71 +123,17 @@ namespace MiRs.DataAccess.Migrations
                     b.Property<int>("LevelId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryProgressId");
-
-                    b.HasIndex("LevelId");
-
-                    b.ToTable("GuildTeamCategoryLevelProgress");
-                });
-
-            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildTeamCategoryProgress", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GuildEventTeamId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsComplete")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("GuildEventTeamId");
-
-                    b.ToTable("GuildTeamCategoryProgress");
-                });
-
-            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildTeamLevelTaskProgress", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryLevelProcessId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsComplete")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset>("LastUpdated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("LevelTaskId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Progress")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryLevelProcessId");
+                    b.HasIndex("GuildEventTeamId");
 
-                    b.HasIndex("LevelTaskId");
+                    b.HasIndex("LevelId")
+                        .IsUnique();
 
-                    b.ToTable("GuildTeamLevelTaskProgress");
+                    b.ToTable("GuildTeamsLevelProgress");
                 });
 
             modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.RHUser", b =>
@@ -248,7 +197,7 @@ namespace MiRs.DataAccess.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunterData.Level", b =>
+            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunterData.LevelTask", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -259,8 +208,15 @@ namespace MiRs.DataAccess.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Levelnumber")
+                    b.Property<int>("Goal")
                         .HasColumnType("int");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Unlock")
                         .HasColumnType("int");
@@ -272,31 +228,6 @@ namespace MiRs.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.ToTable("Level");
-                });
-
-            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunterData.LevelTask", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Goal")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LevelId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LevelId");
 
                     b.ToTable("LevelTasks");
                 });
@@ -320,61 +251,23 @@ namespace MiRs.DataAccess.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildTeamCategoryLevelProgress", b =>
+            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildTeamLevelProgress", b =>
                 {
-                    b.HasOne("MiRs.Domain.Entities.RuneHunter.GuildTeamCategoryProgress", "CategoryProgress")
-                        .WithMany("CategoryLevelProcess")
-                        .HasForeignKey("CategoryProgressId")
+                    b.HasOne("MiRs.Domain.Entities.RuneHunter.GuildEventTeam", "GuildEventTeam")
+                        .WithMany("LevelProgresses")
+                        .HasForeignKey("GuildEventTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MiRs.Domain.Entities.RuneHunterData.Level", "Level")
-                        .WithMany()
-                        .HasForeignKey("LevelId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("MiRs.Domain.Entities.RuneHunterData.LevelTask", "Level")
+                        .WithOne()
+                        .HasForeignKey("MiRs.Domain.Entities.RuneHunter.GuildTeamLevelProgress", "LevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("CategoryProgress");
-
-                    b.Navigation("Level");
-                });
-
-            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildTeamCategoryProgress", b =>
-                {
-                    b.HasOne("MiRs.Domain.Entities.RuneHunterData.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("MiRs.Domain.Entities.RuneHunter.GuildEventTeam", "GuildEventTeam")
-                        .WithMany("CategoryProgresses")
-                        .HasForeignKey("GuildEventTeamId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Category");
 
                     b.Navigation("GuildEventTeam");
-                });
 
-            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildTeamLevelTaskProgress", b =>
-                {
-                    b.HasOne("MiRs.Domain.Entities.RuneHunter.GuildTeamCategoryLevelProgress", "CategoryLevelProgress")
-                        .WithMany("LevelTaskProgress")
-                        .HasForeignKey("CategoryLevelProcessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MiRs.Domain.Entities.RuneHunterData.LevelTask", "LevelTask")
-                        .WithMany()
-                        .HasForeignKey("LevelTaskId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("CategoryLevelProgress");
-
-                    b.Navigation("LevelTask");
+                    b.Navigation("Level");
                 });
 
             modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.RHUserToTeam", b =>
@@ -396,26 +289,15 @@ namespace MiRs.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunterData.Level", b =>
+            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunterData.LevelTask", b =>
                 {
                     b.HasOne("MiRs.Domain.Entities.RuneHunterData.Category", "Category")
-                        .WithMany("Level")
+                        .WithMany("LevelTasks")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunterData.LevelTask", b =>
-                {
-                    b.HasOne("MiRs.Domain.Entities.RuneHunterData.Level", "LevelParent")
-                        .WithMany("LevelTasks")
-                        .HasForeignKey("LevelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LevelParent");
                 });
 
             modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildEvent", b =>
@@ -425,7 +307,7 @@ namespace MiRs.DataAccess.Migrations
 
             modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildEventTeam", b =>
                 {
-                    b.Navigation("CategoryProgresses");
+                    b.Navigation("LevelProgresses");
                 });
 
             modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildTeam", b =>
@@ -435,27 +317,12 @@ namespace MiRs.DataAccess.Migrations
                     b.Navigation("UsersInTeam");
                 });
 
-            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildTeamCategoryLevelProgress", b =>
-                {
-                    b.Navigation("LevelTaskProgress");
-                });
-
-            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildTeamCategoryProgress", b =>
-                {
-                    b.Navigation("CategoryLevelProcess");
-                });
-
             modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.RHUser", b =>
                 {
                     b.Navigation("UserToTeams");
                 });
 
             modelBuilder.Entity("MiRs.Domain.Entities.RuneHunterData.Category", b =>
-                {
-                    b.Navigation("Level");
-                });
-
-            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunterData.Level", b =>
                 {
                     b.Navigation("LevelTasks");
                 });
