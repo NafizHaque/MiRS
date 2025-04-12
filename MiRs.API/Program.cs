@@ -8,6 +8,7 @@ using MiRs.Interactors;
 using MiRs.Interfaces.Helpers;
 using MiRs.RunescapeClient;
 using MiRs.Utils.Helpers;
+using MiRS.Gateway.DataAccess;
 using MiRS.Gateway.RunescapeClient;
 using System.Reflection;
 
@@ -68,6 +69,8 @@ namespace MiRs.API
             builder.Services.AddScoped<UserMapper>();
 
             builder.Services.AddScoped<IRuneClient, WOMClient>();
+
+            builder.Services.AddScoped(typeof(IGenericSQLRepository<>), typeof(GenericSQLRepository<>));
 
             builder.Services.AddMediatRContracts();
 

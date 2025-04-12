@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MiRs.Domain.Entities.RuneHunter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace MiRs.Mediator.Models.RuneHunter.Admin
 {
     public class GetGuildTeamsResponse
     {
+        public IEnumerable<GuildTeam> GuildTeams { get; set; }
     }
 }

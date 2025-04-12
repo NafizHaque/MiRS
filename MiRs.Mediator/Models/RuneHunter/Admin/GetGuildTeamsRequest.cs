@@ -3,7 +3,7 @@ using MiRs.Domain.Exceptions;
 
 namespace MiRs.Mediator.Models.RuneHunter.Admin
 {
-    public class GetGuildTeamsRequest : IRequest<CreateGuildTeamResponse>, IValidatable
+    public class GetGuildTeamsRequest : IRequest<GetGuildTeamsResponse>, IValidatable
     {
         /// <summary>
         /// Gets or sets the GuildId.

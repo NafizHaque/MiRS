@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace MiRs.Interactors.RuneHunter.Admin
 {
-    internal class GetGuildTeamsInteractor : RequestHandler<CreateGuildTeamRequest, CreateGuildTeamResponse>
+    internal class GetGuildTeamsInteractor : RequestHandler<GetGuildTeamsRequest, GetGuildTeamsResponse>
     {
         private readonly IGenericSQLRepository<GuildTeam> _guildTeamRepository;
         private readonly AppSettings _appSettings;
@@ -43,9 +43,9 @@ namespace MiRs.Interactors.RuneHunter.Admin
         /// <param name="result">User object that was created.</param>
         /// <param name="cancellationToken">The cancellation token for the request.</param>
         /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
-        protected override async Task<CreateGuildTeamResponse> HandleRequest(CreateGuildTeamRequest request, CreateGuildTeamResponse result, CancellationToken cancellationToken)
+        protected override async Task<GetGuildTeamsResponse> HandleRequest(GetGuildTeamsRequest request, GetGuildTeamsResponse result, CancellationToken cancellationToken)
         {
-            Logger.LogInformation((int)LoggingEvents.GetGuildTeam, "Creating Guild Team. Guild Id: {guildId}, Teamname: {teamname}", request.GuildId, request.Teamname);
+            Logger.LogInformation((int)LoggingEvents.GetGuildTeam, "Creating Guild Team. Guild Id: {guildId}", request.GuildId);
 
             result.GuildTeams = await _guildTeamRepository.Query(g => g.GuildId == request.GuildId);
 
