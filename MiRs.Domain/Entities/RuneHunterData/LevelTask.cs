@@ -8,8 +8,20 @@ namespace MiRs.Domain.Entities.RuneHunterData
 {
     public class LevelTask
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public string name { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+
+        public int Level { get; set; }
+
+        public int Goal { get; set; }
+
+        public int Unlock { get; set; }
+
+        public string UnlockDescription { get; set; } = string.Empty;
+
+        public int CategoryId { get; set; }
+
+        public Category Category { get; set; }
     }
 }

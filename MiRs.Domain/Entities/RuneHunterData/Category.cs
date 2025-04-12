@@ -2,8 +2,10 @@
 {
     public class Category
     {
-        public int id {  get; set; }
+        public int Id {  get; set; }
 
         public string name { get; set; } = string.Empty;
+
+        public ICollection<LevelTask> LevelTasks { get; set; }   
     }
 }

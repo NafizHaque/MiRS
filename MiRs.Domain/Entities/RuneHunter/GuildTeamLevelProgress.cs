@@ -20,7 +20,7 @@ namespace MiRs.Domain.Entities.RuneHunter
 
         public int LevelId { get; set; }
 
-        public Levels Level { get; set; }
+        public LevelTask Level { get; set; }
 
     }
 }

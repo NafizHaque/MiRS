@@ -25,9 +25,7 @@ namespace MiRs.DataAccess
 
         public DbSet<Category> Categories { get; set; }
 
-        public DbSet<Levels> Levels { get; set; }
-
-        public DbSet<Levels> LevelTasks { get; set; }
+        public DbSet<LevelTask> LevelTasks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -99,6 +97,18 @@ namespace MiRs.DataAccess
                 .HasOne(p => p.Level)
                 .WithOne()
                 .HasForeignKey<GuildTeamLevelProgress>(p => p.LevelId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            /// <summary>
+            /// Configures Categories entity and its relationships.
+            /// </summary>
+            modelBuilder.Entity<Category>()
+                .HasKey(p => p.Id);
+
+            modelBuilder.Entity<Category>()
+                .HasMany(p => p.LevelTasks)
+                .WithOne(p => p.Category)
+                .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
