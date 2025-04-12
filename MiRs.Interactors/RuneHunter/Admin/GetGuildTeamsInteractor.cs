@@ -4,7 +4,6 @@ using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Logging;
 using MiRs.Mediator;
-using MiRs.Mediator.Models.RuneHunter;
 using MiRs.Mediator.Models.RuneHunter.Admin;
 using MiRS.Gateway.DataAccess;
 using System;
@@ -15,19 +14,20 @@ using System.Threading.Tasks;
 
 namespace MiRs.Interactors.RuneHunter.Admin
 {
-    public class CreateGuildTeamInteractor : RequestHandler<CreateGuildTeamRequest, CreateGuildTeamResponse>
+    internal class GetGuildTeamsInteractor : RequestHandler<CreateGuildTeamRequest, CreateGuildTeamResponse>
     {
         private readonly IGenericSQLRepository<GuildTeam> _guildTeamRepository;
         private readonly AppSettings _appSettings;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateGuildTeamInteractor"/> class.
+        /// Initializes a new instance of the <see cref="CreateUserInteractor"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
-        /// <param name="guildTeamRepository">The repo interface to SQL storage.</param>
+        /// <param name="userRepository">The repo interface to table storage.</param>
+        /// <param name="configRepository">The repo interface to table storage for config data.</param>
         /// <param name="appSettings">The app settings.</param>
-        public CreateGuildTeamInteractor(
-            ILogger<CreateGuildTeamInteractor> logger,
+        public GetGuildTeamsInteractor(
+            ILogger<GetGuildTeamsInteractor> logger,
             IGenericSQLRepository<GuildTeam> guildTeamRepository,
             IOptions<AppSettings> appSettings)
             : base(logger)
@@ -45,14 +45,9 @@ namespace MiRs.Interactors.RuneHunter.Admin
         /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<CreateGuildTeamResponse> HandleRequest(CreateGuildTeamRequest request, CreateGuildTeamResponse result, CancellationToken cancellationToken)
         {
-            Logger.LogInformation((int)LoggingEvents.CreateGuildTeam, "Creating Guild Team. Guild Id: {guildId}, Teamname: {teamname}", request.GuildId, request.Teamname);
+            Logger.LogInformation((int)LoggingEvents.GetGuildTeam, "Creating Guild Team. Guild Id: {guildId}, Teamname: {teamname}", request.GuildId, request.Teamname);
 
-            await _guildTeamRepository.AddAsync(
-                new GuildTeam
-                {
-                    GuildId = request.GuildId,
-                    TeamName = request.Teamname,
-                });
+            result.GuildTeams = await _guildTeamRepository.Query(g => g.GuildId == request.GuildId);
 
             return result;
         }

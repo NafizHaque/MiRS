@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace MiRs.Mediator
 {
@@ -10,11 +11,16 @@ namespace MiRs.Mediator
     /// <remarks>
     /// Initializes a new instance of the <see cref="RequestHandler{TRequest, TResponse}"/> class.
     /// </remarks>
-    public abstract class RequestHandler<TRequest, TResponse>()
+    public abstract class RequestHandler<TRequest, TResponse>(ILogger logger)
         : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>, IValidatable
         where TResponse : new()
     {
+
+        /// <summary>
+        /// Gets the logging interface.
+        /// </summary>
+        protected ILogger Logger { get; } = logger;
 
         /// <summary>
         /// Handler method that run shared logic on every handler request made.

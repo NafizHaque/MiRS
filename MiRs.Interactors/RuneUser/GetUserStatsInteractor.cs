@@ -1,5 +1,7 @@
 ﻿
+using Microsoft.Extensions.Logging;
 using MiRs.Domain.Entities.User;
+using MiRs.Interactors.RuneHunter.Admin;
 using MiRs.Mediator;
 using MiRs.Mediator.Models.RuneUser;
 using MiRS.Gateway.RunescapeClient;
@@ -13,7 +15,7 @@ namespace MiRs.Interactors.RuneUser
     {
         private readonly IRuneClient _runeClient;
 
-        public GetUserStatsInteractor(IRuneClient runeclient)
+        public GetUserStatsInteractor(IRuneClient runeclient, ILogger<GetUserStatsInteractor> logger) : base (logger)
         {
             _runeClient = runeclient;
         }
