@@ -23,8 +23,7 @@ namespace MiRs.Interactors.RuneHunter.Admin
         /// Initializes a new instance of the <see cref="CreateUserInteractor"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
-        /// <param name="userRepository">The repo interface to table storage.</param>
-        /// <param name="configRepository">The repo interface to table storage for config data.</param>
+        /// <param name="guildTeamRepository">The repo interface to table storage.</param>
         /// <param name="appSettings">The app settings.</param>
         public GetGuildTeamsInteractor(
             ILogger<GetGuildTeamsInteractor> logger,
@@ -32,7 +31,7 @@ namespace MiRs.Interactors.RuneHunter.Admin
             IOptions<AppSettings> appSettings)
             : base(logger)
         {
-            guildTeamRepository = _guildTeamRepository;
+            _guildTeamRepository = guildTeamRepository;
             _appSettings = appSettings.Value;
         }
 

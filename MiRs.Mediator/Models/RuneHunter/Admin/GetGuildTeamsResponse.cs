@@ -9,6 +9,6 @@ namespace MiRs.Mediator.Models.RuneHunter.Admin
 {
     public class GetGuildTeamsResponse
     {
-        public IEnumerable<GuildTeam> GuildTeams { get; set; }
+        public IEnumerable<GuildTeam> GuildTeams { get; set; } = Enumerable.Empty<GuildTeam>();
     }
 }
