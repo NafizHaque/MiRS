@@ -19,5 +19,8 @@ namespace MiRs.Domain.Entities.RuneHunter
         public DateTimeOffset EventStart { get; set; }
 
         public DateTimeOffset EventEnd { get; set; }
+
+        public int TeamId { get; set; }
+        public ICollection<GuildEventTeam> EventTeams { get; set; }
     }
 }

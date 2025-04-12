@@ -14,9 +14,10 @@ namespace MiRs.DataAccess
 
         public DbSet<RHUserToTeam> UserToTeams { get; set; }
 
-        public DbSet<GuildTeams> GuildTeams{ get; set; }
+        public DbSet<GuildTeam> GuildTeams{ get; set; }
 
         public DbSet<GuildEvent> GuildEvent { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

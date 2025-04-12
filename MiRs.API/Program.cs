@@ -101,7 +101,7 @@ namespace MiRs.API
                 IEnumerable<string> pendingMigrations = runeHunterDbContext.Database.GetPendingMigrations();
                 if (pendingMigrations.Any())
                 {
-                    runeHunterDbContext.Database.Migrate();
+                   runeHunterDbContext.Database.Migrate();
                 }
             }
         }
