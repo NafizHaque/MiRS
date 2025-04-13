@@ -37,7 +37,7 @@ namespace MiRs.DataAccess
             /// Configures the primary key for RHUser.
             /// </summary>
             modelBuilder.Entity<RHUser>()
-                .HasKey(u => u.Id);
+                .HasKey(u => u.UserId);
 
             /// <summary>
             /// Configures the one-to-many relationship between RHUser and RHUserToTeam.
@@ -60,12 +60,6 @@ namespace MiRs.DataAccess
                 .HasOne(ut => ut.Team)
                 .WithMany(t => t.UsersInTeam)
                 .HasForeignKey(ut => ut.TeamId);
-
-            /// <summary>
-            /// Configures the primary key for RHUser.
-            /// </summary>
-            modelBuilder.Entity<GuildEventTeam>()
-                .HasKey(et => et.Id);
 
             /// <summary>
             /// Configures the one-to-many relationship between GuildEvent and GuildEventTeam.

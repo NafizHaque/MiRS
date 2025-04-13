@@ -11,7 +11,7 @@ namespace MiRs.Domain.Entities.RuneHunter
 
         public int Id { get; set; }
 
-        public int UserId { get; set; }
+        public ulong UserId { get; set; }
 
         public int TeamId { get; set; }
 

@@ -17,7 +17,7 @@ namespace MiRs.Mediator.Models.RuneHunter
         /// <exception cref="BadRequestException"> The custom exception type for bad requests.</exception>
         public void Validate()
         {
-            if (rhUser.Id <= 0)
+            if (rhUser.UserId <= 0)
             {
                 throw new BadRequestException("Invalid Id given!");
             }

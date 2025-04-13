@@ -10,9 +10,11 @@ namespace MiRs.Domain.Entities.RuneHunter
     {
         public int Id { get; set; }
 
-        public int GuildId { get; set; }
+        public ulong GuildId { get; set; }
 
         public string TeamName { get; set; } = string.Empty;
+
+        public DateTimeOffset CreatedDate { get; set; }
 
         public ICollection<RHUserToTeam> UsersInTeam { get; set; }
 

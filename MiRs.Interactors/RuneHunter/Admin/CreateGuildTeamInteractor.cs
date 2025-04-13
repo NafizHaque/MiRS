@@ -32,7 +32,7 @@ namespace MiRs.Interactors.RuneHunter.Admin
             IOptions<AppSettings> appSettings)
             : base(logger)
         {
-            guildTeamRepository = _guildTeamRepository;
+            _guildTeamRepository = guildTeamRepository;
             _appSettings = appSettings.Value;
         }
 

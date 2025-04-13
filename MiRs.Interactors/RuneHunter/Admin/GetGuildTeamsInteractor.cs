@@ -6,15 +6,10 @@ using MiRs.Domain.Logging;
 using MiRs.Mediator;
 using MiRs.Mediator.Models.RuneHunter.Admin;
 using MiRS.Gateway.DataAccess;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiRs.Interactors.RuneHunter.Admin
 {
-    internal class GetGuildTeamsInteractor : RequestHandler<GetGuildTeamsRequest, GetGuildTeamsResponse>
+    public class GetGuildTeamsInteractor : RequestHandler<GetGuildTeamsRequest, GetGuildTeamsResponse>
     {
         private readonly IGenericSQLRepository<GuildTeam> _guildTeamRepository;
         private readonly AppSettings _appSettings;

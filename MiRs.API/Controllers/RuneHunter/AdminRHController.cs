@@ -23,14 +23,14 @@ namespace MiRs.API.Controllers.RuneHunter
         public AdminRHController(ILogger<AdminRHController> logger) => _logger = logger;
 
         /// <summary>
-        /// User to Join a Team
+        /// Get All Guild Teams Call. 
         /// </summary>
         /// <param name="guildId">The discord server Id.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(GuildTeam), StatusCodes.Status200OK)]
-        [HttpGet]
-        public async Task<IActionResult> GetTeamsInGuild(int guildId)
+        [HttpGet("guilds")]
+        public async Task<IActionResult> GetTeamsInGuild(ulong guildId)
         {
             try
             {
@@ -55,10 +55,11 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(GuildTeam), StatusCodes.Status200OK)]
-        [HttpPost]
-        public async Task<IActionResult> CreateTeamInGuild(int guildId, string teamname)
+        [HttpPost("guilds")]
+        public async Task<IActionResult> CreateTeamInGuild(ulong guildId, string teamname)
         {
             try
+            
             {
                 return Ok(await Mediator.Send(new CreateGuildTeamRequest { GuildId = guildId, Teamname = teamname }));
 
@@ -81,8 +82,8 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(GuildTeam), StatusCodes.Status200OK)]
-        [HttpPatch]
-        public async Task<IActionResult> EditTeamInGuild(int guildId, string teamId)
+        [HttpPatch("guilds")]
+        public async Task<IActionResult> EditTeamInGuild(ulong guildId, string teamId)
         {
             try
             {
@@ -107,7 +108,7 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(GuildTeam), StatusCodes.Status200OK)]
-        [HttpDelete]
+        [HttpDelete("guilds")]
         public async Task<IActionResult> DeleteTeamInGuild(int guildId, string teamId)
         {
             try

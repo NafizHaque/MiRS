@@ -8,7 +8,7 @@ namespace MiRs.Mediator.Models.RuneHunter.Admin
         /// <summary>
         /// Gets or sets the GuildId.
         /// </summary>
-        public int GuildId { get; set; }
+        public ulong GuildId { get; set; }
 
         /// <summary>
         /// Gets or sets the TeamName.
