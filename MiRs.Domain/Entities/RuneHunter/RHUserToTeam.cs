@@ -15,8 +15,8 @@ namespace MiRs.Domain.Entities.RuneHunter
 
         public int TeamId { get; set; }
 
-        public RHUser User { get; set; }
+        public RHUser? User { get; set; }
 
-        public GuildTeam Team { get; set; }
+        public GuildTeam? Team { get; set; }
     }
 }

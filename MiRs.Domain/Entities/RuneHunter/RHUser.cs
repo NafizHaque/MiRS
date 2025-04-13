@@ -16,7 +16,7 @@ namespace MiRs.Domain.Entities.RuneHunter
 
         public DateTimeOffset CreatedDate { get; set; } 
 
-        public ICollection<RHUserToTeam> UserToTeams { get; set; }
+        public ICollection<RHUserToTeam>? UserToTeams { get; set; }
     }
     
 }

@@ -15,12 +15,12 @@ namespace MiRs.Domain.Entities.RuneHunter
 
         public int CategoryId { get; set; }
 
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
 
         public int GuildEventTeamId { get; set; }
 
-        public GuildEventTeam GuildEventTeam { get; set; }
+        public GuildEventTeam? GuildEventTeam { get; set; }
 
-        public ICollection<GuildTeamCategoryLevelProgress> CategoryLevelProcess { get; set; }
+        public ICollection<GuildTeamCategoryLevelProgress>? CategoryLevelProcess { get; set; }
     }
 }

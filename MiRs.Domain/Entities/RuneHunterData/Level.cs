@@ -18,8 +18,8 @@ namespace MiRs.Domain.Entities.RuneHunterData
 
         public int CategoryId { get; set; }
 
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
 
-        public ICollection<LevelTask> LevelTasks { get; set; }
+        public ICollection<LevelTask>? LevelTasks { get; set; }
     }
 }

@@ -16,6 +16,6 @@ namespace MiRs.Domain.Entities.RuneHunterData
 
         public int LevelId { get; set; }
 
-        public Level LevelParent { get; set; }
+        public Level? LevelParent { get; set; }
     }
 }

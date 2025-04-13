@@ -75,20 +75,18 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// User to Join a Team
+        /// Get All Guild Teams Call. 
         /// </summary>
-        /// <param name="guildId">The Guild Id.</param>
-        /// <param name="teamId">The Team Id.</param>
+        /// <param name="guildId">The discord server Id.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(GuildTeam), StatusCodes.Status200OK)]
-        [HttpPatch("guilds")]
-        public async Task<IActionResult> EditTeamInGuild(ulong guildId, string teamId)
+        [HttpGet("events")]
+        public async Task<IActionResult> GetEventsInGuild(ulong guildId)
         {
             try
             {
-                //return Ok(await Mediator.Send(new JoinTeamRequest { UserId = guildId, Teamname = teamname }));
-                throw new NotImplementedException();
+                return Ok(await Mediator.Send(new GetGuildTeamsRequest { GuildId = guildId }));
 
             }
             catch (BadRequestException ex)
@@ -102,14 +100,39 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
+        /// Create Event
+        /// </summary>
+        /// <param name="guildEvent">The discord event object.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return .</remarks>
+        [ProducesResponseType(typeof(GuildEvent), StatusCodes.Status200OK)]
+        [HttpPost("events")]
+        public async Task<IActionResult> CreateEventInGuild([FromBody] GuildEvent guildEvent)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new CreateEventInGuildRequest { GuildEventToBeCreated = guildEvent }));
+
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+        /// <summary>
         /// User to Join a Team
         /// </summary>
-        /// <param name="guildId">Test.</param>
+        /// <param name="guildId">The Guild Id.</param>
+        /// <param name="teamId">The Team Id.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(GuildTeam), StatusCodes.Status200OK)]
-        [HttpDelete("guilds")]
-        public async Task<IActionResult> DeleteTeamInGuild(int guildId, string teamId)
+        [HttpPatch("guilds")]
+        public async Task<IActionResult> EditTeamInGuild(ulong guildId, string teamId)
         {
             try
             {

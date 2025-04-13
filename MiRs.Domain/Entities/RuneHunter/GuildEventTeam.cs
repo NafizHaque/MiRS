@@ -6,13 +6,13 @@
 
         public int EventId { get; set; }
 
-        public GuildEvent Event { get; set; }
+        public GuildEvent? Event { get; set; }
 
         public int TeamId { get; set; }
 
-        public GuildTeam Team { get; set; }
+        public GuildTeam? Team { get; set; }
 
-        public ICollection<GuildTeamCategoryProgress> CategoryProgresses { get; set; }
+        public ICollection<GuildTeamCategoryProgress>? CategoryProgresses { get; set; }
 
     }
 }

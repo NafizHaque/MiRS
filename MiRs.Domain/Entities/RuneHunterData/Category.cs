@@ -6,6 +6,6 @@
 
         public string name { get; set; } = string.Empty;
 
-        public ICollection<Level> Level { get; set; }   
+        public ICollection<Level>? Level { get; set; }   
     }
 }
