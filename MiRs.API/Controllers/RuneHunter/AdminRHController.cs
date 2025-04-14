@@ -48,7 +48,7 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// User to Join a Team
+        /// Create Guild Team
         /// </summary>
         /// <param name="guildId">The discord server Id.</param>
         /// <param name="teamname">The Team name.</param>
@@ -75,56 +75,7 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// Get All Guild Teams Call. 
-        /// </summary>
-        /// <param name="guildId">The discord server Id.</param>
-        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return user.</remarks>
-        [ProducesResponseType(typeof(GuildTeam), StatusCodes.Status200OK)]
-        [HttpGet("events")]
-        public async Task<IActionResult> GetEventsInGuild(ulong guildId)
-        {
-            try
-            {
-                return Ok(await Mediator.Send(new GetGuildTeamsRequest { GuildId = guildId }));
-
-            }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(ex.CustomErrorMessage);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Create Event
-        /// </summary>
-        /// <param name="guildEvent">The discord event object.</param>
-        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return .</remarks>
-        [ProducesResponseType(typeof(GuildEvent), StatusCodes.Status200OK)]
-        [HttpPost("events")]
-        public async Task<IActionResult> CreateEventInGuild([FromBody] GuildEvent guildEvent)
-        {
-            try
-            {
-                return Ok(await Mediator.Send(new CreateEventInGuildRequest { GuildEventToBeCreated = guildEvent }));
-
-            }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(ex.CustomErrorMessage);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-        /// <summary>
-        /// User to Join a Team
+        /// Edit Guild Team name
         /// </summary>
         /// <param name="guildId">The Guild Id.</param>
         /// <param name="teamId">The Team Id.</param>
@@ -151,7 +102,57 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// User to Join a Team
+        /// Get All Guild Events Call. 
+        /// </summary>
+        /// <param name="guildId">The discord server Id.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return user.</remarks>
+        [ProducesResponseType(typeof(GuildTeam), StatusCodes.Status200OK)]
+        [HttpGet("events")]
+        public async Task<IActionResult> GetEventsInGuild(ulong guildId)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new GetGuildTeamsRequest { GuildId = guildId }));
+
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Create Guild Event.
+        /// </summary>
+        /// <param name="guildEvent">The discord event object.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return .</remarks>
+        [ProducesResponseType(typeof(GuildEvent), StatusCodes.Status200OK)]
+        [HttpPost("events")]
+        public async Task<IActionResult> CreateEventInGuild([FromBody] GuildEvent guildEvent)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new CreateEventInGuildRequest { GuildEventToBeCreated = guildEvent }));
+
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get All Guild Events. 
         /// </summary>
         /// <param name="username">Test.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>

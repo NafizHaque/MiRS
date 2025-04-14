@@ -14,6 +14,10 @@ namespace MiRs.Domain.Entities.RuneHunter
 
         public string PreviousUsername { get; set; } = string.Empty;
 
+        public string Runescapename { get; set; } = string.Empty;
+
+        public string PreviousRunescapename { get; set; } = string.Empty;
+
         public DateTimeOffset CreatedDate { get; set; } 
 
         public ICollection<RHUserToTeam>? UserToTeams { get; set; }

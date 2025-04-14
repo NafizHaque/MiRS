@@ -9,7 +9,7 @@ namespace MiRs.Mediator.Models.RuneHunter
         /// <summary>
         /// Gets or sets the rhUser.
         /// </summary>
-        public RHUser? rhUser { get; set; }
+        public RHUser? rhUserToBeCreated { get; set; }
 
         /// <summary>
         /// Validates the user
@@ -17,14 +17,19 @@ namespace MiRs.Mediator.Models.RuneHunter
         /// <exception cref="BadRequestException"> The custom exception type for bad requests.</exception>
         public void Validate()
         {
-            if (rhUser.UserId <= 0)
+            if (rhUserToBeCreated.UserId <= 0)
             {
                 throw new BadRequestException("Invalid Id given!");
             }
 
-            if (string.IsNullOrEmpty(rhUser.Username))
+            if (string.IsNullOrEmpty(rhUserToBeCreated.Username))
             {
                 throw new BadRequestException("Username is null or Empty!");
+            }
+
+            if (string.IsNullOrEmpty(rhUserToBeCreated.Runescapename))
+            {
+                throw new BadRequestException("Runescapename is null or Empty!");
             }
         }
     }

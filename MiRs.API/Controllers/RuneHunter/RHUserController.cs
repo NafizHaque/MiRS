@@ -31,12 +31,12 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
-        [HttpPost]
+        [HttpPost("user")]
         public async Task<IActionResult> RegisterUser([FromBody] RHUser rhUser)
         {
             try
             {
-                return Ok(await Mediator.Send(new RegisterUserRequest { rhUser = rhUser }));
+                return Ok(await Mediator.Send(new RegisterUserRequest { rhUserToBeCreated = rhUser }));
 
             }
             catch (BadRequestException ex)
@@ -83,31 +83,6 @@ namespace MiRs.API.Controllers.RuneHunter
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost]
         public async Task<IActionResult> GetUsersInTeam(int id, string teamname)
-        {
-            try
-            {
-                return Ok(await Mediator.Send(new JoinTeamRequest { UserId = id, Teamname = teamname }));
-
-            }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(ex.CustomErrorMessage);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// User to Join a Team
-        /// </summary>
-        /// <param name="username">Test.</param>
-        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return user.</remarks>
-        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
-        [HttpPost]
-        public async Task<IActionResult> GetTeamsInGuild(int id, string teamname)
         {
             try
             {

@@ -14,12 +14,27 @@ namespace MiRs.Domain.Logging
         /// <summary>
         /// The event id to be used when logging calls related to getting Guild Teams.
         /// </summary>
-        GetGuildTeam = 1000,
+        AdminEvent = 1000,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to getting Guild Teams.
+        /// </summary>
+        GetGuildTeam = 1001,
 
         /// <summary>
         /// The event id to be used when logging calls related to creating Guild Teams.
         /// </summary>
-        CreateGuildTeam = 1001,
+        CreateGuildTeam = 1002,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to creating Guild Teams.
+        /// </summary>
+        GetGuildEvent = 1101,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to creating Guild Teams.
+        /// </summary>
+        CreateGuildEvent = 1102,
 
         /// <summary>
         /// The event id to be used when logging calls related to registering user.

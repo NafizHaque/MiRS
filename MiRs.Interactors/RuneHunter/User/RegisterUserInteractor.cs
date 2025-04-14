@@ -13,9 +13,10 @@ using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRS.Gateway.DataAccess;
-using MiRs.Interactors.RuneHunter.Admin;
+using MiRs.Domain.Logging;
+using MiRs.Domain.Exceptions;
 
-namespace MiRs.Interactors.RuneHunter
+namespace MiRs.Interactors.RuneHunter.User
 {
     /// <summary>
     /// The Interactor to Rune User Stats and Metrics.
@@ -51,7 +52,16 @@ namespace MiRs.Interactors.RuneHunter
         /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<RegisterUserResponse> HandleRequest(RegisterUserRequest request, RegisterUserResponse result, CancellationToken cancellationToken)
         {
+            Logger.LogInformation((int)LoggingEvents.CreateGuildTeam, "Creating User. User Id: {userId}, UserName: {username} ", request.rhUserToBeCreated.UserId, request.rhUserToBeCreated.Username);
 
+            IEnumerable<RHUser> usersInTable = await _rhUserRepository.GetAllEntitiesAsync();
+
+            if(usersInTable.Any(u => u.UserId == request.rhUserToBeCreated.UserId))
+            {
+                throw new BadRequestException("User Already Exists!");
+            }
+
+            await _rhUserRepository.AddAsync(request.rhUserToBeCreated);
             return result;
 
         }
