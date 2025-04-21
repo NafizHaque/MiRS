@@ -23,7 +23,7 @@ namespace MiRs.API.Controllers.RuneHunter
         public AdminRHController(ILogger<AdminRHController> logger) => _logger = logger;
 
         /// <summary>
-        /// Get All Guild Teams Call. 
+        /// Get All Guild Teams. 
         /// </summary>
         /// <param name="guildId">The discord server Id.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
@@ -75,7 +75,7 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// Edit Guild Team name
+        /// Edit Guild Team
         /// </summary>
         /// <param name="guildId">The Guild Id.</param>
         /// <param name="teamId">The Team Id.</param>
@@ -102,7 +102,7 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// Get All Guild Events Call. 
+        /// Get All Guild Events. 
         /// </summary>
         /// <param name="guildId">The discord server Id.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
@@ -113,7 +113,7 @@ namespace MiRs.API.Controllers.RuneHunter
         {
             try
             {
-                return Ok(await Mediator.Send(new GetGuildTeamsRequest { GuildId = guildId }));
+                return Ok(await Mediator.Send(new GetGuildEventsRequest { GuildId = guildId }));
 
             }
             catch (BadRequestException ex)
@@ -152,7 +152,7 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// Get All Guild Events. 
+        /// Placeholder Text. 
         /// </summary>
         /// <param name="username">Test.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
@@ -180,22 +180,17 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// User to Join a Team
+        /// Test Api Connection
         /// </summary>
-        /// <param name="username">Test.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
-        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
-        [HttpPost]
-        [Route("UserTeam")]
-        public async Task<IActionResult> ChangeUserToTeamInGuild(int userid, int guildId, string teamId)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpPost("ping")]
+        public async Task<IActionResult> PingConnection()
         {
             try
             {
-                //return Ok(await Mediator.Send(new JoinTeamRequest { UserId = userid, Teamname = teamname }));
-
-                throw new NotImplementedException();
-
+                return Ok(true);
             }
             catch (BadRequestException ex)
             {
@@ -207,31 +202,5 @@ namespace MiRs.API.Controllers.RuneHunter
             }
         }
 
-        /// <summary>
-        /// User to Join a Team
-        /// </summary>
-        /// <param name="username">Test.</param>
-        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return user.</remarks>
-        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
-        [HttpPost]
-        public async Task<IActionResult> RemoveUserToTeamInGuild(int userid, int guildId, string teamname)
-        {
-            try
-            {
-                //return Ok(await Mediator.Send(new JoinTeamRequest { UserId = id, Teamname = teamname }));
-
-                throw new NotImplementedException();
-
-            }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(ex.CustomErrorMessage);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
     }
 }

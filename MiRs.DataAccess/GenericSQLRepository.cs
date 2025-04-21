@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using MiRs.Domain.Entities.User;
 using MiRS.Gateway.DataAccess;
 using System;
 using System.Collections.Generic;
@@ -6,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MiRs.DataAccess
 {
@@ -117,9 +120,50 @@ namespace MiRs.DataAccess
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task<IEnumerable<TEntity>> GetAllEntitiesAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<TEntity>> GetAllEntitiesAsync(
+            Expression<Func<TEntity, bool>>? filter = null,
+            CancellationToken cancellationToken = default,
+            params Expression<Func<TEntity, object>>[]? includes
+        )
         {
-            return await _dbSet.ToListAsync();
+
+            IQueryable<TEntity> query = _dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach ( Expression<Func<TEntity, object>> include in includes) 
+            {
+                if(include is not null)
+                {
+                    query = query.Include(include);
+                }
+
+            }
+
+            return await query.ToListAsync();
         }
+
+        /// <summary>
+        /// Adds an entity to a table with Insert Identity.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        public async Task AddWithIdentityInsertAsync(TEntity entity, CancellationToken cancellationToken = default)
+        {
+            using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
+
+            await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Users ON");
+
+            _dbSet.Add(entity);
+            await _context.SaveChangesAsync();
+
+            await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Users OFF");
+
+            await transaction.CommitAsync();
+        }
+
     }
 }

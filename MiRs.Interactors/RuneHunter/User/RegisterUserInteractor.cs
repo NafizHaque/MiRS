@@ -39,7 +39,7 @@ namespace MiRs.Interactors.RuneHunter.User
             IOptions<AppSettings> appSettings)
             : base(logger)
         {
-            rhUserRepository = _rhUserRepository;
+            _rhUserRepository = rhUserRepository;
             _appSettings = appSettings.Value;
         }
 
@@ -58,10 +58,10 @@ namespace MiRs.Interactors.RuneHunter.User
 
             if(usersInTable.Any(u => u.UserId == request.rhUserToBeCreated.UserId))
             {
-                throw new BadRequestException("User Already Exists!");
+                throw new BadRequestException($"User: <@{request.rhUserToBeCreated.UserId}> Already Exists!");
             }
 
-            await _rhUserRepository.AddAsync(request.rhUserToBeCreated);
+            await _rhUserRepository.AddWithIdentityInsertAsync(request.rhUserToBeCreated);
             return result;
 
         }

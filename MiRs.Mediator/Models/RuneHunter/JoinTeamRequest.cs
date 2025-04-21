@@ -8,7 +8,12 @@ namespace MiRs.Mediator.Models.RuneHunter
         /// <summary>
         /// Gets or sets the userid.
         /// </summary>
-        public int UserId { get; set; }
+        public ulong UserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the guild id.
+        /// </summary>
+        public ulong GuildId { get; set; }
 
         /// <summary>
         /// Gets or sets the teamName.
@@ -23,7 +28,12 @@ namespace MiRs.Mediator.Models.RuneHunter
         {
             if (UserId <= 0)
             {
-                throw new BadRequestException("Invalid Id given!");
+                throw new BadRequestException("Invalid user Id given!");
+            }
+
+            if (GuildId <= 0)
+            {
+                throw new BadRequestException("Invalid guild Id given!");
             }
 
             if (string.IsNullOrEmpty(Teamname))

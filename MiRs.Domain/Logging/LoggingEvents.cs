@@ -40,5 +40,10 @@ namespace MiRs.Domain.Logging
         /// The event id to be used when logging calls related to registering user.
         /// </summary>
         RegisterUser = 2000,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to registering user.
+        /// </summary>
+        UserToTeamJoin = 2001,
     }
 }

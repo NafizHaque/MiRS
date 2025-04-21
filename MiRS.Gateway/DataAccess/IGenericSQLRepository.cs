@@ -66,6 +66,16 @@ namespace MiRS.Gateway.DataAccess
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<IEnumerable<TEntity>> GetAllEntitiesAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<TEntity>> GetAllEntitiesAsync(
+            Expression<Func<TEntity, bool>>? filter = null,
+            CancellationToken cancellationToken = default,
+            params Expression<Func<TEntity, object>>[] includes);
+
+        /// <summary>
+        /// Adds an entity to a table with Insert Identity.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        Task AddWithIdentityInsertAsync(TEntity entity, CancellationToken cancellationToken = default);
     }
 }

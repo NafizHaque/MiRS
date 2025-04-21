@@ -52,16 +52,17 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <summary>
         /// User to Join a Team
         /// </summary>
-        /// <param name="username">Test.</param>
+        /// <param name="id">user id.</param>
+        /// <param name="teamname">Team name to join.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
-        [HttpPost]
-        public async Task<IActionResult> JoinTeam(int id, string teamname)
+        [HttpPost("userteam")]
+        public async Task<IActionResult> JoinTeam(ulong userid, ulong guildid, string teamname)
         {
             try
             {
-                return Ok(await Mediator.Send(new JoinTeamRequest { UserId = id, Teamname = teamname }));
+                return Ok(await Mediator.Send(new JoinTeamRequest { UserId = userid, GuildId = guildid, Teamname = teamname }));
 
             }
             catch (BadRequestException ex)
@@ -81,8 +82,8 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
-        [HttpPost]
-        public async Task<IActionResult> GetUsersInTeam(int id, string teamname)
+        [HttpGet("userteam")]
+        public async Task<IActionResult> GetUsersInTeam(ulong id, string teamname)
         {
             try
             {
