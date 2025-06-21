@@ -180,6 +180,34 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
+        /// Placeholder Text. 
+        /// </summary>
+        /// <param name="username">Test.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return user.</remarks>
+        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
+        [HttpPost]
+        [Route("EventTeam")]
+        public async Task<IActionResult> AddGuildTeamToEvent(int teamid, int eventid)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new AddGuildTeamToEventRequest { TeamId = teamid, EventId = eventid }));
+
+                throw new NotImplementedException();
+
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Test Api Connection
         /// </summary>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>

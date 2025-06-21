@@ -32,6 +32,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiRs.DataAccess", "MiRs.DataAccess\MiRs.DataAccess.csproj", "{307D7B75-E0DC-436A-AE8C-113AFAD6D2A2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{437617D5-7CDC-46B8-9C8E-7B967936FA5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiRs.Tests", "MiRs.Tests\MiRs.Tests.csproj", "{A6CB100D-489E-4977-BC15-BA6C72BF8C98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +78,10 @@ Global
 		{307D7B75-E0DC-436A-AE8C-113AFAD6D2A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{307D7B75-E0DC-436A-AE8C-113AFAD6D2A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{307D7B75-E0DC-436A-AE8C-113AFAD6D2A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6CB100D-489E-4977-BC15-BA6C72BF8C98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6CB100D-489E-4977-BC15-BA6C72BF8C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6CB100D-489E-4977-BC15-BA6C72BF8C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6CB100D-489E-4977-BC15-BA6C72BF8C98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +96,7 @@ Global
 		{217544C8-6DDB-40E6-B39B-5D544E88C47A} = {FF5EF375-5433-4189-9183-F27F0C884C3E}
 		{125A60A7-87B1-4646-A2F5-7994232CE200} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{307D7B75-E0DC-436A-AE8C-113AFAD6D2A2} = {FF5EF375-5433-4189-9183-F27F0C884C3E}
+		{A6CB100D-489E-4977-BC15-BA6C72BF8C98} = {437617D5-7CDC-46B8-9C8E-7B967936FA5C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F50E342D-08D4-4CF1-B648-BD73F1E6783B}

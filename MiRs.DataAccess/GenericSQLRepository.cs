@@ -1,14 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using MiRs.Domain.Entities.User;
 using MiRS.Gateway.DataAccess;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MiRs.DataAccess
 {
@@ -110,9 +103,9 @@ namespace MiRs.DataAccess
         /// <param name="filter">The filter to run against the table data.</param>
         /// <param name="continuationToken">The cancellation token.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task<IEnumerable<TEntity>> Query(Expression<Func<TEntity, bool>> filter, string? continuationToken = null)
+        public async Task<IQueryable<TEntity>> Query(Expression<Func<TEntity, bool>> filter, string? continuationToken = null)
         {
-            return await _dbSet.Where(filter).ToListAsync();
+            return _dbSet.Where(filter);
         }
 
         /// <summary>
@@ -120,7 +113,7 @@ namespace MiRs.DataAccess
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task<IEnumerable<TEntity>> GetAllEntitiesAsync(
+        public async Task<IQueryable<TEntity>> GetAllEntitiesAsync(
             Expression<Func<TEntity, bool>>? filter = null,
             CancellationToken cancellationToken = default,
             params Expression<Func<TEntity, object>>[]? includes
@@ -143,7 +136,7 @@ namespace MiRs.DataAccess
 
             }
 
-            return await query.ToListAsync();
+            return query;
         }
 
         /// <summary>

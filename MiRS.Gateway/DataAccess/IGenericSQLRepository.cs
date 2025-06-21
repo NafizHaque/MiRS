@@ -59,14 +59,14 @@ namespace MiRS.Gateway.DataAccess
         /// <param name="filter">The filter to run against the table data.</param>
         /// <param name="continuationToken">The cancellation token.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<IEnumerable<TEntity>> Query(Expression<Func<TEntity, bool>> filter, string? continuationToken = null);
+        Task<IQueryable<TEntity>> Query(Expression<Func<TEntity, bool>> filter, string? continuationToken = null);
 
         /// <summary>
         /// Gets all entities from a table.
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<IEnumerable<TEntity>> GetAllEntitiesAsync(
+        Task<IQueryable<TEntity>> GetAllEntitiesAsync(
             Expression<Func<TEntity, bool>>? filter = null,
             CancellationToken cancellationToken = default,
             params Expression<Func<TEntity, object>>[] includes);

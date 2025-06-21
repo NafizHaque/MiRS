@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MiRs.Mediator.Models.RuneHunter;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
@@ -15,6 +14,7 @@ using MiRs.Domain.Entities.RuneHunter;
 using MiRS.Gateway.DataAccess;
 using MiRs.Domain.Logging;
 using MiRs.Domain.Exceptions;
+using MiRs.Mediator.Models.RuneHunter.User;
 
 namespace MiRs.Interactors.RuneHunter.User
 {

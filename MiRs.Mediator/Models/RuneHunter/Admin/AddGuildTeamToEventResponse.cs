@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiRs.Mediator.Models.RuneHunter
+namespace MiRs.Mediator.Models.RuneHunter.Admin
 {
-    public class RegisterUserResponse
+    public class AddGuildTeamToEventResponse
     {
     }
 }

@@ -4,6 +4,7 @@ using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Entities.User;
 using MiRs.Domain.Exceptions;
 using MiRs.Mediator.Models.RuneHunter;
+using MiRs.Mediator.Models.RuneHunter.User;
 using MiRs.Mediator.Models.RuneUser;
 using System.Net;
 
@@ -57,7 +58,7 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
-        [HttpPost("userteam")]
+        [HttpPost("JoinTeam")]
         public async Task<IActionResult> JoinTeam(ulong userid, ulong guildid, string teamname)
         {
             try
@@ -82,12 +83,12 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
-        [HttpGet("userteam")]
-        public async Task<IActionResult> GetUsersInTeam(ulong id, string teamname)
+        [HttpGet("CurrentUserEvents")]
+        public async Task<IActionResult> CurrentEventsForUser(ulong userid, ulong guildid)
         {
             try
             {
-                return Ok(await Mediator.Send(new JoinTeamRequest { UserId = id, Teamname = teamname }));
+                return Ok(await Mediator.Send(new GetCurrentEventsForUserRequest { UserId = userid, GuildId = guildid }));
 
             }
             catch (BadRequestException ex)

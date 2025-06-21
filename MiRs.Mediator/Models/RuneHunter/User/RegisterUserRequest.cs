@@ -2,7 +2,7 @@
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Exceptions;
 
-namespace MiRs.Mediator.Models.RuneHunter
+namespace MiRs.Mediator.Models.RuneHunter.User
 {
     public class RegisterUserRequest : IRequest<RegisterUserResponse>, IValidatable
     {

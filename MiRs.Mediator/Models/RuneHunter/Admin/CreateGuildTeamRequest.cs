@@ -13,7 +13,7 @@ namespace MiRs.Mediator.Models.RuneHunter.Admin
         /// <summary>
         /// Gets or sets the TeamName.
         /// </summary>
-        public string Teamname { get; set; }
+        public string Teamname { get; set; } = string.Empty;
 
         /// <summary>
         /// Validates the user
@@ -23,7 +23,7 @@ namespace MiRs.Mediator.Models.RuneHunter.Admin
         {
             if (GuildId <= 0)
             {
-                throw new BadRequestException("Invalid  Guild Id given!");
+                throw new BadRequestException("Invalid Guild Id given!");
             }
 
             if (string.IsNullOrEmpty(Teamname))

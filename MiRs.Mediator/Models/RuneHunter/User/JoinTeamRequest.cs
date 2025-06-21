@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using MiRs.Domain.Exceptions;
 
-namespace MiRs.Mediator.Models.RuneHunter
+namespace MiRs.Mediator.Models.RuneHunter.User
 {
     public class JoinTeamRequest : IRequest<JoinTeamResponse>, IValidatable
     {

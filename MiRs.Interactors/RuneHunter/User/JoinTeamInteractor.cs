@@ -5,13 +5,13 @@ using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Exceptions;
 using MiRs.Domain.Logging;
 using MiRS.Gateway.DataAccess;
-using MiRs.Mediator.Models.RuneHunter;
 using MiRs.Mediator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MiRs.Mediator.Models.RuneHunter.User;
 
 namespace MiRs.Interactors.RuneHunter.User
 {
