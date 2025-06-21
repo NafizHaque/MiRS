@@ -63,6 +63,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'app-MiRS-dev'
-          slot-name: 'Production'
+          slot-name: 'dev'
           package: .
           
