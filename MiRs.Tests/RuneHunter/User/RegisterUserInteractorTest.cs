@@ -67,6 +67,96 @@ namespace MiRs.Tests.RuneHunter.User
 
         }
 
+        /// <summary>
+        /// A test that checks that invalid Discord User ID are validated correctly.
+        /// </summary>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        [TestMethod]
+        public async Task when_user_id_is_invalid_then_return_bad_request()
+        {
+            //Arrange
+            RHUser userDetails = new RHUser()
+            {
+                UserId = 0,
+                Username = "InvalidUserId",
+                Runescapename = "NewRuneUser",
+                CreatedDate = DateTime.Now,
+            };
+
+            _rhUserRepository.Setup(u => u.Query(It.IsAny<Expression<Func<RHUser, bool>>>(), null)).Returns(Task.FromResult(_userData));
+
+            RegisterUserInteractor registerUserInteractor = new RegisterUserInteractor(_logger.Object, _rhUserRepository.Object, _appSettings.Object);
+
+            RegisterUserRequest registerUserRequest = new RegisterUserRequest()
+            {
+                rhUserToBeCreated = userDetails,
+            };
+
+            //Act
+            //Assert
+            await Assert.ThrowsExceptionAsync<BadRequestException>(async () => await registerUserInteractor.Handle(registerUserRequest, CancellationToken.None));
+        }
+
+        /// <summary>
+        /// A test that checks that invalid Runescape name are validated correctly.
+        /// </summary>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        [TestMethod]
+        public async Task when_Runescape_name_is_null_or_empty_then_return_bad_request()
+        {
+            //Arrange
+            RHUser userDetails = new RHUser()
+            {
+                UserId = 30001,
+                Username = "ValidUserId",
+                Runescapename = "",
+                CreatedDate = DateTime.Now,
+            };
+
+            _rhUserRepository.Setup(u => u.Query(It.IsAny<Expression<Func<RHUser, bool>>>(), null)).Returns(Task.FromResult(_userData));
+
+            RegisterUserInteractor registerUserInteractor = new RegisterUserInteractor(_logger.Object, _rhUserRepository.Object, _appSettings.Object);
+
+            RegisterUserRequest registerUserRequest = new RegisterUserRequest()
+            {
+                rhUserToBeCreated = userDetails,
+            };
+
+            //Act
+            //Assert
+            await Assert.ThrowsExceptionAsync<BadRequestException>(async () => await registerUserInteractor.Handle(registerUserRequest, CancellationToken.None));
+        }
+
+        /// <summary>
+        /// A test that checks that invalid Discord Username are validated correctly.
+        /// </summary>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        [TestMethod]
+        public async Task when_Username_is_null_or_empty_then_return_bad_request()
+        {
+            //Arrange
+            RHUser userDetails = new RHUser()
+            {
+                UserId = 50001,
+                Username = "",
+                Runescapename = "ValidRSN",
+                CreatedDate = DateTime.Now,
+            };
+
+            _rhUserRepository.Setup(u => u.Query(It.IsAny<Expression<Func<RHUser, bool>>>(), null)).Returns(Task.FromResult(_userData));
+
+            RegisterUserInteractor registerUserInteractor = new RegisterUserInteractor(_logger.Object, _rhUserRepository.Object, _appSettings.Object);
+
+            RegisterUserRequest registerUserRequest = new RegisterUserRequest()
+            {
+                rhUserToBeCreated = userDetails,
+            };
+
+            //Act
+            //Assert
+            await Assert.ThrowsExceptionAsync<BadRequestException>(async () => await registerUserInteractor.Handle(registerUserRequest, CancellationToken.None));
+        }
+
         private void ArrangeDBcontext() 
         {
             _userData = new List<RHUser>()
