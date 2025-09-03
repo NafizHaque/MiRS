@@ -69,7 +69,7 @@ namespace MiRS.Gateway.DataAccess
         Task<IQueryable<TEntity>> GetAllEntitiesAsync(
             Expression<Func<TEntity, bool>>? filter = null,
             CancellationToken cancellationToken = default,
-            params Expression<Func<TEntity, object>>[] includes);
+            Func<IQueryable<TEntity>, IQueryable<TEntity>>? includeFunc = null);
 
         /// <summary>
         /// Adds an entity to a table with Insert Identity.

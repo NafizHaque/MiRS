@@ -143,7 +143,12 @@ namespace MiRs.Tests.RuneHunter.User
                 CreatedDate = DateTime.Now,
             };
 
-            _rhUserRepository.Setup(u => u.Query(It.IsAny<Expression<Func<RHUser, bool>>>(), null)).Returns(Task.FromResult(_userData));
+            _rhUserRepository
+                .Setup(r => r.GetAllEntitiesAsync(
+                    It.IsAny<Expression<Func<RHUser, bool>>>(),
+                    It.IsAny<CancellationToken>(),
+                    It.IsAny<Func<IQueryable<RHUser>, IQueryable<RHUser>>>()))
+                .Returns(Task.FromResult(_userData));
 
             RegisterUserInteractor registerUserInteractor = new RegisterUserInteractor(_logger.Object, _rhUserRepository.Object, _appSettings.Object);
 
@@ -153,6 +158,42 @@ namespace MiRs.Tests.RuneHunter.User
             };
 
             //Act
+            //Assert
+            await Assert.ThrowsExceptionAsync<BadRequestException>(async () => await registerUserInteractor.Handle(registerUserRequest, CancellationToken.None));
+        }
+
+        /// <summary>
+        /// A test that checks that valid rhuser where user already exists returns Exception
+        /// </summary>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        [TestMethod]
+        public async Task when_given_valid_user_but_user_already_exists_return_bad_exception()
+        {
+            //Arrange
+            RHUser userDetails = new RHUser()
+            {
+                UserId = 50001,
+                Username = "",
+                Runescapename = "ValidRSN",
+                CreatedDate = DateTime.Now,
+            };
+
+            _rhUserRepository
+                .Setup(r => r.GetAllEntitiesAsync(
+                    It.IsAny<Expression<Func<RHUser, bool>>>(),
+                    It.IsAny<CancellationToken>(),
+                    It.IsAny<Func<IQueryable<RHUser>, IQueryable<RHUser>>>()))
+                .Returns(Task.FromResult(_userData));
+
+            RegisterUserInteractor registerUserInteractor = new RegisterUserInteractor(_logger.Object, _rhUserRepository.Object, _appSettings.Object);
+
+            RegisterUserRequest registerUserRequest = new RegisterUserRequest()
+            {
+                rhUserToBeCreated = userDetails,
+            };
+
+            //Act 
+            // &
             //Assert
             await Assert.ThrowsExceptionAsync<BadRequestException>(async () => await registerUserInteractor.Handle(registerUserRequest, CancellationToken.None));
         }
