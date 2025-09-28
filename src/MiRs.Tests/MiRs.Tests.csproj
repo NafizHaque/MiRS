@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="RuneHunter\Admin\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MiRs.Interactors\MiRs.Interactors.csproj" />
   </ItemGroup>
 
