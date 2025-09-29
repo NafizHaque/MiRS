@@ -61,7 +61,7 @@ namespace MiRs.Interactors.RuneHunter.Admin
                 throw new BadRequestException($"Event: {request.EventId} is not in guild!");
             }
 
-            if (!(await _guildTeamEventRepository.Query(t => t.EventId == request.EventId && t.TeamId == request.TeamId)).Any())
+            if ((await _guildTeamEventRepository.Query(t => t.EventId == request.EventId && t.TeamId == request.TeamId)).Any())
             {
                 throw new BadRequestException($"Team: {request.TeamId} is already registered to Event: {request.EventId}");
             }

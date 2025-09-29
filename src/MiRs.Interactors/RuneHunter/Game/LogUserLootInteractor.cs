@@ -78,7 +78,7 @@ namespace MiRs.Interactors.RuneHunter.Game
 
             userLoot.UserId = usersInTable.UserId;
 
-            userLoot.DateLogged = DateTimeOffset.Now;
+            userLoot.DateLogged = DateTimeOffset.UtcNow;
 
             await _rhUserRawLoot.AddAsync(userLoot);
 

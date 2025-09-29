@@ -46,7 +46,7 @@ namespace MiRs.Interactors.RuneHunter.Admin
         {
             Logger.LogInformation((int)LoggingEvents.CreateGuildTeam, "Creating Guild Event. Guild Id: {guildId}, EventName: {teamname} ", request.GuildEventToBeCreated.GuildId, request.GuildEventToBeCreated.Eventname);
 
-            request.GuildEventToBeCreated.CreatedDate = DateTimeOffset.Now;
+            request.GuildEventToBeCreated.CreatedDate = DateTimeOffset.UtcNow;
 
             await _guildEventRepository.AddAsync(request.GuildEventToBeCreated);
 
