@@ -31,8 +31,17 @@ namespace MiRs.DataAccess
 
         public DbSet<LevelTask> LevelTasks { get; set; }
 
+        public DbSet<RHUserRawLoot> UserRawLoot { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            /// <summary>
+            /// Configures the primary key for RHUserRawLoot.
+            /// </summary>
+            modelBuilder.Entity<RHUserRawLoot>()
+                .HasKey(u => u.Id);
+
             /// <summary>
             /// Configures the primary key for RHUser.
             /// </summary>
