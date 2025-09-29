@@ -49,7 +49,7 @@ dotnet restore
 
 ## Completed
 
--
+Base features completed
 
 ---
 
@@ -57,8 +57,9 @@ dotnet restore
 
 -Admin Section
   - AddUserToTeamInGuild Logic
-  - Remove Al users from team logic
+  - Remove users from team logic
   - Delete team logic
+  - Delete event logic
 
 -User 
-  -Update user (my) details
+  - Update user (my) details
