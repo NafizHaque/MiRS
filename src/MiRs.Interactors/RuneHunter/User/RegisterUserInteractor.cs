@@ -62,6 +62,9 @@ namespace MiRs.Interactors.RuneHunter.User
             }
 
             await _rhUserRepository.AddWithIdentityInsertAsync(request.rhUserToBeCreated);
+
+            result.RegisteredUser = request.rhUserToBeCreated;
+
             return result;
 
         }

@@ -50,15 +50,20 @@ namespace MiRs.Interactors.RuneHunter.Admin
         protected override async Task<AddGuildTeamToEventResponse> HandleRequest(AddGuildTeamToEventRequest request, AddGuildTeamToEventResponse result, CancellationToken cancellationToken)
         {
             Logger.LogInformation((int)LoggingEvents.CreateGuildTeam, "Linking Team to Event. Team Id: {teamId}, Event Id: {eventId} ", request.TeamId, request.EventId);
-            string.Compare("a", "b", StringComparison.InvariantCultureIgnoreCase);
-            if (!await (await _guildTeamRepository.Query(t => t.Id == request.TeamId)).AnyAsync())
+
+            if (!(await _guildTeamRepository.Query(t => t.Id == request.TeamId)).Any())
             {
-                throw new BadRequestException($"Team: <@{request.TeamId}> is not in guild!");
+                throw new BadRequestException($"Team: {request.TeamId} is not in guild!");
             }
 
-            if (!await (await _guildEventRepository.Query(t => t.Id == request.EventId)).AnyAsync())
+            if (!(await _guildEventRepository.Query(t => t.Id == request.EventId)).Any())
             {
-                throw new BadRequestException($"Event: <@{request.EventId}> is not in guild!");
+                throw new BadRequestException($"Event: {request.EventId} is not in guild!");
+            }
+
+            if (!(await _guildTeamEventRepository.Query(t => t.EventId == request.EventId && t.TeamId == request.TeamId)).Any())
+            {
+                throw new BadRequestException($"Team: {request.TeamId} is already registered to Event: {request.EventId}");
             }
 
             await _guildTeamEventRepository.AddAsync(

@@ -116,7 +116,7 @@ namespace MiRs.DataAccess
         public async Task<IQueryable<TEntity>> GetAllEntitiesAsync(
             Expression<Func<TEntity, bool>>? filter = null,
             CancellationToken cancellationToken = default,
-            params Expression<Func<TEntity, object>>[]? includes
+            Func<IQueryable<TEntity>, IQueryable<TEntity>>? includeFunc = null
         )
         {
 
@@ -127,14 +127,8 @@ namespace MiRs.DataAccess
                 query = query.Where(filter);
             }
 
-            foreach ( Expression<Func<TEntity, object>> include in includes) 
-            {
-                if(include is not null)
-                {
-                    query = query.Include(include);
-                }
-
-            }
+            if (includeFunc != null)
+                query = includeFunc(query);
 
             return query;
         }

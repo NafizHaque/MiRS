@@ -7,13 +7,15 @@ using MiRS.Gateway.DataAccess;
 using MiRs.Mediator.Models.RuneHunter.Admin;
 using MiRs.Mediator;
 using MiRs.Mediator.Models.RuneHunter.User;
+using Microsoft.EntityFrameworkCore;
+using MiRs.Domain.DTOs.RuneHunter;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MiRs.Interactors.RuneHunter.User
 {
     public class GetCurrentEventsForUserInteractor : RequestHandler<GetCurrentEventsForUserRequest, GetCurrentEventsForUserResponse>
     {
         private readonly IGenericSQLRepository<RHUser> _userRepository;
-        private readonly IGenericSQLRepository<GuildEvent> _guildEventRepository;
         private readonly AppSettings _appSettings;
 
         /// <summary>
@@ -24,18 +26,16 @@ namespace MiRs.Interactors.RuneHunter.User
         /// <param name="appSettings">The app settings.</param>
         public GetCurrentEventsForUserInteractor(
             ILogger<GetCurrentEventsForUserInteractor> logger,
-            IGenericSQLRepository<GuildEvent> guildEventRepository,
             IGenericSQLRepository<RHUser> userRepository,
             IOptions<AppSettings> appSettings)
             : base(logger)
         {
-            _guildEventRepository = guildEventRepository;
             _userRepository = userRepository;
             _appSettings = appSettings.Value;
         }
 
         /// <summary>
-        /// Handles the request to create a Guild team.
+        /// Handles the request to return all current events for user.
         /// </summary>
         /// <param name="request">The request to create Guild Team.</param>
         /// <param name="result">User object that was created.</param>
@@ -45,7 +45,23 @@ namespace MiRs.Interactors.RuneHunter.User
         {
             Logger.LogInformation((int)LoggingEvents.CreateGuildTeam, "Return current Guild Events for User. User Id: {userId}, Guild Id: {guildId}", request.UserId, request.GuildId);
 
-            RHUser? user = (await _userRepository.GetAllEntitiesAsync(u => u.UserId == request.UserId, default, utt => utt.UserToTeams)).FirstOrDefault();
+            IList<RHUser> userWithEvents = (await _userRepository.GetAllEntitiesAsync(
+                u => u.UserId == request.UserId,
+                default,
+                q => q.Include(utt => utt.UserToTeams!)
+                        .ThenInclude(tt => tt.Team!)
+                        .ThenInclude(ett => ett.EventTeams!)
+                        .ThenInclude(e => e.Event))).ToList();
+
+            IList<GuildEvent> currentEventsForUser = userWithEvents
+                .SelectMany(utt => utt.UserToTeams!)
+                .SelectMany(ett => ett.Team!.EventTeams!)
+                .Where(ett => ett.Event!.EventActive)
+                .Select(e => e.Event!)  
+                .Where(e => e.GuildId == request.GuildId)
+                .ToList();
+
+            result.UserCurrentEvents = currentEventsForUser.IsNullOrEmpty() ? new List<GuildEvent>() : currentEventsForUser;
 
             return result;
         }

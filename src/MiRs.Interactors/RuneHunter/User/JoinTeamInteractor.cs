@@ -6,16 +6,12 @@ using MiRs.Domain.Exceptions;
 using MiRs.Domain.Logging;
 using MiRS.Gateway.DataAccess;
 using MiRs.Mediator;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MiRs.Mediator.Models.RuneHunter.User;
+using Microsoft.EntityFrameworkCore;
 
 namespace MiRs.Interactors.RuneHunter.User
 {
-    internal class JoinTeamInteractor : RequestHandler<JoinTeamRequest, JoinTeamResponse>
+    public class JoinTeamInteractor : RequestHandler<JoinTeamRequest, JoinTeamResponse>
     {
         private readonly IGenericSQLRepository<RHUserToTeam> _rhUserToTeamRepository;
         private readonly IGenericSQLRepository<GuildTeam> _guildTeamRepository;
@@ -29,7 +25,7 @@ namespace MiRs.Interactors.RuneHunter.User
         /// <param name="configRepository">The repo interface to table storage for config data.</param>
         /// <param name="appSettings">The app settings.</param>
         public JoinTeamInteractor(
-            ILogger<RegisterUserInteractor> logger,
+            ILogger<JoinTeamInteractor> logger,
             IGenericSQLRepository<RHUserToTeam> rhUserToTeamRepository,
             IGenericSQLRepository<GuildTeam> guildTeamRepository,
             IOptions<AppSettings> appSettings)
@@ -52,9 +48,9 @@ namespace MiRs.Interactors.RuneHunter.User
             Logger.LogInformation((int)LoggingEvents.UserToTeamJoin, "User joining team. User Id: {userId}", request.UserId);
 
             IEnumerable<RHUserToTeam> userToTeamsinTable = await _rhUserToTeamRepository.GetAllEntitiesAsync(
-                  null, default, utt => utt.User, utt => utt.Team);
+                  null, default, q => q.Include(utt => utt.User).Include(utt => utt.Team));
 
-            if (userToTeamsinTable.Any(u => u.Team!.GuildId == request.GuildId && u.Team!.TeamName == request.Teamname))
+            if (userToTeamsinTable.Any(u => u.Team!.GuildId == request.GuildId && string.Equals(u.Team!.TeamName, request.Teamname, StringComparison.OrdinalIgnoreCase)))
             {
                 throw new BadRequestException($"User: <@{request.UserId}> Already In Team!");
             

@@ -152,19 +152,21 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// Placeholder Text. 
+        /// Add User To Team Guild
         /// </summary>
-        /// <param name="username">Test.</param>
+        /// <param name="userids"> list of userids.</param>
+        /// <param name="guildId">guildid.</param>
+        /// <param name="teamId">teamid.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost]
         [Route("UserTeam")]
-        public async Task<IActionResult> AddUserToTeamInGuild(int userid, int guildId, string teamnId)
+        public async Task<IActionResult> AddUserToTeamInGuild(int[] userids, int guildId, string teamId)
         {
             try
             {
-                //return Ok(await Mediator.Send(new JoinTeamRequest { UserId = userid, Teamname = teamname }));
+                // return Ok(await Mediator.Send(new adduser { UserId = userid, Teamname = teamname }));
 
                 throw new NotImplementedException();
 
@@ -180,9 +182,10 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// Placeholder Text. 
+        /// Add Guild Team to Event
         /// </summary>
-        /// <param name="username">Test.</param>
+        /// <param name="teamid">teamid.</param>
+        /// <param name="eventid">eventid.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]

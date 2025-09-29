@@ -26,7 +26,7 @@ namespace MiRs.Interactors.RuneHunter.Admin
         /// <param name="guildTeamRepository">The repo interface to SQL storage.</param>
         /// <param name="appSettings">The app settings.</param>
         public CreateGuildEventInteractor(
-            ILogger<CreateGuildTeamInteractor> logger,
+            ILogger<CreateGuildEventInteractor> logger,
             IGenericSQLRepository<GuildEvent> guildEventRepository,
             IOptions<AppSettings> appSettings)
             : base(logger)
@@ -45,6 +45,8 @@ namespace MiRs.Interactors.RuneHunter.Admin
         protected override async Task<CreateEventInGuildResponse> HandleRequest(CreateEventInGuildRequest request, CreateEventInGuildResponse result, CancellationToken cancellationToken)
         {
             Logger.LogInformation((int)LoggingEvents.CreateGuildTeam, "Creating Guild Event. Guild Id: {guildId}, EventName: {teamname} ", request.GuildEventToBeCreated.GuildId, request.GuildEventToBeCreated.Eventname);
+
+            request.GuildEventToBeCreated.CreatedDate = DateTimeOffset.Now;
 
             await _guildEventRepository.AddAsync(request.GuildEventToBeCreated);
 
