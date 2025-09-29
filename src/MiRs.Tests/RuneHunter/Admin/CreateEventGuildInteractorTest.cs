@@ -33,7 +33,7 @@ namespace MiRs.Tests.RuneHunter.Admin
         }
 
         /// <summary>
-        /// A test that checks that valid user id, guild id and Teamname is given to add user to team. 
+        /// A test that checks that valid event object, create guild object and return the details. 
         /// </summary>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         [TestMethod]
