@@ -4,6 +4,7 @@ using MiRs.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MiRs.DataAccess.Migrations
 {
     [DbContext(typeof(RuneHunterDbContext))]
-    partial class RuneHunterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250929105223_AddRawLoot")]
+    partial class AddRawLoot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,9 +233,6 @@ namespace MiRs.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTimeOffset>("DateLogged")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<string>("Loot")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -241,14 +241,8 @@ namespace MiRs.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Processed")
-                        .HasColumnType("bit");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("UserId")
-                        .HasColumnType("decimal(20,0)");
 
                     b.Property<string>("Username")
                         .IsRequired()

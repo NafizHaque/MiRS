@@ -45,5 +45,10 @@ namespace MiRs.Domain.Logging
         /// The event id to be used when logging calls related to registering user.
         /// </summary>
         UserToTeamJoin = 2001,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to logging user loot.
+        /// </summary>
+        GameLogLoot = 3000,
     }
 }
