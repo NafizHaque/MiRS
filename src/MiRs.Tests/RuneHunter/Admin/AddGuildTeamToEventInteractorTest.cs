@@ -51,7 +51,6 @@ namespace MiRs.Tests.RuneHunter.Admin
         public async Task when_given_valid_event_and_team_id_then_register_team_to_event()
         {
             //Arrange
-
             _guildTeamRepository.Setup(u => u.Query(It.IsAny<Expression<Func<GuildTeam, bool>>>(), null)).Returns(Task.FromResult(_guildTeamsData));
 
             _guildEventRepository.Setup(u => u.Query(It.IsAny<Expression<Func<GuildEvent, bool>>>(), null)).Returns(Task.FromResult(_guildEventData));
@@ -117,7 +116,7 @@ namespace MiRs.Tests.RuneHunter.Admin
                 new GuildEventTeam()
                 {
                     EventId = 2001,
-                    TeamId = 1001,
+                    TeamId = 1005,
                     Event = _guildEventData.FirstOrDefault(u => u.Id == eventId),
                 }
             }.AsQueryable();
@@ -126,7 +125,7 @@ namespace MiRs.Tests.RuneHunter.Admin
             {
                 new GuildTeam()
                 {
-                    Id = 1001,
+                    Id = 1005,
                     GuildId = 2002002002,
                     EventTeams = _guildEventTeams.ToList()
                 }

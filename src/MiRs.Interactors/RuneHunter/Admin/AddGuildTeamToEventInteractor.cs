@@ -4,12 +4,9 @@ using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Logging;
 using MiRS.Gateway.DataAccess;
-using MiRs.Interactors.RuneHunter.User;
 using MiRs.Mediator.Models.RuneHunter.Admin;
-using MediatR;
 using MiRs.Mediator;
 using MiRs.Domain.Exceptions;
-using Microsoft.EntityFrameworkCore;
 
 namespace MiRs.Interactors.RuneHunter.Admin
 {
@@ -68,9 +65,9 @@ namespace MiRs.Interactors.RuneHunter.Admin
 
             await _guildTeamEventRepository.AddAsync(
                 new GuildEventTeam
-                    {
-                        TeamId = request.TeamId,
-                        EventId = request.EventId,
+                {
+                    TeamId = request.TeamId,
+                    EventId = request.EventId,
                 });
 
             return result;

@@ -1,6 +1,6 @@
-﻿namespace MiRs.Domain.Entities.RuneHunter
+﻿namespace MiRs.Domain.DTOs.RuneHunter
 {
-    public class GuildEvent
+    public class UserEvents
     {
         public int Id { get; set; }
 
@@ -8,14 +8,11 @@
 
         public string Eventname { get; set; } = string.Empty;
 
-        public bool EventActive { get; set; }
-
-        public DateTimeOffset CreatedDate { get; set; }
-
         public DateTimeOffset EventStart { get; set; }
 
         public DateTimeOffset EventEnd { get; set; }
 
-        public ICollection<GuildEventTeam>? EventTeams { get; set; }
+        public EventTeam EventTeam { get; set; }
+
     }
 }

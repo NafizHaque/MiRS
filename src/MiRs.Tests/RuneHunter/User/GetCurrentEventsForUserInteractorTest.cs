@@ -57,8 +57,7 @@ namespace MiRs.Tests.RuneHunter.User
 
             GetCurrentEventsForUserRequest getCurrentEventsForUserRequest = new GetCurrentEventsForUserRequest()
             {
-                UserId = 1001999666,
-                GuildId = 2002002002
+                UserId = 1001999666
             };
 
             //Act
@@ -70,7 +69,6 @@ namespace MiRs.Tests.RuneHunter.User
                 .SelectMany(ett => ett.Team!.EventTeams!)
                 .Where(ett => ett.Event!.EventActive)
                 .Select(e => e.Event!)
-                .Where(e => e.GuildId == 2002002002)
                 .Count());
 
         }

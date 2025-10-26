@@ -10,10 +10,6 @@ namespace MiRs.Mediator.Models.RuneHunter.User
         /// </summary>
         public ulong UserId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the UserId.
-        /// </summary>
-        public ulong GuildId { get; set; }
 
         /// <summary>
         /// Validates the provided store number.
@@ -24,11 +20,6 @@ namespace MiRs.Mediator.Models.RuneHunter.User
             if (UserId <= 0)
             {
                 throw new BadRequestException("Invalid User Id given!");
-            }
-
-            if (GuildId <= 0)
-            {
-                throw new BadRequestException("Invalid Guild Id given!");
             }
         }
     }

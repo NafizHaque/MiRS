@@ -13,6 +13,9 @@ using MiRs.Domain.Exceptions;
 using MiRs.Domain.Logging;
 using MiRS.Gateway.DataAccess;
 using System.Text.RegularExpressions;
+using MiRs.Domain.Entities.User;
+using MiRs.Mediator.Models.RuneHunter.User;
+using MediatR;
 
 namespace MiRs.Interactors.RuneHunter.Game
 {
@@ -21,6 +24,7 @@ namespace MiRs.Interactors.RuneHunter.Game
         private readonly IGenericSQLRepository<RHUserRawLoot> _rhUserRawLoot;
         private readonly IGenericSQLRepository<RHUser> _rhUserRepository;
         private readonly AppSettings _appSettings;
+        private readonly ISender _mediator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessUserLootInteractor"/> class.
@@ -32,12 +36,14 @@ namespace MiRs.Interactors.RuneHunter.Game
             ILogger<ProcessUserLootInteractor> logger,
             IGenericSQLRepository<RHUserRawLoot> rhUserRawLoot,
             IGenericSQLRepository<RHUser> rhUserRepository,
+            ISender mediator,
             IOptions<AppSettings> appSettings)
             : base(logger)
         {
             _rhUserRawLoot = rhUserRawLoot;
             _rhUserRepository = rhUserRepository;
             _appSettings = appSettings.Value;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -52,6 +58,18 @@ namespace MiRs.Interactors.RuneHunter.Game
             Logger.LogInformation((int)LoggingEvents.GameProcessLoot, "Proocessing User Loot.");
 
             IEnumerable<RHUserRawLoot> unprocessedUserLoot = await _rhUserRawLoot.Query(l => !l.Processed);
+
+            IEnumerable<IGrouping<ulong, RHUserRawLoot>> groupedLoot = unprocessedUserLoot.GroupBy(l => l.UserId);
+
+            foreach (IGrouping<ulong, RHUserRawLoot> group in groupedLoot)
+            {
+                GetCurrentEventsForUserResponse currentUserEvents =  await _mediator.Send(new GetCurrentEventsForUserRequest { UserId = group.Key });
+
+                foreach (RHUserRawLoot loot in group)
+                {
+                    Console.WriteLine($"  LootId: {loot.Id}, Processed: {loot.Processed}");
+                }
+            }
 
             Logger.LogInformation((int)LoggingEvents.GameProcessLoot, "Loot ({totalLoot}) to be processed.", unprocessedUserLoot.Count());
 

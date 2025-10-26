@@ -77,18 +77,18 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// User to Join a Team
+        /// User Current Events
         /// </summary>
         /// <param name="username">Test.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpGet("CurrentUserEvents")]
-        public async Task<IActionResult> CurrentEventsForUser(ulong userid, ulong guildid)
+        public async Task<IActionResult> CurrentEventsForUser(ulong userid)
         {
             try
             {
-                return Ok(await Mediator.Send(new GetCurrentEventsForUserRequest { UserId = userid, GuildId = guildid }));
+                return Ok(await Mediator.Send(new GetCurrentEventsForUserRequest { UserId = userid }));
 
             }
             catch (BadRequestException ex)

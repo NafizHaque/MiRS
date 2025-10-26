@@ -48,7 +48,7 @@ namespace MiRs.Interactors.RuneHunter.Game
         {
             Logger.LogInformation((int)LoggingEvents.GameLogLoot, "Logging User Loot.");
 
-            string pattern = @"\*\*(.*?)\*\* - Just got \*\*(?:(\d+)x\s+)?(.+?)\*\* from lvl (\d+) \*\*(.*?)\*\*";
+            string pattern = @"\*\*(.*?)\*\* - Just got \*\*(?:(\d+)x\s+)?(.+?)\*\* from (?:lvl (\d+) )?\*\*(.*?)\*\*";
 
             Match match = Regex.Match(request.LootMessage, pattern);
 

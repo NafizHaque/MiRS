@@ -164,7 +164,7 @@ namespace MiRs.API.Controllers.RuneHunter
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost]
         [Route("UserTeam")]
-        public async Task<IActionResult> AddUserToTeamInGuild(int[] userids, int guildId, string teamId)
+        public async Task<IActionResult> AddUserToTeamInGuild(ulong[] userids, ulong guildId, int teamId)
         {
             try
             {

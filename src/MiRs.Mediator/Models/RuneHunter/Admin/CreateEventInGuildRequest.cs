@@ -1,12 +1,6 @@
 ﻿using MediatR;
 using MiRs.Domain.Entities.RuneHunter;
-using MiRs.Domain.Entities.User;
 using MiRs.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiRs.Mediator.Models.RuneHunter.Admin
 {

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Logging;
+using MiRs.Mediator.Models.RuneHunter.Game;
 using MiRS.Gateway.DataAccess;
 
 namespace MiRs.Function
@@ -43,7 +44,7 @@ namespace MiRs.Function
 
             try
             {
-                await _mediator.Send(new DeleteExpiredUserRequest());
+                await _mediator.Send(new ProcessUserLootRequest());
             }
             catch (Exception ex)
             {
