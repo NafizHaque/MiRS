@@ -3,11 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRS.Gateway.DataAccess;
-using MiRs.Interactors.RuneHunter.User;
 using Moq;
 using Microsoft.Extensions.Logging;
 using MiRs.Interactors.RuneHunter.Admin;
-using MiRs.Mediator.Models.RuneHunter.User;
 using System.Linq.Expressions;
 using MiRs.Mediator.Models.RuneHunter.Admin;
 
@@ -55,10 +53,16 @@ namespace MiRs.Tests.RuneHunter.Admin
 
             _guildEventRepository.Setup(u => u.Query(It.IsAny<Expression<Func<GuildEvent, bool>>>(), null)).Returns(Task.FromResult(_guildEventData));
 
-            _guildTeamEventRepository.Setup(u => u.Query(It.IsAny<Expression<Func<GuildEventTeam, bool>>>(), null)).Returns(Task.FromResult(_guildEventTeams));
+            _guildTeamEventRepository
+                .Setup(u => u.Query(It.IsAny<Expression<Func<GuildEventTeam, bool>>>(), null))
+                .Returns<Expression<Func<GuildEventTeam, bool>>, object?>((predicate, _) =>
+                {
+                    IQueryable<GuildEventTeam> result = _guildEventTeams.AsQueryable().Where(predicate);
+                    return Task.FromResult(result);
+                });
 
             AddGuildTeamToEventInteractor addGuildTeamToEventInteractor = new AddGuildTeamToEventInteractor(
-                                                                                _logger.Object, 
+                                                                                _logger.Object,
                                                                                 _guildTeamEventRepository.Object,
                                                                                 _guildTeamRepository.Object,
                                                                                 _guildEventRepository.Object,
