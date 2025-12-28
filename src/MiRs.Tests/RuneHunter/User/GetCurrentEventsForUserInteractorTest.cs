@@ -3,12 +3,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRS.Gateway.DataAccess;
-using MiRs.Interactors.RuneHunter.User;
 using Moq;
 using Microsoft.Extensions.Logging;
 using MiRs.Mediator.Models.RuneHunter.User;
 using System.Linq.Expressions;
-using Azure.Core;
+using MiRs.Interactors.RuneHunter.User;
 
 namespace MiRs.Tests.RuneHunter.User
 {
@@ -42,7 +41,7 @@ namespace MiRs.Tests.RuneHunter.User
         /// </summary>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         [TestMethod]
-        public async Task when_given_valid_userid_and_guildId_then_return_list_of_all_active_user_events_in_guild ()
+        public async Task when_given_valid_userid_and_guildId_then_return_list_of_all_active_user_events_in_guild()
         {
             //Arrange
 
@@ -76,7 +75,7 @@ namespace MiRs.Tests.RuneHunter.User
         private void ArrangeDBcontext()
         {
             ulong userId = 1001999666;
-            int eventId  = 2001;
+            int eventId = 2001;
 
             _guildEventData = new List<GuildEvent>()
             {

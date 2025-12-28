@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MiRs.Domain.Entities.RuneHunterData
+﻿namespace MiRs.Domain.Entities.RuneHunterData
 {
     public class LevelTask
     {
@@ -15,6 +9,8 @@ namespace MiRs.Domain.Entities.RuneHunterData
         public int Goal { get; set; }
 
         public int LevelId { get; set; }
+
+        public int Levelnumber { get; set; }
 
         public Level? LevelParent { get; set; }
     }

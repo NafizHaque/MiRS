@@ -4,7 +4,6 @@ using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Logging;
 using MiRS.Gateway.DataAccess;
-using MiRs.Mediator.Models.RuneHunter.Admin;
 using MiRs.Mediator;
 using MiRs.Mediator.Models.RuneHunter.User;
 using Microsoft.EntityFrameworkCore;

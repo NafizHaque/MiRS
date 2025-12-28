@@ -10,7 +10,6 @@ namespace MiRs.Mediator.Models.RuneHunter.User
         /// </summary>
         public ulong UserId { get; set; }
 
-
         /// <summary>
         /// Validates the provided store number.
         /// </summary>

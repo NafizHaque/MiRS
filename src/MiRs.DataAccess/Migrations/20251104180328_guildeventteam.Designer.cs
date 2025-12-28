@@ -4,6 +4,7 @@ using MiRs.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MiRs.DataAccess.Migrations
 {
     [DbContext(typeof(RuneHunterDbContext))]
-    partial class RuneHunterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251104180328_guildeventteam")]
+    partial class guildeventteam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,9 +170,6 @@ namespace MiRs.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CategoryLevelProcessId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GuildEventTeamId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsComplete")

@@ -18,7 +18,7 @@ namespace MiRs.Interactors.RuneHunter.Admin
         /// Initializes a new instance of the <see cref="CreateGuildTeamInteractor"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
-        /// <param name="guildTeamRepository">The repo interface to SQL storage.</param>
+        /// <param name="guildEventRepository">The repo interface to SQL storage.</param>
         /// <param name="appSettings">The app settings.</param>
         public CreateGuildEventInteractor(
             ILogger<CreateGuildEventInteractor> logger,

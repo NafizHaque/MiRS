@@ -1,11 +1,8 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using MiRs.Domain.Entities.RuneHunter;
-using MiRs.Domain.Entities.User;
 using MiRs.Domain.Exceptions;
-using MiRs.Mediator.Models.RuneHunter;
 using MiRs.Mediator.Models.RuneHunter.User;
-using MiRs.Mediator.Models.RuneUser;
 using System.Net;
 
 namespace MiRs.API.Controllers.RuneHunter
@@ -53,7 +50,8 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <summary>
         /// User to Join a Team
         /// </summary>
-        /// <param name="id">user id.</param>
+        /// <param name="userid">user id.</param>
+        /// <param name="guildid">guild id.</param>
         /// <param name="teamname">Team name to join.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
@@ -79,7 +77,7 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <summary>
         /// User Current Events
         /// </summary>
-        /// <param name="username">Test.</param>
+        /// <param name="userid">Test.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]

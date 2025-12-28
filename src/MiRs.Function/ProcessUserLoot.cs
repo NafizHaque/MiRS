@@ -1,11 +1,9 @@
-using System;
 using MediatR;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
-using MiRs.Domain.Logging;
 using MiRs.Mediator.Models.RuneHunter.Game;
 using MiRS.Gateway.DataAccess;
 
@@ -38,7 +36,7 @@ namespace MiRs.Function
         }
 
         [Function("ProcessUserLoot")]
-        public async Task Run([TimerTrigger("*/5 * * * *")] TimerInfo myTimer)
+        public async Task Run([TimerTrigger("*/10 * * * * *")] TimerInfo myTimer)
         {
             _logger.LogInformation("C# Timer trigger function executed at: {executionTime}", DateTimeOffset.UtcNow);
 
