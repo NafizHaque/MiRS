@@ -4,12 +4,9 @@ using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Logging;
 using MiRS.Gateway.DataAccess;
-using MiRs.Interactors.RuneHunter.User;
 using MiRs.Mediator.Models.RuneHunter.Admin;
-using MediatR;
 using MiRs.Mediator;
 using MiRs.Domain.Exceptions;
-using Microsoft.EntityFrameworkCore;
 
 namespace MiRs.Interactors.RuneHunter.Admin
 {
@@ -61,16 +58,16 @@ namespace MiRs.Interactors.RuneHunter.Admin
                 throw new BadRequestException($"Event: {request.EventId} is not in guild!");
             }
 
-            if (!(await _guildTeamEventRepository.Query(t => t.EventId == request.EventId && t.TeamId == request.TeamId)).Any())
+            if ((await _guildTeamEventRepository.Query(t => t.EventId == request.EventId && t.TeamId == request.TeamId)).Any())
             {
                 throw new BadRequestException($"Team: {request.TeamId} is already registered to Event: {request.EventId}");
             }
 
             await _guildTeamEventRepository.AddAsync(
                 new GuildEventTeam
-                    {
-                        TeamId = request.TeamId,
-                        EventId = request.EventId,
+                {
+                    TeamId = request.TeamId,
+                    EventId = request.EventId,
                 });
 
             return result;

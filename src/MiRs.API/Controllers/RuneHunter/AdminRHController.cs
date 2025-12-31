@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Entities.User;
 using MiRs.Domain.Exceptions;
+using MiRs.Interactors.RuneHunter.Game;
 using MiRs.Mediator.Models.RuneHunter;
 using MiRs.Mediator.Models.RuneHunter.Admin;
+using MiRs.Mediator.Models.RuneHunter.Game;
 using MiRs.Mediator.Models.RuneUser;
 using System.Net;
 
@@ -162,7 +164,7 @@ namespace MiRs.API.Controllers.RuneHunter
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost]
         [Route("UserTeam")]
-        public async Task<IActionResult> AddUserToTeamInGuild(int[] userids, int guildId, string teamId)
+        public async Task<IActionResult> AddUserToTeamInGuild(ulong[] userids, ulong guildId, int teamId)
         {
             try
             {
@@ -196,6 +198,35 @@ namespace MiRs.API.Controllers.RuneHunter
             try
             {
                 return Ok(await Mediator.Send(new AddGuildTeamToEventRequest { TeamId = teamid, EventId = eventid }));
+
+                throw new NotImplementedException();
+
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// /Initialise team progress
+        /// </summary>
+        /// <param name="teamid">teamid.</param>
+        /// <param name="eventid">eventid.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return user.</remarks>
+        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
+        [HttpPost]
+        [Route("InitTeamProgress")]
+        public async Task<IActionResult> InitTeamProgress(int teamid, int eventid)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new InitaliseTeamProgressRequest { TeamId = teamid, EventId = eventid }));
 
                 throw new NotImplementedException();
 

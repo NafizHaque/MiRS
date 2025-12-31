@@ -12,6 +12,8 @@ namespace MiRs.Domain.Entities.RuneHunter
 
         public DateTimeOffset LastUpdated { get; set; }
 
+        public int GuildEventTeamId { get; set; }
+
         public int CategoryLevelProcessId { get; set; }
 
         public GuildTeamCategoryLevelProgress? CategoryLevelProgress { get; set; }

@@ -11,11 +11,6 @@ namespace MiRs.Mediator.Models.RuneHunter.User
         public ulong UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets the UserId.
-        /// </summary>
-        public ulong GuildId { get; set; }
-
-        /// <summary>
         /// Validates the provided store number.
         /// </summary>
         /// <exception cref="BadRequestException"> The custom exception type for bad requests.</exception>
@@ -24,11 +19,6 @@ namespace MiRs.Mediator.Models.RuneHunter.User
             if (UserId <= 0)
             {
                 throw new BadRequestException("Invalid User Id given!");
-            }
-
-            if (GuildId <= 0)
-            {
-                throw new BadRequestException("Invalid Guild Id given!");
             }
         }
     }

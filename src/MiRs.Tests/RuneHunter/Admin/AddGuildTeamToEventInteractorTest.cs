@@ -3,11 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRS.Gateway.DataAccess;
-using MiRs.Interactors.RuneHunter.User;
 using Moq;
 using Microsoft.Extensions.Logging;
 using MiRs.Interactors.RuneHunter.Admin;
-using MiRs.Mediator.Models.RuneHunter.User;
 using System.Linq.Expressions;
 using MiRs.Mediator.Models.RuneHunter.Admin;
 
@@ -51,15 +49,20 @@ namespace MiRs.Tests.RuneHunter.Admin
         public async Task when_given_valid_event_and_team_id_then_register_team_to_event()
         {
             //Arrange
-
             _guildTeamRepository.Setup(u => u.Query(It.IsAny<Expression<Func<GuildTeam, bool>>>(), null)).Returns(Task.FromResult(_guildTeamsData));
 
             _guildEventRepository.Setup(u => u.Query(It.IsAny<Expression<Func<GuildEvent, bool>>>(), null)).Returns(Task.FromResult(_guildEventData));
 
-            _guildTeamEventRepository.Setup(u => u.Query(It.IsAny<Expression<Func<GuildEventTeam, bool>>>(), null)).Returns(Task.FromResult(_guildEventTeams));
+            _guildTeamEventRepository
+                .Setup(u => u.Query(It.IsAny<Expression<Func<GuildEventTeam, bool>>>(), null))
+                .Returns<Expression<Func<GuildEventTeam, bool>>, object?>((predicate, _) =>
+                {
+                    IQueryable<GuildEventTeam> result = _guildEventTeams.AsQueryable().Where(predicate);
+                    return Task.FromResult(result);
+                });
 
             AddGuildTeamToEventInteractor addGuildTeamToEventInteractor = new AddGuildTeamToEventInteractor(
-                                                                                _logger.Object, 
+                                                                                _logger.Object,
                                                                                 _guildTeamEventRepository.Object,
                                                                                 _guildTeamRepository.Object,
                                                                                 _guildEventRepository.Object,
@@ -117,7 +120,7 @@ namespace MiRs.Tests.RuneHunter.Admin
                 new GuildEventTeam()
                 {
                     EventId = 2001,
-                    TeamId = 1001,
+                    TeamId = 1005,
                     Event = _guildEventData.FirstOrDefault(u => u.Id == eventId),
                 }
             }.AsQueryable();
@@ -126,7 +129,7 @@ namespace MiRs.Tests.RuneHunter.Admin
             {
                 new GuildTeam()
                 {
-                    Id = 1001,
+                    Id = 1005,
                     GuildId = 2002002002,
                     EventTeams = _guildEventTeams.ToList()
                 }

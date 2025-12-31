@@ -8,5 +8,11 @@
             },
             "enableLiveMetricsFilters": true
         }
+    },
+    "extensions": {
+        "timers": {
+            "maxConcurrentExecutions": 1,
+            "scheduleMonitorPollInterval": "00:00:10"
+        }
     }
 }

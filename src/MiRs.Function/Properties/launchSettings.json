@@ -1,9 +1,9 @@
 {
   "profiles": {
     "MiRs.Function": {
-      "commandName": "Project",
-      "commandLineArgs": "--port 7188",
-      "launchBrowser": false
+        "commandName": "Project",
+        "commandLineArgs": "--port 7188",
+        "launchBrowser": false,
     }
   }
 }

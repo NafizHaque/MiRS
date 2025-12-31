@@ -4,7 +4,6 @@ using MiRs.API.ApiDTOs;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Exceptions;
 using MiRs.Mediator.Models.RuneHunter.Game;
-using MiRs.Mediator.Models.RuneHunter.User;
 using System.Net;
 
 namespace MiRs.API.Controllers.RuneHunter
@@ -25,7 +24,7 @@ namespace MiRs.API.Controllers.RuneHunter
         public RuneHunterController(ILogger<RuneHunterController> logger) => _logger = logger;
 
         /// <summary>
-        /// Register User
+        /// Register User Loot
         /// </summary>
         /// <param name="username">Test.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>

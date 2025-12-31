@@ -4,8 +4,8 @@ namespace MiRs.Domain.DTOs.RuneHunter
 {
     public class EventTeam
     {
-        public GuildTeam Teams { get; set; }
+        public int TeamId { get; set; }
 
-        public GuildEvent Events { get; set; }
+        public int EventId { get; set; }
     }
 }

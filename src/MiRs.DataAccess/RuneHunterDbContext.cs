@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Entities.RuneHunterData;
-using MiRs.Domain.Entities.User;
 
 namespace MiRs.DataAccess
 {
-    public class RuneHunterDbContext :DbContext
+    public class RuneHunterDbContext : DbContext
     {
         public RuneHunterDbContext(DbContextOptions<RuneHunterDbContext> options) : base(options)
         {
@@ -15,7 +14,7 @@ namespace MiRs.DataAccess
 
         public DbSet<RHUserToTeam> UserToTeams { get; set; }
 
-        public DbSet<GuildTeam> GuildTeams{ get; set; }
+        public DbSet<GuildTeam> GuildTeams { get; set; }
 
         public DbSet<GuildEvent> GuildEvents { get; set; }
 
@@ -32,6 +31,8 @@ namespace MiRs.DataAccess
         public DbSet<LevelTask> LevelTasks { get; set; }
 
         public DbSet<RHUserRawLoot> UserRawLoot { get; set; }
+
+        public DbSet<RunescapeLootAlias> RunescapeLootAlias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -162,6 +163,12 @@ namespace MiRs.DataAccess
                 .WithOne(p => p.LevelParent)
                 .HasForeignKey(p => p.LevelId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            /// <summary>
+            /// Configures the primary key for RunescapeLootAlias.
+            /// </summary>
+            modelBuilder.Entity<RunescapeLootAlias>()
+                .HasKey(u => u.Id);
         }
     }
 }

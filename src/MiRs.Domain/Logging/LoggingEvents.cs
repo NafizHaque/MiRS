@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MiRs.Domain.Logging
+﻿namespace MiRs.Domain.Logging
 {
     /// <summary>
     /// The enum for setting the logging event numbers, this is used to help query logs for an event type in App Insights.
@@ -50,5 +44,15 @@ namespace MiRs.Domain.Logging
         /// The event id to be used when logging calls related to logging user loot.
         /// </summary>
         GameLogLoot = 3000,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to processing user loot.
+        /// </summary>
+        GameProcessLoot = 3001,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to game statw updating.
+        /// </summary>
+        GameStateUpdate = 3002,
     }
 }
