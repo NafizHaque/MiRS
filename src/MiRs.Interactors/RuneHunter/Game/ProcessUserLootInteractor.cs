@@ -17,17 +17,9 @@ namespace MiRs.Interactors.RuneHunter.Game
     public class ProcessUserLootInteractor : RequestHandler<ProcessUserLootRequest, ProcessUserLootResponse>
     {
         private readonly IGenericSQLRepository<RHUserRawLoot> _rhUserRawLoot;
-        private readonly IGenericSQLRepository<RHUser> _rhUserRepository;
         private readonly IGenericSQLRepository<RunescapeLootAlias> _rhLootAlias;
 
-        private readonly IGenericSQLRepository<Category> _category;
-        private readonly IGenericSQLRepository<GuildTeamCategoryProgress> _categoryProgress;
-
-        private readonly IGenericSQLRepository<Level> _level;
-        private readonly IGenericSQLRepository<GuildTeamCategoryLevelProgress> _levelProgress;
-
         private readonly IGenericSQLRepository<GuildTeamLevelTaskProgress> _levelTaskProgress;
-        private readonly IGenericSQLRepository<LevelTask> _levelTasks;
 
         private readonly AppSettings _appSettings;
         private readonly ISender _mediator;
@@ -41,26 +33,14 @@ namespace MiRs.Interactors.RuneHunter.Game
         public ProcessUserLootInteractor(
             ILogger<ProcessUserLootInteractor> logger,
             IGenericSQLRepository<RHUserRawLoot> rhUserRawLoot,
-            IGenericSQLRepository<RHUser> rhUserRepository,
-            IGenericSQLRepository<LevelTask> levelTasks,
             IGenericSQLRepository<GuildTeamLevelTaskProgress> levelTaskProgress,
-            IGenericSQLRepository<Level> level,
-            IGenericSQLRepository<GuildTeamCategoryLevelProgress> levelProgress,
-            IGenericSQLRepository<Category> category,
-            IGenericSQLRepository<GuildTeamCategoryProgress> categoryProgress,
             IGenericSQLRepository<RunescapeLootAlias> rhLootAlias,
             ISender mediator,
             IOptions<AppSettings> appSettings)
             : base(logger)
         {
             _rhUserRawLoot = rhUserRawLoot;
-            _rhUserRepository = rhUserRepository;
-            _levelTasks = levelTasks;
             _levelTaskProgress = levelTaskProgress;
-            _level = level;
-            _levelProgress = levelProgress;
-            _category = category;
-            _categoryProgress = categoryProgress;
             _rhLootAlias = rhLootAlias;
             _appSettings = appSettings.Value;
             _mediator = mediator;
