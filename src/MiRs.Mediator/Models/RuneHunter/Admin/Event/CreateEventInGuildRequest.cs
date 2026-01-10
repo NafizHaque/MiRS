@@ -2,7 +2,7 @@
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Exceptions;
 
-namespace MiRs.Mediator.Models.RuneHunter.Admin
+namespace MiRs.Mediator.Models.RuneHunter.Admin.Event
 {
     public class CreateEventInGuildRequest : IRequest<CreateEventInGuildResponse>, IValidatable
     {

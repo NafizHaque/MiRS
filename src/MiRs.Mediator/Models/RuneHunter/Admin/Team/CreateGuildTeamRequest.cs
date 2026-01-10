@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using MiRs.Domain.Exceptions;
 
-namespace MiRs.Mediator.Models.RuneHunter.Admin
+namespace MiRs.Mediator.Models.RuneHunter.Admin.Team
 {
     public class CreateGuildTeamRequest : IRequest<CreateGuildTeamResponse>, IValidatable
     {

@@ -7,8 +7,8 @@ using MiRs.Interactors.RuneHunter.User;
 using MiRs.Mediator.Models.RuneHunter.User;
 using Moq;
 using Microsoft.Extensions.Logging;
-using MiRs.Interactors.RuneHunter.Admin;
-using MiRs.Mediator.Models.RuneHunter.Admin;
+using MiRs.Mediator.Models.RuneHunter.Admin.Event;
+using MiRs.Interactors.RuneHunter.Admin.Event;
 
 namespace MiRs.Tests.RuneHunter.Admin
 {

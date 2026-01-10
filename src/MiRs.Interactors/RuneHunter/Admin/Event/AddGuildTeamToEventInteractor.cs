@@ -4,11 +4,11 @@ using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Logging;
 using MiRS.Gateway.DataAccess;
-using MiRs.Mediator.Models.RuneHunter.Admin;
 using MiRs.Mediator;
 using MiRs.Domain.Exceptions;
+using MiRs.Mediator.Models.RuneHunter.Admin.Event;
 
-namespace MiRs.Interactors.RuneHunter.Admin
+namespace MiRs.Interactors.RuneHunter.Admin.Event
 {
     public class AddGuildTeamToEventInteractor : RequestHandler<AddGuildTeamToEventRequest, AddGuildTeamToEventResponse>
     {

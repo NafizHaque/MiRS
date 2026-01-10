@@ -1,14 +1,9 @@
 ﻿using MediatR;
 using MiRs.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MiRs.Mediator.Models.RuneHunter.Admin
+namespace MiRs.Mediator.Models.RuneHunter.Admin.Team
 {
-    public class GetGuildEventsRequest : IRequest<GetGuildEventsResponse>, IValidatable
+    public class GetGuildTeamsRequest : IRequest<GetGuildTeamsResponse>, IValidatable
     {
         /// <summary>
         /// Gets or sets the GuildId.

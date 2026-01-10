@@ -12,15 +12,15 @@ namespace MiRs.API.Controllers.RuneHunter
     /// </summary>
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
-    public class RHUserController : ApiControllerBase
+    public class UserController : ApiControllerBase
     {
-        private readonly ILogger<RHUserController> _logger;
+        private readonly ILogger<UserController> _logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RHUserController"/> class.
+        /// Initializes a new instance of the <see cref="UserController"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
-        public RHUserController(ILogger<RHUserController> logger) => _logger = logger;
+        public UserController(ILogger<UserController> logger) => _logger = logger;
 
         /// <summary>
         /// Register User

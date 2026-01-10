@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiRs.Mediator.Models.RuneHunter.Admin
+namespace MiRs.Mediator.Models.RuneHunter.Admin.Team
 {
     public class GetGuildTeamsResponse
     {
