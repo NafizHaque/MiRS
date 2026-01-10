@@ -1,7 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using MiRs.Domain.Entities.RuneHunter;
-using MiRs.Domain.Entities.User;
 using MiRs.Domain.Exceptions;
 using MiRs.Interactors.RuneHunter.Game;
 using MiRs.Mediator.Models.RuneHunter;
@@ -12,6 +11,9 @@ using System.Net;
 
 namespace MiRs.API.Controllers.RuneHunter
 {
+    /// <summary>
+    /// This controller contains any calls relating to event management.
+    /// </summary>
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
     public class AdminRHController : ApiControllerBase
@@ -29,7 +31,6 @@ namespace MiRs.API.Controllers.RuneHunter
         /// </summary>
         /// <param name="guildId">The discord server Id.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(GuildTeam), StatusCodes.Status200OK)]
         [HttpGet("guilds")]
         public async Task<IActionResult> GetTeamsInGuild(ulong guildId)
@@ -55,13 +56,12 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <param name="guildId">The discord server Id.</param>
         /// <param name="teamname">The Team name.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(GuildTeam), StatusCodes.Status200OK)]
         [HttpPost("guilds")]
         public async Task<IActionResult> CreateTeamInGuild(ulong guildId, string teamname)
         {
             try
-            
+
             {
                 return Ok(await Mediator.Send(new CreateGuildTeamRequest { GuildId = guildId, Teamname = teamname }));
 
@@ -82,7 +82,6 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <param name="guildId">The Guild Id.</param>
         /// <param name="teamId">The Team Id.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(GuildTeam), StatusCodes.Status200OK)]
         [HttpPatch("guilds")]
         public async Task<IActionResult> EditTeamInGuild(ulong guildId, string teamId)
@@ -108,7 +107,6 @@ namespace MiRs.API.Controllers.RuneHunter
         /// </summary>
         /// <param name="guildId">The discord server Id.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(GuildTeam), StatusCodes.Status200OK)]
         [HttpGet("events")]
         public async Task<IActionResult> GetEventsInGuild(ulong guildId)
@@ -133,7 +131,6 @@ namespace MiRs.API.Controllers.RuneHunter
         /// </summary>
         /// <param name="guildEvent">The discord event object.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return .</remarks>
         [ProducesResponseType(typeof(GuildEvent), StatusCodes.Status200OK)]
         [HttpPost("events")]
         public async Task<IActionResult> CreateEventInGuild([FromBody] GuildEvent guildEvent)
@@ -157,10 +154,9 @@ namespace MiRs.API.Controllers.RuneHunter
         /// Add User To Team Guild
         /// </summary>
         /// <param name="userids"> list of userids.</param>
-        /// <param name="guildId">guildid.</param>
-        /// <param name="teamId">teamid.</param>
+        /// <param name="guildId">the discord server Id.</param>
+        /// <param name="teamId">the event team Id.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost]
         [Route("UserTeam")]
@@ -186,10 +182,9 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <summary>
         /// Add Guild Team to Event
         /// </summary>
-        /// <param name="teamid">teamid.</param>
-        /// <param name="eventid">eventid.</param>
+        /// <param name="teamid">the event team Id.</param>
+        /// <param name="eventid">the event id.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost]
         [Route("EventTeam")]
@@ -245,7 +240,6 @@ namespace MiRs.API.Controllers.RuneHunter
         /// Test Api Connection
         /// </summary>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return user.</remarks>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost("ping")]
         public async Task<IActionResult> PingConnection()

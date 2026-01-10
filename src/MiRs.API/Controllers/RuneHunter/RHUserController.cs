@@ -25,9 +25,8 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <summary>
         /// Register User
         /// </summary>
-        /// <param name="username">Test.</param>
+        /// <param name="rhUser">User object details.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost("user")]
         public async Task<IActionResult> RegisterUser([FromBody] RHUser rhUser)
@@ -51,10 +50,9 @@ namespace MiRs.API.Controllers.RuneHunter
         /// User to Join a Team
         /// </summary>
         /// <param name="userid">user id.</param>
-        /// <param name="guildid">guild id.</param>
+        /// <param name="guildid">the discord server id.</param>
         /// <param name="teamname">Team name to join.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost("JoinTeam")]
         public async Task<IActionResult> JoinTeam(ulong userid, ulong guildid, string teamname)
@@ -75,9 +73,9 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// User Current Events
+        /// User to Join a Team
         /// </summary>
-        /// <param name="userid">Test.</param>
+        /// <param name="username">Test.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
