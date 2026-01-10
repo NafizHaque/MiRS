@@ -18,7 +18,7 @@ namespace MiRs.API.Controllers.RuneHunter
         private readonly ILogger<RuneHunterController> _logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RHUserController"/> class.
+        /// Initializes a new instance of the <see cref="UserController"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
         public RuneHunterController(ILogger<RuneHunterController> logger) => _logger = logger;
@@ -37,6 +37,35 @@ namespace MiRs.API.Controllers.RuneHunter
             {
 
                 return Ok(await Mediator.Send(new LogUserLootRequest { LootMessage = loot.Content }));
+
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// /Initialise team progress
+        /// </summary>
+        /// <param name="teamid">teamid.</param>
+        /// <param name="eventid">eventid.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return user.</remarks>
+        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
+        [HttpPost]
+        [Route("InitTeamProgress")]
+        public async Task<IActionResult> InitTeamProgress(int teamid, int eventid)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new InitaliseTeamProgressRequest { TeamId = teamid, EventId = eventid }));
+
+                throw new NotImplementedException();
 
             }
             catch (BadRequestException ex)

@@ -1,4 +1,4 @@
-﻿namespace MiRs.Mediator.Models.RuneHunter.Admin
+﻿namespace MiRs.Mediator.Models.RuneHunter.Admin.Team
 {
     public class CreateGuildTeamResponse
     {

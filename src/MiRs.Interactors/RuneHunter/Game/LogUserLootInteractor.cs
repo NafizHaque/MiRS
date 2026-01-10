@@ -6,10 +6,10 @@ using MiRs.Domain.Entities.RuneHunter;
 using MiRS.Gateway.DataAccess;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MiRs.Interactors.RuneHunter.Admin;
 using MiRs.Domain.Logging;
 using System.Text.RegularExpressions;
 using MiRs.Domain.Exceptions;
+using MiRs.Interactors.RuneHunter.Admin.Team;
 
 namespace MiRs.Interactors.RuneHunter.Game
 {

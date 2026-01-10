@@ -3,30 +3,30 @@ using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Logging;
-using MiRS.Gateway.DataAccess;
-using MiRs.Mediator.Models.RuneHunter.Admin;
 using MiRs.Mediator;
+using MiRs.Mediator.Models.RuneHunter.Admin.Team;
+using MiRS.Gateway.DataAccess;
 
-namespace MiRs.Interactors.RuneHunter.Admin
+namespace MiRs.Interactors.RuneHunter.Admin.Team
 {
-    public class GetGuildEventsInteractor : RequestHandler<GetGuildEventsRequest, GetGuildEventsResponse>
+    public class GetGuildTeamsInteractor : RequestHandler<GetGuildTeamsRequest, GetGuildTeamsResponse>
     {
-        private readonly IGenericSQLRepository<GuildEvent> _guildEventRepository;
+        private readonly IGenericSQLRepository<GuildTeam> _guildTeamRepository;
         private readonly AppSettings _appSettings;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GetGuildEventsInteractor"/> class.
+        /// Initializes a new instance of the <see cref="CreateUserInteractor"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
-        /// <param name="guildEventRepository">The repo interface to table storage.</param>
+        /// <param name="guildTeamRepository">The repo interface to table storage.</param>
         /// <param name="appSettings">The app settings.</param>
-        public GetGuildEventsInteractor(
+        public GetGuildTeamsInteractor(
             ILogger<GetGuildTeamsInteractor> logger,
-            IGenericSQLRepository<GuildEvent> guildEventRepository,
+            IGenericSQLRepository<GuildTeam> guildTeamRepository,
             IOptions<AppSettings> appSettings)
             : base(logger)
         {
-            _guildEventRepository = guildEventRepository;
+            _guildTeamRepository = guildTeamRepository;
             _appSettings = appSettings.Value;
         }
 
@@ -37,11 +37,11 @@ namespace MiRs.Interactors.RuneHunter.Admin
         /// <param name="result">User object that was created.</param>
         /// <param name="cancellationToken">The cancellation token for the request.</param>
         /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
-        protected override async Task<GetGuildEventsResponse> HandleRequest(GetGuildEventsRequest request, GetGuildEventsResponse result, CancellationToken cancellationToken)
+        protected override async Task<GetGuildTeamsResponse> HandleRequest(GetGuildTeamsRequest request, GetGuildTeamsResponse result, CancellationToken cancellationToken)
         {
-            Logger.LogInformation((int)LoggingEvents.GetGuildEvent, "Retrieving Guild Events. Guild Id: {guildId}", request.GuildId);
+            Logger.LogInformation((int)LoggingEvents.GetGuildTeam, "Retrieving Guild Team. Guild Id: {guildId}", request.GuildId);
 
-            result.GuildEvents = await _guildEventRepository.Query(g => g.GuildId == request.GuildId);
+            result.GuildTeams = await _guildTeamRepository.Query(g => g.GuildId == request.GuildId);
 
             return result;
         }

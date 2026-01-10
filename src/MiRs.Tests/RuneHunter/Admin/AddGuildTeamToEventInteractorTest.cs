@@ -5,9 +5,9 @@ using MiRs.Domain.Entities.RuneHunter;
 using MiRS.Gateway.DataAccess;
 using Moq;
 using Microsoft.Extensions.Logging;
-using MiRs.Interactors.RuneHunter.Admin;
 using System.Linq.Expressions;
-using MiRs.Mediator.Models.RuneHunter.Admin;
+using MiRs.Mediator.Models.RuneHunter.Admin.Event;
+using MiRs.Interactors.RuneHunter.Admin.Event;
 
 namespace MiRs.Tests.RuneHunter.Admin
 {

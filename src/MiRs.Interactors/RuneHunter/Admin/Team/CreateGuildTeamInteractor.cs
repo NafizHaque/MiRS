@@ -4,10 +4,10 @@ using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Logging;
 using MiRs.Mediator;
-using MiRs.Mediator.Models.RuneHunter.Admin;
+using MiRs.Mediator.Models.RuneHunter.Admin.Team;
 using MiRS.Gateway.DataAccess;
 
-namespace MiRs.Interactors.RuneHunter.Admin
+namespace MiRs.Interactors.RuneHunter.Admin.Team
 {
     public class CreateGuildTeamInteractor : RequestHandler<CreateGuildTeamRequest, CreateGuildTeamResponse>
     {
