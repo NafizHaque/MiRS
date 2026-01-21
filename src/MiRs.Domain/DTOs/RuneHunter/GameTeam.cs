@@ -1,6 +1,6 @@
-﻿namespace MiRs.Domain.Entities.RuneHunter
+﻿namespace MiRs.Domain.DTOs.RuneHunter
 {
-    public class GuildTeam
+    public class GameTeam
     {
         public int Id { get; set; }
 
@@ -10,8 +10,6 @@
 
         public DateTimeOffset CreatedDate { get; set; }
 
-        public ICollection<RHUserToTeam>? UsersInTeam { get; set; }
-
-        public ICollection<GuildEventTeam>? EventTeams { get; set; }
+        public IEnumerable<UserToTeam> UsersInTeam { get; set; } = Enumerable.Empty<UserToTeam>();
     }
 }

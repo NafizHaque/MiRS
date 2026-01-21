@@ -31,6 +31,11 @@
         CreateGuildEvent = 1102,
 
         /// <summary>
+        /// The event id to be used when logging calls related to getting Teams from Guild Event.
+        /// </summary>
+        GetTeamsFromEvent = 1102,
+
+        /// <summary>
         /// The event id to be used when logging calls related to registering user.
         /// </summary>
         RegisterUser = 2000,
@@ -39,6 +44,11 @@
         /// The event id to be used when logging calls related to registering user.
         /// </summary>
         UserToTeamJoin = 2001,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to registering user.
+        /// </summary>
+        UserSearch = 2002,
 
         /// <summary>
         /// The event id to be used when logging calls related to logging user loot.

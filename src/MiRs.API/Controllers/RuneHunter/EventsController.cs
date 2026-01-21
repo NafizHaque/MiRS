@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using MiRs.Domain.DTOs.RuneHunter;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Exceptions;
 using MiRs.Mediator.Models.RuneHunter.Admin.Event;
@@ -14,7 +15,6 @@ namespace MiRs.API.Controllers.RuneHunter
     [ApiExplorerSettings(GroupName = "v1")]
     public class EventsController : ApiControllerBase
     {
-
         /// <summary>
         /// Get All Guild Events. 
         /// </summary>
@@ -27,6 +27,30 @@ namespace MiRs.API.Controllers.RuneHunter
             try
             {
                 return Ok(await Mediator.Send(new GetGuildEventsRequest { GuildId = guildId }));
+
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get All Events. 
+        /// </summary>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        [ProducesResponseType(typeof(GuildEvent), StatusCodes.Status200OK)]
+        [HttpGet]
+        [Route("allevents")]
+        public async Task<IActionResult> GetAllEvents()
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new GetAllEventsRequest()));
 
             }
             catch (BadRequestException ex)
@@ -66,13 +90,12 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <summary>
         /// Get Guild Team from Event
         /// </summary>
-        /// <param name="teamid">the event team Id.</param>
         /// <param name="eventid">the event id.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpGet]
-        [Route("teamtoevent")]
-        public async Task<IActionResult> GetGuildTeamFromEvent(int eventid)
+        [Route("teamstoevent")]
+        public async Task<IActionResult> GetGuildTeamsFromEvent(int eventid)
         {
             try
             {
@@ -96,12 +119,67 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost]
-        [Route("teamtoevent")]
+        [Route("teamstoevent")]
         public async Task<IActionResult> AddGuildTeamToEvent(int teamid, int eventid)
         {
             try
             {
                 return Ok(await Mediator.Send(new AddGuildTeamToEventRequest { TeamId = teamid, EventId = eventid }));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Update Guild Team to Event
+        /// </summary>
+        /// <param name="updateTeamList">update team list that contains the new team and the current team list.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
+        [HttpPatch]
+        [Route("teamstoevent")]
+        public async Task<IActionResult> UpdateTeamsToEvent([FromBody] UpdateTeamList updateTeamList)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new UpdateTeamsToEventRequest
+                {
+                    EventId = updateTeamList.EventId,
+                    AddExistingTeamToggle = updateTeamList.AddExistingTeamToggle,
+                    NewTeamToBeCreated = updateTeamList.NewTeamToBeCreated,
+                    CurrentTeamsToBeUpdated = updateTeamList.CurrentTeamsToBeUpdated,
+                }));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Unlink Guild Team From Event
+        /// </summary>
+        /// <param name="teamid">the event team Id.</param>
+        /// <param name="eventid">the event id.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
+        [HttpDelete]
+        [Route("teamstoevent")]
+        public async Task<IActionResult> RemoveTeamFromEvent(int teamid, int eventid)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new RemoveTeamFromEventRequest { TeamId = teamid, EventId = eventid }));
             }
             catch (BadRequestException ex)
             {

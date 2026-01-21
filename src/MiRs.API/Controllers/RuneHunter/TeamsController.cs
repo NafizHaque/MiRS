@@ -75,17 +75,15 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <summary>
         /// Edit Guild Team
         /// </summary>
-        /// <param name="guildId">The Guild Id.</param>
-        /// <param name="teamId">The Team Id.</param>
+        /// <param name="guildTeam">The Guild Team to be updated.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         [ProducesResponseType(typeof(GuildTeam), StatusCodes.Status200OK)]
         [HttpPatch]
-        public async Task<IActionResult> EditTeamInGuild(ulong guildId, string teamId)
+        public async Task<IActionResult> UpdateTeamInGuild([FromBody] GuildTeam guildTeam)
         {
             try
             {
-                //return Ok(await Mediator.Send(new JoinTeamRequest { UserId = guildId, Teamname = teamname }));
-                throw new NotImplementedException();
+                return Ok(await Mediator.Send(new UpdateGuildTeamRequest { TeamToBeUpdated = guildTeam }));
 
             }
             catch (BadRequestException ex)

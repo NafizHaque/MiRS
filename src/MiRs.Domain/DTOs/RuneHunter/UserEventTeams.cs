@@ -6,6 +6,6 @@ namespace MiRs.Domain.DTOs.RuneHunter
     {
         public RHUser? User { get; set; }
 
-        public IEnumerable<EventTeam> EventTeams { get; set; }
+        public IEnumerable<EventTeam> EventTeams { get; set; } = Enumerable.Empty<EventTeam>();
     }
 }
