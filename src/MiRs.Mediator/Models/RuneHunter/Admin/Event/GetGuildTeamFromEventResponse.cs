@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MiRs.Domain.DTOs.RuneHunter;
 
 namespace MiRs.Mediator.Models.RuneHunter.Admin.Event
 {
-    internal class GetGuildTeamFromEventResponse
+    public class GetGuildTeamFromEventResponse
     {
+        public IEnumerable<GameTeam> GuildTeams { get; set; } = Enumerable.Empty<GameTeam>();
     }
 }

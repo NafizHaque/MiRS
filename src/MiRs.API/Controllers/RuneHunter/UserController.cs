@@ -28,12 +28,37 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <param name="rhUser">User object details.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
-        [HttpPost("user")]
+        [HttpPost]
         public async Task<IActionResult> RegisterUser([FromBody] RHUser rhUser)
         {
             try
             {
                 return Ok(await Mediator.Send(new RegisterUserRequest { rhUserToBeCreated = rhUser }));
+
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// User Search
+        /// </summary>
+        /// <param name="search">the search term.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return users.</remarks>
+        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
+        [HttpGet]
+        public async Task<IActionResult> UserSearch(string search)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new UserSearchRequest { Searchkey = search }));
 
             }
             catch (BadRequestException ex)

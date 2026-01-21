@@ -74,6 +74,17 @@ namespace MiRs.API
 
             builder.Services.AddMediatRContracts();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("DevCors", policy =>
+                {
+                    policy
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
             WebApplication app = builder.Build();
 
             ApplyMigrations(app);
@@ -86,6 +97,8 @@ namespace MiRs.API
             });
 
             app.UseHttpsRedirection();
+
+            app.UseCors("DevCors");
 
             app.UseAuthorization();
 
@@ -104,7 +117,7 @@ namespace MiRs.API
                 IEnumerable<string> pendingMigrations = runeHunterDbContext.Database.GetPendingMigrations();
                 if (pendingMigrations.Any())
                 {
-                   runeHunterDbContext.Database.Migrate();
+                    runeHunterDbContext.Database.Migrate();
                 }
             }
         }
