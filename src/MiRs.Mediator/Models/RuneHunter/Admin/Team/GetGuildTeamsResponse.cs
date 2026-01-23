@@ -1,14 +1,9 @@
-﻿using MiRs.Domain.Entities.RuneHunter;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MiRs.Domain.DTOs.RuneHunter;
 
 namespace MiRs.Mediator.Models.RuneHunter.Admin.Team
 {
     public class GetGuildTeamsResponse
     {
-        public IEnumerable<GuildTeam> GuildTeams { get; set; } = Enumerable.Empty<GuildTeam>();
+        public IEnumerable<GameTeam> GuildTeams { get; set; } = Enumerable.Empty<GameTeam>();
     }
 }

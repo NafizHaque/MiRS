@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
+using MiRs.Domain.DTOs.RuneHunter;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Logging;
 using MiRs.Mediator;
@@ -41,7 +43,32 @@ namespace MiRs.Interactors.RuneHunter.Admin.Team
         {
             Logger.LogInformation((int)LoggingEvents.GetGuildTeam, "Retrieving Guild Team. Guild Id: {guildId}", request.GuildId);
 
-            result.GuildTeams = await _guildTeamRepository.Query(g => g.GuildId == request.GuildId);
+            IEnumerable<GuildTeam> allGuildTeams = await _guildTeamRepository.GetAllEntitiesAsync(g => g.GuildId == request.GuildId, default, gt => gt.Include(gt => gt.UsersInTeam).ThenInclude(u => u.User));
+
+            result.GuildTeams = allGuildTeams.Select(tfe => new GameTeam
+            {
+                Id = tfe.Id,
+                GuildId = tfe.GuildId,
+                TeamName = tfe.TeamName,
+                CreatedDate = tfe.CreatedDate,
+                UsersInTeam = tfe.UsersInTeam == null ? new List<UserToTeam>() :
+                tfe.UsersInTeam.Select(ut => new UserToTeam
+                {
+                    Id = ut.Id,
+                    UserId = ut.UserId,
+                    TeamId = ut.TeamId,
+                    User = ut.User == null ? null :
+                    new GameUser
+                    {
+                        UserId = ut.User.UserId,
+                        Username = ut.User.Username,
+                        PreviousUsername = ut.User.Username,
+                        PreviousRunescapename = ut.User.PreviousRunescapename,
+                        Runescapename = ut.User.Runescapename,
+                        CreatedDate = ut.User.CreatedDate
+                    }
+                })
+            }).ToList();
 
             return result;
         }
