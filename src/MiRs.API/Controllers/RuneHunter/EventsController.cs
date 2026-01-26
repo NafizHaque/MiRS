@@ -192,6 +192,32 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
+        /// Add Guild Team to Event
+        /// </summary>
+        /// <param name="eventid">the event id.</param>
+        /// <param name="guildid">the guild id.</param>
+        /// <param name="eventpassword">the event password.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
+        [HttpGet]
+        [Route("verify")]
+        public async Task<IActionResult> UpdateEventVerification(int eventid, ulong guildid, string eventpassword)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new UpdateEventVerificationRequest { EventId = eventid, GuildId = guildid, EventPassword = eventpassword }));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Test Api Connection
         /// </summary>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>

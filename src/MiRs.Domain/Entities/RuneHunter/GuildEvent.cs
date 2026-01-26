@@ -8,7 +8,11 @@
 
         public string Eventname { get; set; } = string.Empty;
 
+        public string ParticipantPassword { get; set; } = string.Empty;
+
         public bool EventActive { get; set; }
+
+        public string EventPassword { get; set; } = string.Empty;
 
         public DateTimeOffset CreatedDate { get; set; }
 
