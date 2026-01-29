@@ -1,6 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using MiRs.Domain.DTOs.RuneHunter;
+using MiRs.API.ApiDTOs;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Exceptions;
 using MiRs.Mediator.Models.RuneHunter.Admin.Event;
@@ -120,11 +120,16 @@ namespace MiRs.API.Controllers.RuneHunter
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost]
         [Route("teamstoevent")]
-        public async Task<IActionResult> AddGuildTeamToEvent(int teamid, int eventid)
+        public async Task<IActionResult> AddGuildTeamToEvent([FromBody] AddNewTeamToEvent addNewTeamToEvent)
         {
             try
             {
-                return Ok(await Mediator.Send(new AddGuildTeamToEventRequest { TeamId = teamid, EventId = eventid }));
+                return Ok(await Mediator.Send(new AddGuildTeamToEventRequest
+                {
+                    EventId = addNewTeamToEvent.EventId,
+                    AddExistingTeamToggle = addNewTeamToEvent.AddExistingTeamToggle,
+                    NewTeamToBeCreated = addNewTeamToEvent.NewTeamToBeCreated
+                }));
             }
             catch (BadRequestException ex)
             {
@@ -151,8 +156,6 @@ namespace MiRs.API.Controllers.RuneHunter
                 return Ok(await Mediator.Send(new UpdateTeamsToEventRequest
                 {
                     EventId = updateTeamList.EventId,
-                    AddExistingTeamToggle = updateTeamList.AddExistingTeamToggle,
-                    NewTeamToBeCreated = updateTeamList.NewTeamToBeCreated,
                     CurrentTeamsToBeUpdated = updateTeamList.CurrentTeamsToBeUpdated,
                 }));
             }
