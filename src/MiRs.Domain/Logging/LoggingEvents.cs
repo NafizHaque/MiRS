@@ -33,7 +33,12 @@
         /// <summary>
         /// The event id to be used when logging calls related to getting Teams from Guild Event.
         /// </summary>
-        GetTeamsFromEvent = 1102,
+        GetTeamsFromEvent = 1103,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to creating Guild Teams.
+        /// </summary>
+        UpdateEventVerify = 1104,
 
         /// <summary>
         /// The event id to be used when logging calls related to registering user.

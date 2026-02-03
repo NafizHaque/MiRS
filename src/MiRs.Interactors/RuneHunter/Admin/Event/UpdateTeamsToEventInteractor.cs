@@ -12,7 +12,6 @@ namespace MiRs.Interactors.RuneHunter.Admin.Event
     public class UpdateTeamsToEventInteractor : RequestHandler<UpdateTeamsToEventRequest, UpdateTeamsToEventResponse>
     {
         private readonly IGenericSQLRepository<GuildEventTeam> _guildEventTeamRepository;
-        private readonly IGenericSQLRepository<GuildTeam> _guildTeamRepository;
         private readonly IGenericSQLRepository<RHUserToTeam> _rhUserToTeamRepository;
         private readonly AppSettings _appSettings;
 
@@ -25,13 +24,11 @@ namespace MiRs.Interactors.RuneHunter.Admin.Event
         public UpdateTeamsToEventInteractor(
             ILogger<UpdateTeamsToEventInteractor> logger,
             IGenericSQLRepository<GuildEventTeam> guildEventTeamRepository,
-            IGenericSQLRepository<GuildTeam> guildTeamRepository,
             IGenericSQLRepository<RHUserToTeam> rhUserToTeamRepository,
             IOptions<AppSettings> appSettings)
             : base(logger)
         {
             _guildEventTeamRepository = guildEventTeamRepository;
-            _guildTeamRepository = guildTeamRepository;
             _rhUserToTeamRepository = rhUserToTeamRepository;
             _appSettings = appSettings.Value;
         }
@@ -54,69 +51,6 @@ namespace MiRs.Interactors.RuneHunter.Admin.Event
                 .Select(t => t.Team!)
                 .ToList()
                 ?? new List<GuildTeam>();
-
-            HashSet<ulong> newTeamUserIds = request.NewTeamToBeCreated.UsersInTeam?
-                .Select(x => x.UserId)
-                .ToHashSet()
-                ?? new HashSet<ulong>();
-
-            if (request.AddExistingTeamToggle)
-            {
-                guildTeamToEvent = request.NewTeamToBeCreated;
-
-                IList<RHUserToTeam> currentTeamUsers = (await _rhUserToTeamRepository.Query(ut => ut.TeamId == request.NewTeamToBeCreated.Id)).ToList();
-
-                IList<RHUserToTeam> NewPlayersToUpdated = newTeamUserIds
-                    .Select(userId => new RHUserToTeam
-                    {
-                        TeamId = guildTeamToEvent.Id,
-                        UserId = userId
-                    })
-                    .ToList();
-
-                HashSet<ulong> existingUserIds = currentTeamUsers
-                    .Select(x => x.UserId)
-                    .ToHashSet();
-
-                HashSet<ulong> incomingUserIds = NewPlayersToUpdated
-                    .Select(x => x.UserId)
-                    .ToHashSet()
-                    ?? new HashSet<ulong>();
-
-                IList<RHUserToTeam> toRemove = currentTeamUsers
-                    .Where(x => !incomingUserIds.Contains(x.UserId))
-                    .ToList();
-
-                await _rhUserToTeamRepository.AddRangeAsync(NewPlayersToUpdated);
-                await _rhUserToTeamRepository.DeleteManyAsync(toRemove);
-
-            }
-            else
-            {
-                guildTeamToEvent = await _guildTeamRepository.AddAsync(new GuildTeam
-                {
-                    GuildId = request.NewTeamToBeCreated.GuildId,
-                    TeamName = request.NewTeamToBeCreated.TeamName,
-                    CreatedDate = DateTimeOffset.Now,
-                });
-
-                IList<RHUserToTeam> NewPlayersToAdd = newTeamUserIds
-                    .Select(userId => new RHUserToTeam
-                    {
-                        TeamId = guildTeamToEvent.Id,
-                        UserId = userId
-                    })
-                    .ToList();
-
-                await _rhUserToTeamRepository.AddRangeAsync(NewPlayersToAdd);
-            }
-
-            await _guildEventTeamRepository.AddAsync(
-                new GuildEventTeam
-                {
-                    EventId = request.EventId,
-                    TeamId = guildTeamToEvent.Id,
-                });
 
             foreach (GuildTeam incomingTeam in request.CurrentTeamsToBeUpdated)
             {
@@ -147,7 +81,7 @@ namespace MiRs.Interactors.RuneHunter.Admin.Event
                     .ToList();
 
                 await _rhUserToTeamRepository.AddRangeAsync(toAdd);
-                await _rhUserToTeamRepository.DeleteManyAsync(toAdd);
+                await _rhUserToTeamRepository.DeleteManyAsync(toRemove);
             }
 
             return result;

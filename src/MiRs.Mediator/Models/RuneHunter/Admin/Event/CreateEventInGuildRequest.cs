@@ -31,6 +31,11 @@ namespace MiRs.Mediator.Models.RuneHunter.Admin.Event
             {
                 throw new BadRequestException("Start date must be less than End date");
             }
+
+            if (string.IsNullOrEmpty(GuildEventToBeCreated.ParticipantPassword))
+            {
+                throw new BadRequestException("partipant password must have a valid name.");
+            }
         }
     }
 }

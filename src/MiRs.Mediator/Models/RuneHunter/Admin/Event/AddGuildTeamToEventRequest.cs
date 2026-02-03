@@ -1,34 +1,32 @@
 ﻿using MediatR;
+using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Exceptions;
 
 namespace MiRs.Mediator.Models.RuneHunter.Admin.Event
 {
     public class AddGuildTeamToEventRequest : IRequest<AddGuildTeamToEventResponse>, IValidatable
     {
-        /// <summary>
-        /// Gets or sets the TeamId.
-        /// </summary>
-        public int TeamId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the EventId.
-        /// </summary>
         public int EventId { get; set; }
 
-        /// <summary>
-        /// validate the GuildEventToBeCreated object.
-        /// </summary>
-        /// <exception cref="BadRequestException"> The custom exception type for bad requests.</exception>
+        public bool AddExistingTeamToggle { get; set; } = false;
+
+        public GuildTeam NewTeamToBeCreated { get; set; } = new GuildTeam();
+
         public void Validate()
         {
-            if (TeamId <= 0)
+            if (NewTeamToBeCreated.GuildId <= 0)
             {
-                throw new BadRequestException("Invalid User Id given!");
+                throw new BadRequestException("Guild Id for new team is not valid ");
+            }
+
+            if (string.IsNullOrWhiteSpace(NewTeamToBeCreated.TeamName))
+            {
+                throw new BadRequestException("Team name for new team is not valid");
             }
 
             if (EventId <= 0)
             {
-                throw new BadRequestException("Invalid Event Id given!");
+                throw new BadRequestException("Event Id is not valid ");
             }
         }
     }

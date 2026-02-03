@@ -3,10 +3,12 @@ using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Logging;
-using MiRS.Gateway.DataAccess;
+using MiRs.Interactors.RuneHunter.Admin.Team;
 using MiRs.Mediator;
 using MiRs.Mediator.Models.RuneHunter.Admin.Event;
-using MiRs.Interactors.RuneHunter.Admin.Team;
+using MiRS.Gateway.DataAccess;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace MiRs.Interactors.RuneHunter.Admin.Event
 {
@@ -43,6 +45,18 @@ namespace MiRs.Interactors.RuneHunter.Admin.Event
             Logger.LogInformation((int)LoggingEvents.CreateGuildTeam, "Creating Guild Event. Guild Id: {guildId}, EventName: {teamname} ", request.GuildEventToBeCreated.GuildId, request.GuildEventToBeCreated.Eventname);
 
             request.GuildEventToBeCreated.CreatedDate = DateTimeOffset.UtcNow;
+
+            request.GuildEventToBeCreated.EventPassword = Convert.ToBase64String(Rfc2898DeriveBytes.Pbkdf2(
+            Encoding.UTF8.GetBytes(request.GuildEventToBeCreated.EventPassword),
+            Encoding.UTF8.GetBytes(_appSettings.PasswordSalt),
+            100000,
+            HashAlgorithmName.SHA256,
+            outputLength: 32));
+
+            if (string.IsNullOrWhiteSpace(request.GuildEventToBeCreated.EventPassword))
+            {
+                throw new Exception("Could not create event secrets.");
+            }
 
             await _guildEventRepository.AddAsync(request.GuildEventToBeCreated);
 
