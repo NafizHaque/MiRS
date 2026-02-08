@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MiRs.Domain.Entities.RuneHunterData
+﻿namespace MiRs.Domain.Entities.RuneHunterData
 {
     public class Level
     {
@@ -12,7 +6,7 @@ namespace MiRs.Domain.Entities.RuneHunterData
 
         public int Levelnumber { get; set; }
 
-        public int Unlock { get; set; }
+        public string Unlock { get; set; } = string.Empty;
 
         public string UnlockDescription { get; set; } = string.Empty;
 

@@ -22,8 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MiRs.DataAccess\MiRs.DataAccess.csproj" />
     <ProjectReference Include="..\MiRS.Gateway\MiRS.Gateway.csproj" />
     <ProjectReference Include="..\MiRs.Mediator\MiRs.Mediator.csproj" />
+    <ProjectReference Include="..\MiRs.Utils\MiRs.Utils.csproj" />
   </ItemGroup>
 
 </Project>

@@ -65,6 +65,7 @@ namespace MiRs.Interactors.RuneHunter.User
                     EventEnd = e.Event.EventEnd,
                     EventTeam = new EventTeam
                     {
+                        Id = e.Id,
                         TeamId = e.TeamId,
                         EventId = e.EventId
                     }

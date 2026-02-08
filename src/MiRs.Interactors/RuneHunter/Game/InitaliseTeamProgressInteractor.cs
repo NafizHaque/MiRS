@@ -5,11 +5,8 @@ using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Exceptions;
-using MiRs.Domain.Logging;
 using MiRS.Gateway.DataAccess;
-using System.Text.RegularExpressions;
 using MiRs.Domain.Entities.RuneHunterData;
-using System.Collections.Generic;
 
 namespace MiRs.Interactors.RuneHunter.Game
 {
@@ -67,12 +64,12 @@ namespace MiRs.Interactors.RuneHunter.Game
         {
             int guildEventTeamId = (await _guildEventTeam.Query(et => et.EventId == request.EventId && et.TeamId == request.TeamId)).Select(i => i.Id).FirstOrDefault();
 
-            if (guildEventTeamId <= 0){
+            if (guildEventTeamId <= 0)
+            {
 
                 throw new BadRequestException("Team is not registered to this event!");
             }
 
-            
             if ((await _categoryProgress.Query(c => c.GuildEventTeamId == guildEventTeamId)).Any())
             {
                 throw new BadRequestException("Progress already initalised!");
@@ -131,7 +128,8 @@ namespace MiRs.Interactors.RuneHunter.Game
                             IsComplete = false,
                             LastUpdated = DateTimeOffset.UtcNow,
                             CategoryLevelProcessId = levelProgress.Id,
-                            LevelTaskId = levelTask.Id
+                            LevelTaskId = levelTask.Id,
+                            GuildEventTeamId = guildEventTeamId,
 
                         });
                 }

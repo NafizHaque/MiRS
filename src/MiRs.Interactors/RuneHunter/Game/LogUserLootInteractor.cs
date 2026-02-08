@@ -1,5 +1,4 @@
-﻿using MiRs.Mediator.Models.RuneHunter.Admin;
-using MiRs.Mediator;
+﻿using MiRs.Mediator;
 using MiRs.Mediator.Models.RuneHunter.Game;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
@@ -65,9 +64,10 @@ namespace MiRs.Interactors.RuneHunter.Game
                 Quantity = string.IsNullOrEmpty(match.Groups[2].Value) ? 1 : int.Parse(match.Groups[2].Value),
                 Loot = match.Groups[3].Value,
                 Mobname = match.Groups[5].Value,
+                MobLevel = string.IsNullOrEmpty(match.Groups[4].Value) ? 0 : int.Parse(match.Groups[4].Value),
             };
 
-            RHUser usersInTable = (await _rhUserRepository.Query(u =>
+            RHUser? usersInTable = (await _rhUserRepository.Query(u =>
                 u.Runescapename.ToLower() == UsernameFromLootLogged.ToLower()))
                 .FirstOrDefault();
 

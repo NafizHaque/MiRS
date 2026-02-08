@@ -66,8 +66,13 @@
         GameProcessLoot = 3001,
 
         /// <summary>
-        /// The event id to be used when logging calls related to game statw updating.
+        /// The event id to be used when logging calls related to game state updating.
         /// </summary>
         GameStateUpdate = 3002,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to game getting meta data.
+        /// </summary>
+        GameGetMetadata = 3004,
     }
 }

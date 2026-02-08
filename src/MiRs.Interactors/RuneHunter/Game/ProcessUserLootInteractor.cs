@@ -6,10 +6,12 @@ using MiRs.Domain.Configurations;
 using MiRs.Domain.DTOs.RuneHunter;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Entities.RuneHunterData;
+using MiRs.Domain.Entities.RuneHunterData.Enums;
 using MiRs.Domain.Logging;
 using MiRs.Mediator;
 using MiRs.Mediator.Models.RuneHunter.Game;
 using MiRs.Mediator.Models.RuneHunter.User;
+using MiRs.Utils.Helpers;
 using MiRS.Gateway.DataAccess;
 
 namespace MiRs.Interactors.RuneHunter.Game
@@ -20,9 +22,12 @@ namespace MiRs.Interactors.RuneHunter.Game
         private readonly IGenericSQLRepository<RunescapeLootAlias> _rhLootAlias;
 
         private readonly IGenericSQLRepository<GuildTeamLevelTaskProgress> _levelTaskProgress;
+        private readonly IGenericSQLRepository<GuildTeamCategoryProgress> _categoryProgress;
 
         private readonly AppSettings _appSettings;
         private readonly ISender _mediator;
+
+        private IEnumerable<GuildTeamCategoryProgress> _categoryProgressData;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessUserLootInteractor"/> class.
@@ -34,6 +39,7 @@ namespace MiRs.Interactors.RuneHunter.Game
             ILogger<ProcessUserLootInteractor> logger,
             IGenericSQLRepository<RHUserRawLoot> rhUserRawLoot,
             IGenericSQLRepository<GuildTeamLevelTaskProgress> levelTaskProgress,
+            IGenericSQLRepository<GuildTeamCategoryProgress> categoryProgress,
             IGenericSQLRepository<RunescapeLootAlias> rhLootAlias,
             ISender mediator,
             IOptions<AppSettings> appSettings)
@@ -41,6 +47,7 @@ namespace MiRs.Interactors.RuneHunter.Game
         {
             _rhUserRawLoot = rhUserRawLoot;
             _levelTaskProgress = levelTaskProgress;
+            _categoryProgress = categoryProgress;
             _rhLootAlias = rhLootAlias;
             _appSettings = appSettings.Value;
             _mediator = mediator;
@@ -95,24 +102,40 @@ namespace MiRs.Interactors.RuneHunter.Game
 
         private async Task AssignUserLootToTeams(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias, UserEvents userEvent)
         {
-            IList<GuildTeamLevelTaskProgress> levelTasksProgress = (await _levelTaskProgress.GetAllEntitiesAsync(t => t.IsComplete == false && t.GuildEventTeamId == userEvent.Id, default, lt => lt.Include(ltt => ltt.LevelTask))).ToList();
+            IList<GuildTeamLevelTaskProgress> levelTasksProgress = (await _levelTaskProgress.GetAllEntitiesAsync(t => t.IsComplete == false && t.GuildEventTeamId == userEvent.EventTeam.Id, default, lt => lt.Include(ltt => ltt.LevelTask))).ToList();
+
+            _categoryProgressData = (await _categoryProgress.GetAllEntitiesAsync(
+              t => t.GuildEventTeamId == userEvent.EventTeam.Id,
+              default,
+              cp => cp.Include(c => c.Category)
+                      .Include(lp => lp.CategoryLevelProcess)
+                          .ThenInclude(l => l.Level)))
+              .ToList();
 
             if (!levelTasksProgress.Any())
             {
+                Logger.LogError((int)LoggingEvents.GameProcessLoot, "No levelTasksProgress for event: {userEvent.EventTeam.Id} could be found!", userEvent.EventTeam.Id);
+
                 return;
             }
 
-            int minLevel = levelTasksProgress.Min(t => t.LevelTask.LevelId);
+            int minLevel = levelTasksProgress.Min(t => t.LevelTask.Levelnumber);
 
             List<GuildTeamLevelTaskProgress> lowestIncompleteTasks = levelTasksProgress
                 .Where(t => t.LevelTask.Levelnumber == minLevel)
                 .ToList();
 
+            bool lootUnlockCheck = await LootUnlockCheck(loot, runescapeLootAlias);
+
+            RHUserRawLoot userMultipliedLoot = await CalculateLootMultiplier(loot, runescapeLootAlias);
+
             foreach (GuildTeamLevelTaskProgress taskProgress in lowestIncompleteTasks)
             {
-                if (string.Equals(taskProgress.LevelTask.Name, loot.Loot, StringComparison.OrdinalIgnoreCase))
+
+                if (string.Equals(taskProgress.LevelTask.Name, loot.Loot, StringComparison.OrdinalIgnoreCase) && lootUnlockCheck)
                 {
-                    taskProgress.Progress += loot.Quantity;
+
+                    taskProgress.Progress += userMultipliedLoot.Quantity;
 
                     if (taskProgress.Progress > taskProgress.LevelTask.Goal)
                     {
@@ -120,25 +143,14 @@ namespace MiRs.Interactors.RuneHunter.Game
                         taskProgress.IsComplete = true;
                     }
                 }
-                else if (runescapeLootAlias.Any(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)))
+                else if (runescapeLootAlias.Any(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)) && lootUnlockCheck)
                 {
                     RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)).First();
 
                     // REminder: add these to a config, hard coded string comparisons. 
-                    if ((lootAlias.Mobname == "Skilling" || lootAlias.Mobname == "Any Boss") && (lootAlias.Lootalias == taskProgress.LevelTask.Name))
+                    if (string.Equals(taskProgress.LevelTask.Name, lootAlias.Lootalias, StringComparison.OrdinalIgnoreCase))
                     {
-                        taskProgress.Progress += loot.Quantity;
-
-                        if (taskProgress.Progress > taskProgress.LevelTask.Goal)
-                        {
-                            taskProgress.Progress = taskProgress.LevelTask.Goal;
-                            taskProgress.IsComplete = true;
-                        }
-                    }
-
-                    if ((lootAlias.Mobname == loot.Mobname) && (lootAlias.Lootalias == taskProgress.LevelTask.Name))
-                    {
-                        taskProgress.Progress += loot.Quantity;
+                        taskProgress.Progress += userMultipliedLoot.Quantity;
 
                         if (taskProgress.Progress > taskProgress.LevelTask.Goal)
                         {
@@ -150,7 +162,134 @@ namespace MiRs.Interactors.RuneHunter.Game
 
                 await _levelTaskProgress.UpdateAsync(taskProgress);
             }
+        }
+
+        private async Task<bool> LootUnlockCheck(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias)
+        {
+            RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)).First();
+
+            string[] specialEncounters = { "Lunar Chest",
+                                        "Fortis Colosseum",
+                                        "Tombs of Amascut",
+                                        "Chambers of Xeric",
+                                        "Theatre of Blood" };
+
+            string? matchedEncounter = specialEncounters
+                .FirstOrDefault(e => string.Equals(e, lootAlias.Mobname, StringComparison.OrdinalIgnoreCase));
+
+            if (matchedEncounter is not null)
+            {
+                IEnumerable<GuildTeamCategoryLevelProgress> specialEncountersActive = _categoryProgressData
+                        .Where(c => string.Equals(c.Category.name, "Armoury", StringComparison.OrdinalIgnoreCase))
+                        .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive);
+
+                if (!specialEncountersActive.Any())
+                {
+                    return false;
+                }
+
+                if (specialEncountersActive.Any(l => string.Equals(l.Level.Unlock, matchedEncounter, StringComparison.OrdinalIgnoreCase)))
+                {
+                    return true;
+                }
+            }
+
+            if (loot.MobLevel <= 200)
+            {
+                return true;
+            }
+
+            IEnumerable<GuildTeamCategoryLevelProgress> MonsterLevelsActive = _categoryProgressData
+            .Where(c => string.Equals(c.Category.name, "Training Area", StringComparison.OrdinalIgnoreCase))
+            .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive);
+
+            if (MonsterLevelsActive.Any())
+            {
+                GuildTeamCategoryLevelProgress highestLevelActive = MonsterLevelsActive
+                 .OrderByDescending(lp => lp.Level.Levelnumber)
+                 .FirstOrDefault();
+
+                if (loot.MobLevel <= int.Parse(highestLevelActive.Level.Unlock))
+                {
+                    return true;
+                }
+            }
+            return false;
 
         }
+
+        private async Task<RHUserRawLoot> CalculateLootMultiplier(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias)
+        {
+            RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+
+            if (lootAlias is null)
+            {
+                return loot;
+            }
+
+            if (lootAlias.Mobname != "Skilling")
+            {
+                return loot;
+            }
+
+            LootAliasSkillingCategories category = EnumHelper.ParseOrDefault<LootAliasSkillingCategories>(lootAlias.Lootalias);
+
+            RHUserRawLoot updatedUserLoot = new RHUserRawLoot
+            {
+                Quantity = (int)Math.Ceiling((double)loot.Quantity * (await GetCategoryMultiplier(category))),
+            };
+
+            return updatedUserLoot;
+        }
+
+        private async Task<double> GetCategoryMultiplier(LootAliasSkillingCategories category)
+        {
+            if (!_categoryProgressData.Any())
+                return 1.0;
+
+            Dictionary<LootAliasSkillingCategories, string> categoryMap = new Dictionary<LootAliasSkillingCategories, string>
+            {
+                [LootAliasSkillingCategories.Gems] = "Crafting Guild",
+                [LootAliasSkillingCategories.Herbs] = "Herbalist Guild",
+                [LootAliasSkillingCategories.Seeds] = "Farming Guild",
+                [LootAliasSkillingCategories.Ores] = "Mining Guild",
+                [LootAliasSkillingCategories.Runes] = "Runecraft Guild",
+                [LootAliasSkillingCategories.Logs] = "Woodcutting Guild"
+            };
+
+            if (!categoryMap.TryGetValue(category, out string guildName))
+                return 1.0;
+
+            return RetrieveMultiplierValue(_categoryProgressData, guildName);
+        }
+
+        private double RetrieveMultiplierValue(IEnumerable<GuildTeamCategoryProgress> categoriesProgress, string catName)
+        {
+            IEnumerable<GuildTeamCategoryLevelProgress> levelsProgressActive = categoriesProgress
+                                    .Where(c => string.Equals(c.Category.name, catName, StringComparison.OrdinalIgnoreCase))
+                                    .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive); ;
+
+            if (!levelsProgressActive.Any())
+            {
+                return 1.0;
+            }
+
+            GuildTeamCategoryLevelProgress highestLevelActive = levelsProgressActive
+                 .OrderByDescending(lp => lp.Level.Levelnumber)
+                 .FirstOrDefault();
+
+            if (highestLevelActive == null)
+            {
+                return 1.0;
+            }
+
+            if (!double.TryParse(highestLevelActive.Level.Unlock, out double multiplier))
+            {
+                Logger.LogError((int)LoggingEvents.GameProcessLoot, "Multiplier could not be concerted to double: levelId: {levelid}", highestLevelActive.LevelId);
+            }
+
+            return multiplier;
+        }
+
     }
 }
