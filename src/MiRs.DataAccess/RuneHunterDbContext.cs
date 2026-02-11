@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MiRs.Domain.Entities.Discord;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Entities.RuneHunterData;
 
@@ -33,6 +34,10 @@ namespace MiRs.DataAccess
         public DbSet<RHUserRawLoot> UserRawLoot { get; set; }
 
         public DbSet<RunescapeLootAlias> RunescapeLootAlias { get; set; }
+
+        public DbSet<GuildCompletedEventArchive> GuildCompletedEventArchive { get; set; }
+
+        public DbSet<GuildPermissions> GuildPermissions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -168,6 +173,18 @@ namespace MiRs.DataAccess
             /// Configures the primary key for RunescapeLootAlias.
             /// </summary>
             modelBuilder.Entity<RunescapeLootAlias>()
+                .HasKey(u => u.Id);
+
+            /// <summary>
+            /// Configures the primary key for GuildCompletedEventArchive.
+            /// </summary>
+            modelBuilder.Entity<GuildCompletedEventArchive>()
+                .HasKey(u => u.Id);
+
+            /// <summary>
+            /// Configures the primary key for GuildPermissions.
+            /// </summary>
+            modelBuilder.Entity<GuildPermissions>()
                 .HasKey(u => u.Id);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using MiRs.API.ApiDTOs;
+using MiRs.Domain.DTOs.RuneHunter;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Exceptions;
 using MiRs.Mediator.Models.RuneHunter.Game;
@@ -64,8 +65,79 @@ namespace MiRs.API.Controllers.RuneHunter
             try
             {
                 return Ok(await Mediator.Send(new InitaliseTeamProgressRequest { TeamId = teamid, EventId = eventid }));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
 
-                throw new NotImplementedException();
+        /// <summary>
+        /// Get Game Metadata
+        /// </summary>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return user.</remarks>
+        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
+        [HttpGet]
+        [Route("metadata")]
+        public async Task<IActionResult> GetGameMetadata()
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new GetGameMetadataRequest()));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Update Game Metadata
+        /// </summary>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return user.</remarks>
+        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
+        [HttpPost]
+        [Route("metadata")]
+        public async Task<IActionResult> UpdateGameMetadata([FromBody] IEnumerable<CategoryDto> cat)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new UpdateGameMetadataRequest { Categories = cat }));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Register User Loot
+        /// </summary>
+        /// <param name="username">Test.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return user.</remarks>
+        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
+        [HttpGet("progress")]
+        public async Task<IActionResult> GetEventTeamProgressForUser(ulong userId, ulong guildId)
+        {
+            try
+            {
+
+                return Ok(await Mediator.Send(new GetEventTeamProgressForUserRequest { UserId = userId, GuildId = guildId }));
 
             }
             catch (BadRequestException ex)

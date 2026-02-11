@@ -66,6 +66,8 @@ namespace MiRs.API
 
             builder.Services.AddSingleton<IJsonSeraliserDefaultOptions, JsonSeraliserDefaultOptions>();
 
+            builder.Services.AddScoped<GameMapper>();
+
             builder.Services.AddScoped<UserMapper>();
 
             builder.Services.AddScoped<IRuneClient, WOMClient>();

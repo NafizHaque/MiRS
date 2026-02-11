@@ -47,7 +47,7 @@ namespace MiRs.Interactors.RuneHunter.Admin.Event
         /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<AddGuildTeamToEventResponse> HandleRequest(AddGuildTeamToEventRequest request, AddGuildTeamToEventResponse result, CancellationToken cancellationToken)
         {
-            Logger.LogInformation((int)LoggingEvents.CreateGuildTeam, "Linking Team to Event. Team: {teamname}, Event Id: {eventId} ", request.NewTeamToBeCreated.TeamName, request.EventId);
+            Logger.LogInformation((int)LoggingEvents.CreateGuildTeam, "Linking Team to Event. Team: {teamname}, Event Id: {eventId}", request.NewTeamToBeCreated.TeamName, request.EventId);
 
             GuildTeam guildTeamToEvent;
 

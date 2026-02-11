@@ -114,8 +114,7 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <summary>
         /// Add Guild Team to Event
         /// </summary>
-        /// <param name="teamid">the event team Id.</param>
-        /// <param name="eventid">the event id.</param>
+        /// <param name="addNewTeamToEvent">the Team to be added to an Event.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost]

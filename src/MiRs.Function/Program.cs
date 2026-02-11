@@ -23,6 +23,8 @@ builder.Services.AddSingleton<IJsonSeraliserDefaultOptions, JsonSeraliserDefault
 
 builder.Services.AddScoped<UserMapper>();
 
+builder.Services.AddScoped<GameMapper>();
+
 builder.Services.AddScoped<IRuneClient, WOMClient>();
 
 builder.Services.AddMediatRContracts();

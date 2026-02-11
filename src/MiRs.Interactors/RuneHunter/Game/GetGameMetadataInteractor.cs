@@ -1,0 +1,75 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using MiRs.Domain.Configurations;
+using MiRs.Domain.DTOs.RuneHunter;
+using MiRs.Domain.Entities.RuneHunterData;
+using MiRs.Domain.Logging;
+using MiRs.Mediator;
+using MiRs.Mediator.Models.RuneHunter.Game;
+using MiRS.Gateway.DataAccess;
+
+namespace MiRs.Interactors.RuneHunter.Game
+{
+    public class GetGameMetadataInteractor : RequestHandler<GetGameMetadataRequest, GetGameMetadataResponse>
+    {
+        private readonly IGenericSQLRepository<Category> _category;
+
+        private readonly AppSettings _appSettings;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetGameMetadataInteractor"/> class.
+        /// </summary>
+        /// <param name="logger">The logging interface.</param>
+        /// <param name="guildTeamRepository">The repo interface to SQL storage.</param>
+        /// <param name="appSettings">The app settings.</param>
+        public GetGameMetadataInteractor(
+            ILogger<ProcessUserLootInteractor> logger,
+            IGenericSQLRepository<Category> category,
+            IOptions<AppSettings> appSettings)
+            : base(logger)
+        {
+            _category = category;
+            _appSettings = appSettings.Value;
+        }
+
+        /// <summary>
+        /// Handles the request to update game state.
+        /// </summary>
+        /// <param name="request">The request to create Guild Team.</param>
+        /// <param name="result">User object that was created.</param>
+        /// <param name="cancellationToken">The cancellation token for the request.</param>
+        /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
+        protected override async Task<GetGameMetadataResponse> HandleRequest(GetGameMetadataRequest request, GetGameMetadataResponse result, CancellationToken cancellationToken)
+        {
+            Logger.LogInformation((int)LoggingEvents.GameGetMetadata, "Retrieving current game Categories, Levels and Tasks.");
+
+            IEnumerable<Category> categories = (await _category.GetAllEntitiesAsync(c => true, default, c => c.Include(l => l.Level).ThenInclude(t => t.LevelTasks))).AsEnumerable();
+
+            result.Categories = categories.Select(c => new CategoryDto
+            {
+                Id = c.Id,
+                Name = c.name,
+                Levels = c.Level.Select(l => new LevelDto
+                {
+                    Id = l.Id,
+                    Levelnumber = l.Levelnumber,
+                    Unlock = l.Unlock,
+                    UnlockDescription = l.UnlockDescription,
+                    CategoryId = l.CategoryId,
+                    LevelTasks = l.LevelTasks.Select(t => new LevelTaskDto
+                    {
+                        Id = t.Id,
+                        Name = t.Name,
+                        Goal = t.Goal,
+                        LevelId = t.LevelId,
+                        Levelnumber = t.Levelnumber,
+
+                    }).ToList()
+                }).ToList()
+            }).ToList();
+
+            return result;
+        }
+    }
+}
