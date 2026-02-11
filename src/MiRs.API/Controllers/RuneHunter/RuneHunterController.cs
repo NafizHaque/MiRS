@@ -123,5 +123,31 @@ namespace MiRs.API.Controllers.RuneHunter
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        /// <summary>
+        /// Register User Loot
+        /// </summary>
+        /// <param name="username">Test.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return user.</remarks>
+        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
+        [HttpGet("progress")]
+        public async Task<IActionResult> GetEventTeamProgressForUser(ulong userId, ulong guildId)
+        {
+            try
+            {
+
+                return Ok(await Mediator.Send(new GetEventTeamProgressForUserRequest { UserId = userId, GuildId = guildId }));
+
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }

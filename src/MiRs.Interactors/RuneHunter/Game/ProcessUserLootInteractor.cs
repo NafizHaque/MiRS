@@ -136,6 +136,7 @@ namespace MiRs.Interactors.RuneHunter.Game
                 {
 
                     taskProgress.Progress += userMultipliedLoot.Quantity;
+                    taskProgress.LastUpdated = DateTimeOffset.UtcNow;
 
                     if (taskProgress.Progress > taskProgress.LevelTask.Goal)
                     {
@@ -151,6 +152,7 @@ namespace MiRs.Interactors.RuneHunter.Game
                     if (string.Equals(taskProgress.LevelTask.Name, lootAlias.Lootalias, StringComparison.OrdinalIgnoreCase))
                     {
                         taskProgress.Progress += userMultipliedLoot.Quantity;
+                        taskProgress.LastUpdated = DateTimeOffset.UtcNow;
 
                         if (taskProgress.Progress > taskProgress.LevelTask.Goal)
                         {

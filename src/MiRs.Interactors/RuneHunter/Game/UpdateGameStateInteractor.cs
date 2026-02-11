@@ -58,6 +58,7 @@ namespace MiRs.Interactors.RuneHunter.Game
                 {
                     level.IsComplete = true;
                     level.IsActive = true;
+                    level.LastUpdated = DateTimeOffset.UtcNow;
                     await _levelProgress.UpdateAsync(level);
                 }
             }

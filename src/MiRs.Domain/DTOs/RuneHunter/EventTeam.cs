@@ -10,5 +10,7 @@
 
         public GameTeam? Team { get; set; }
 
+        public IEnumerable<CategoryProgress>? CategoryProgresses { get; set; }
+
     }
 }
