@@ -29,7 +29,7 @@ namespace MiRs.Domain.Mappers
             dto.Category = new CategoryDto
             {
                 Id = tcp.Category.Id,
-                Name = tcp.Category.name,
+                Name = tcp.Category.Name,
             };
 
             dto.CategoryLevelProcess = tcp.CategoryLevelProcess.Select(clp =>

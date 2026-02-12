@@ -75,9 +75,9 @@ namespace MiRs.Interactors.RuneHunter.Game
                 throw new BadRequestException("Progress already initalised!");
             }
 
-            IEnumerable<Category> categories = await _category.GetAllEntitiesAsync();
+            IList<Category> categories = (await _category.Query(c => true)).ToList();
 
-            foreach (Category category in categories.ToList())
+            foreach (Category category in categories)
             {
                 await _categoryProgress.AddAsync(
                     new GuildTeamCategoryProgress
@@ -88,9 +88,9 @@ namespace MiRs.Interactors.RuneHunter.Game
                     });
             }
 
-            IEnumerable<GuildTeamCategoryProgress> categoriesProgress = await _categoryProgress.GetAllEntitiesAsync();
+            IList<GuildTeamCategoryProgress> categoriesProgress = (await _categoryProgress.Query(c => c.GuildEventTeamId == guildEventTeamId)).ToList();
 
-            IEnumerable<Level> levels = await _level.GetAllEntitiesAsync();
+            IList<Level> levels = (await _level.Query(l => true)).ToList();
 
             foreach (GuildTeamCategoryProgress categoryProgress in categoriesProgress.ToList())
             {
@@ -106,16 +106,16 @@ namespace MiRs.Interactors.RuneHunter.Game
                             LastUpdated = DateTimeOffset.UtcNow,
                             LevelId = level.Id,
                             CategoryProgressId = categoryProgress.Id,
-
+                            GuildEventTeamId = guildEventTeamId,
                         });
                 }
             }
 
-            IEnumerable<GuildTeamCategoryLevelProgress> levelsProgress = await _levelProgress.GetAllEntitiesAsync();
+            IList<GuildTeamCategoryLevelProgress> levelsProgress = (await _levelProgress.Query(lp => lp.GuildEventTeamId == guildEventTeamId)).ToList();
 
-            IEnumerable<LevelTask> levelTasks = await _levelTask.GetAllEntitiesAsync();
+            IList<LevelTask> levelTasks = (await _levelTask.Query(lt => true)).ToList();
 
-            foreach (GuildTeamCategoryLevelProgress levelProgress in levelsProgress.ToList())
+            foreach (GuildTeamCategoryLevelProgress levelProgress in levelsProgress)
             {
                 IList<LevelTask> levelTasksForLevel = levelTasks.Where(l => l.LevelId == levelProgress.LevelId).ToList();
 

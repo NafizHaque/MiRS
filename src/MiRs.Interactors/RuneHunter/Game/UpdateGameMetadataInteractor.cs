@@ -74,7 +74,7 @@ namespace MiRs.Interactors.RuneHunter.Game
             {
                 categoryInProcess = await _category.AddAsync(new Category
                 {
-                    name = catUpsert.Name,
+                    Name = catUpsert.Name,
                 });
             }
             else
@@ -85,7 +85,7 @@ namespace MiRs.Interactors.RuneHunter.Game
                 if (categoryToBeUpdated == null)
                     throw new InvalidOperationException($"Category {catUpsert.Id} not found");
 
-                categoryToBeUpdated.name = catUpsert.Name;
+                categoryToBeUpdated.Name = catUpsert.Name;
 
                 categoryInProcess = categoryToBeUpdated;
             }

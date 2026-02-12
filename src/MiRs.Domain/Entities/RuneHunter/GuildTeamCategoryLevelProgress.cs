@@ -18,6 +18,8 @@ namespace MiRs.Domain.Entities.RuneHunter
 
         public int CategoryProgressId { get; set; }
 
+        public int GuildEventTeamId { get; set; }
+
         public GuildTeamCategoryProgress? CategoryProgress { get; set; }
 
         public ICollection<GuildTeamLevelTaskProgress>? LevelTaskProgress { get; set; }

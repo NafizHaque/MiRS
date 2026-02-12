@@ -218,28 +218,5 @@ namespace MiRs.API.Controllers.RuneHunter
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
-
-        /// <summary>
-        /// Test Api Connection
-        /// </summary>
-        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpPost("ping")]
-        public async Task<IActionResult> PingConnection()
-        {
-            try
-            {
-                return Ok(true);
-            }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(ex.CustomErrorMessage);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
     }
 }

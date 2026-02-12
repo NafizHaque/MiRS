@@ -7,8 +7,10 @@ using MiRs.Domain.Mappers;
 using MiRs.Interactors;
 using MiRs.Interfaces.Helpers;
 using MiRs.RunescapeClient;
+using MiRs.DiscordClient;
 using MiRs.Utils.Helpers;
 using MiRS.Gateway.DataAccess;
+using MiRS.Gateway.DiscordBotClient;
 using MiRS.Gateway.RunescapeClient;
 using System.Reflection;
 
@@ -71,6 +73,8 @@ namespace MiRs.API
             builder.Services.AddScoped<UserMapper>();
 
             builder.Services.AddScoped<IRuneClient, WOMClient>();
+
+            builder.Services.AddScoped<IDiscordBotClient, DiscordBotClient>();
 
             builder.Services.AddScoped(typeof(IGenericSQLRepository<>), typeof(GenericSQLRepository<>));
 

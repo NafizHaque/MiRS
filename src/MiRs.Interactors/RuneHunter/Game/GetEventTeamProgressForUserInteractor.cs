@@ -75,7 +75,7 @@ namespace MiRs.Interactors.RuneHunter.Game
                 throw new BadRequestException("Cannot find any current events or teams in guild");
             }
 
-            IQueryable<RHUserToTeam> userTeams = await _userToTeam.Query(ge => ge.UserId == request.UserId);
+            IList<RHUserToTeam> userTeams = (await _userToTeam.Query(ge => ge.UserId == request.UserId)).ToList();
 
             foreach (GuildEvent activeGuildEvent in activeGuildEvents)
             {
