@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiRs.Tests", "MiRs.Tests\Mi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiRs.Function", "MiRs.Function\MiRs.Function.csproj", "{74FB4388-2F9B-4A12-A2D7-1D94AAEEE433}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiRs.DiscordBotClient", "MiRs.DiscordBotClient\MiRs.DiscordBotClient.csproj", "{47DFE3B6-1AAB-4943-8C68-F0710BD9F736}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +90,10 @@ Global
 		{74FB4388-2F9B-4A12-A2D7-1D94AAEEE433}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74FB4388-2F9B-4A12-A2D7-1D94AAEEE433}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74FB4388-2F9B-4A12-A2D7-1D94AAEEE433}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47DFE3B6-1AAB-4943-8C68-F0710BD9F736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47DFE3B6-1AAB-4943-8C68-F0710BD9F736}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47DFE3B6-1AAB-4943-8C68-F0710BD9F736}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47DFE3B6-1AAB-4943-8C68-F0710BD9F736}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,6 +109,7 @@ Global
 		{125A60A7-87B1-4646-A2F5-7994232CE200} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{307D7B75-E0DC-436A-AE8C-113AFAD6D2A2} = {FF5EF375-5433-4189-9183-F27F0C884C3E}
 		{A6CB100D-489E-4977-BC15-BA6C72BF8C98} = {437617D5-7CDC-46B8-9C8E-7B967936FA5C}
+		{47DFE3B6-1AAB-4943-8C68-F0710BD9F736} = {FF5EF375-5433-4189-9183-F27F0C884C3E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F50E342D-08D4-4CF1-B648-BD73F1E6783B}

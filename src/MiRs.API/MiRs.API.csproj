@@ -27,6 +27,7 @@
 
   <ItemGroup>
 	<ProjectReference Include="..\MiRs.DataAccess\MiRs.DataAccess.csproj" />
+	<ProjectReference Include="..\MiRs.DiscordBotClient\MiRs.DiscordBotClient.csproj" />
 	<ProjectReference Include="..\MiRS.Gateway\MiRS.Gateway.csproj" />
 	<ProjectReference Include="..\MiRs.Interactors\MiRs.Interactors.csproj" />
 	<ProjectReference Include="..\MiRs.Mediator\MiRs.Mediator.csproj" />

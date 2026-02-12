@@ -100,7 +100,7 @@ namespace MiRs.Interactors.RuneHunter.Admin.Event
                 {
                     GuildId = request.NewTeamToBeCreated.GuildId,
                     TeamName = request.NewTeamToBeCreated.TeamName,
-                    CreatedDate = DateTimeOffset.Now,
+                    CreatedDate = DateTimeOffset.UtcNow,
                 });
 
                 IList<RHUserToTeam> NewPlayersToAdd = newTeamUserIds

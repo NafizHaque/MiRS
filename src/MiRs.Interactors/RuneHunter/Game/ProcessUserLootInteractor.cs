@@ -64,11 +64,12 @@ namespace MiRs.Interactors.RuneHunter.Game
         {
             Logger.LogInformation((int)LoggingEvents.GameProcessLoot, "Proocessing User Loot.");
 
-            IEnumerable<RHUserRawLoot> unprocessedUserLoot = await _rhUserRawLoot.Query(l => l.Processed == false);
+            IList<RHUserRawLoot> unprocessedUserLoot = (await _rhUserRawLoot.Query(l => l.Processed == false)).ToList();
 
-            IEnumerable<RunescapeLootAlias> runescapeLootAlias = await _rhLootAlias.GetAllEntitiesAsync();
+            IList<RunescapeLootAlias> runescapeLootAlias = (await _rhLootAlias.GetAllEntitiesAsync()).ToList();
 
             IEnumerable<IGrouping<ulong, RHUserRawLoot>> groupedLoot = unprocessedUserLoot.GroupBy(l => l.UserId);
+
             try
             {
                 foreach (IGrouping<ulong, RHUserRawLoot> group in groupedLoot)
@@ -170,6 +171,7 @@ namespace MiRs.Interactors.RuneHunter.Game
         {
             RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)).First();
 
+            // TODO: Yeah this needs moving too
             string[] specialEncounters = { "Lunar Chest",
                                         "Fortis Colosseum",
                                         "Tombs of Amascut",
@@ -182,7 +184,7 @@ namespace MiRs.Interactors.RuneHunter.Game
             if (matchedEncounter is not null)
             {
                 IEnumerable<GuildTeamCategoryLevelProgress> specialEncountersActive = _categoryProgressData
-                        .Where(c => string.Equals(c.Category.name, "Armoury", StringComparison.OrdinalIgnoreCase))
+                        .Where(c => string.Equals(c.Category.Name, "Armoury", StringComparison.OrdinalIgnoreCase))
                         .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive);
 
                 if (!specialEncountersActive.Any())
@@ -202,7 +204,7 @@ namespace MiRs.Interactors.RuneHunter.Game
             }
 
             IEnumerable<GuildTeamCategoryLevelProgress> MonsterLevelsActive = _categoryProgressData
-            .Where(c => string.Equals(c.Category.name, "Training Area", StringComparison.OrdinalIgnoreCase))
+            .Where(c => string.Equals(c.Category.Name, "Training Area", StringComparison.OrdinalIgnoreCase))
             .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive);
 
             if (MonsterLevelsActive.Any())
@@ -251,6 +253,7 @@ namespace MiRs.Interactors.RuneHunter.Game
 
             Dictionary<LootAliasSkillingCategories, string> categoryMap = new Dictionary<LootAliasSkillingCategories, string>
             {
+                // TODO: Sort these hard coded categories out
                 [LootAliasSkillingCategories.Gems] = "Crafting Guild",
                 [LootAliasSkillingCategories.Herbs] = "Herbalist Guild",
                 [LootAliasSkillingCategories.Seeds] = "Farming Guild",
@@ -268,8 +271,8 @@ namespace MiRs.Interactors.RuneHunter.Game
         private double RetrieveMultiplierValue(IEnumerable<GuildTeamCategoryProgress> categoriesProgress, string catName)
         {
             IEnumerable<GuildTeamCategoryLevelProgress> levelsProgressActive = categoriesProgress
-                                    .Where(c => string.Equals(c.Category.name, catName, StringComparison.OrdinalIgnoreCase))
-                                    .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive); ;
+                                    .Where(c => string.Equals(c.Category.Name, catName, StringComparison.OrdinalIgnoreCase))
+                                    .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive);
 
             if (!levelsProgressActive.Any())
             {

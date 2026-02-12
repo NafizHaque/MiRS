@@ -30,35 +30,20 @@ namespace MiRs.Function
             _mediator = mediator;
         }
 
-        //[Function("ProcessUserLoot")]
-        //public async Task Run([TimerTrigger("*/10 * * * * *")] TimerInfo myTimer)
-        //{
-        //    _logger.LogInformation("C# Timer trigger function executed at: {executionTime}", DateTimeOffset.UtcNow);
-
-        //    try
-        //    {
-        //        await _mediator.Send(new ProcessUserLootRequest());
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //    }
-
-        //    if (myTimer.ScheduleStatus is not null)
-        //    {
-        //        _logger.LogInformation("Next timer schedule at: {nextSchedule}", myTimer.ScheduleStatus.Next);
-        //    }
-        //}
-
-        [Function("UpdateGameStateTest")]
-        public async Task Run([TimerTrigger("*/10 * * * * *")] TimerInfo myTimer)
+        [Function("UpdateGameState")]
+        public async Task Run([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer)
         {
-            _logger.LogInformation("C# Timer trigger function executed at: {executionTime}", DateTimeOffset.UtcNow);
+            _logger.LogInformation("UpdateGameState function executed at: {executionTime}", DateTimeOffset.UtcNow);
 
             try
             {
                 await _mediator.Send(new ProcessUserLootRequest());
 
                 await _mediator.Send(new UpdateGameStateRequest());
+
+                await _mediator.Send(new UpdateEventWinnersRequest());
+
+                _logger.LogInformation("UpdateGameState function completed at: {executionTime}", DateTimeOffset.UtcNow);
             }
             catch (Exception ex)
             {

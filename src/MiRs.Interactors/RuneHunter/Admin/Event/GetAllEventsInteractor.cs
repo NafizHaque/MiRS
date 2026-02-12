@@ -46,11 +46,11 @@ namespace MiRs.Interactors.RuneHunter.Admin.Event
         /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<GetAllEventsResponse> HandleRequest(GetAllEventsRequest request, GetAllEventsResponse result, CancellationToken cancellationToken)
         {
-            IEnumerable<GuildEvent> gameEvents = (await _guildEventRepository.Query(g => true)).ToList();
+            IList<GuildEvent> gameEvents = (await _guildEventRepository.Query(g => true)).ToList();
 
             foreach (GuildEvent gameEvent in gameEvents)
             {
-                List<GuildEventTeam> teamsfromEvent = (await _guildTeamEventRepository.GetAllEntitiesAsync(e => e.EventId == gameEvent.Id, default, eg => eg.Include(egt => egt.Team).ThenInclude(utt => utt.UsersInTeam).ThenInclude(u => u.User))).ToList();
+                IList<GuildEventTeam> teamsfromEvent = (await _guildTeamEventRepository.GetAllEntitiesAsync(e => e.EventId == gameEvent.Id, default, eg => eg.Include(egt => egt.Team).ThenInclude(utt => utt.UsersInTeam).ThenInclude(u => u.User))).ToList();
 
                 int playerCount = teamsfromEvent
                     .Where(tfe => tfe.Team != null)
