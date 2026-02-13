@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MiRs.DataAccess.Migrations
 {
     [DbContext(typeof(RuneHunterDbContext))]
-    [Migration("20260212185156_LevelProgressUpdate")]
-    partial class LevelProgressUpdate
+    [Migration("20260213212608_DiscPermAddTeam")]
+    partial class DiscPermAddTeam
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,16 @@ namespace MiRs.DataAccess.Migrations
 
                     b.Property<decimal>("GuildId")
                         .HasColumnType("decimal(20,0)");
+
+                    b.Property<decimal>("MessageId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<int?>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

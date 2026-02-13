@@ -89,6 +89,12 @@ namespace MiRs.Interactors.RuneHunter.Game
 
                         await _rhUserRawLoot.UpdateAsync(loot);
                     }
+
+                    foreach (UserEvents userEvent in currentUserEvents.UserCurrentEvents)
+                    {
+                        await _mediator.Send(new GetRecentTeamLootRequest { UserId = group.Key, GuildId = userEvent.GuildId });
+                    }
+
                 }
             }
             catch (Exception ex)

@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MiRs.DataAccess;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Logging;
 using MiRs.Mediator;
+using MiRs.Mediator.Models.Discord;
 using MiRs.Mediator.Models.RuneHunter.Game;
 using MiRS.Gateway.DataAccess;
 using MiRS.Gateway.DiscordBotClient;
@@ -16,7 +17,7 @@ namespace MiRs.Interactors.RuneHunter.Game
     {
         private readonly IGenericSQLRepository<GuildEvent> _guildEventRepository;
         private readonly IGenericSQLRepository<GuildCompletedEventArchive> _eventArchiveRepository;
-        private readonly RuneHunterDbContext _context;
+        private readonly ISender _mediator;
 
         private readonly AppSettings _appSettings;
         private readonly IDiscordBotClient _discordBotClient;
@@ -31,15 +32,15 @@ namespace MiRs.Interactors.RuneHunter.Game
             ILogger<ProcessUserLootInteractor> logger,
             IGenericSQLRepository<GuildEvent> guildEventRepository,
             IGenericSQLRepository<GuildCompletedEventArchive> eventArchiveRepository,
-            RuneHunterDbContext context,
             IDiscordBotClient discordBotClient,
+            ISender mediator,
             IOptions<AppSettings> appSettings)
             : base(logger)
         {
             _guildEventRepository = guildEventRepository;
             _eventArchiveRepository = eventArchiveRepository;
-            _context = context;
             _discordBotClient = discordBotClient;
+            _mediator = mediator;
             _appSettings = appSettings.Value;
         }
 
@@ -67,18 +68,22 @@ namespace MiRs.Interactors.RuneHunter.Game
 
             foreach (GuildEvent ge in expiredGameEvents)
             {
-                GuildTeam t = await GetWinningEventTeamForExpired(ge);
+                GuildPermissionsResponse perms = await _mediator.Send(new GuildPermissionsRequest { GuildId = ge.GuildId, permissionType = Domain.Entities.Discord.Enums.PermissionType.Admin });
 
-                await _discordBotClient.SendEventWinningTeam(t);
+                GuildTeam winningTeam = await GetWinningEventTeamForExpired(ge);
+
+                await _discordBotClient.SendEventWinningTeam(winningTeam, perms.GuildPermissions);
             }
 
             foreach (GuildEvent ae in allActiveEvents)
             {
+                GuildPermissionsResponse perms = await _mediator.Send(new GuildPermissionsRequest { GuildId = ae.GuildId });
+
                 GuildTeam? winningTeam = await GetWinningEventTeamForActive(ae);
 
                 if (winningTeam != null)
                 {
-                    await _discordBotClient.SendEventWinningTeam(winningTeam);
+                    await _discordBotClient.SendEventWinningTeam(winningTeam, perms.GuildPermissions);
                 }
             }
 

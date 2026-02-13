@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MiRs.DataAccess.Migrations
 {
     [DbContext(typeof(RuneHunterDbContext))]
-    [Migration("20251104180612_guildeventteam2")]
-    partial class guildeventteam2
+    [Migration("20260213212412_CreateMig")]
+    partial class CreateMig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,68 @@ namespace MiRs.DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("MiRs.Domain.Entities.Discord.GuildPermissions", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("ChannelId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<decimal>("GuildId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<decimal>("MessageId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GuildPermissions");
+                });
+
+            modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildCompletedEventArchive", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("EventComplete")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset>("EventEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("EventStart")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("EventTeamWinner")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Eventname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("GuildId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GuildCompletedEventArchive");
+                });
 
             modelBuilder.Entity("MiRs.Domain.Entities.RuneHunter.GuildEvent", b =>
                 {
@@ -42,6 +104,10 @@ namespace MiRs.DataAccess.Migrations
                     b.Property<DateTimeOffset>("EventEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("EventPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("EventStart")
                         .HasColumnType("datetimeoffset");
 
@@ -51,6 +117,10 @@ namespace MiRs.DataAccess.Migrations
 
                     b.Property<decimal>("GuildId")
                         .HasColumnType("decimal(20,0)");
+
+                    b.Property<string>("ParticipantPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -112,6 +182,9 @@ namespace MiRs.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CategoryProgressId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GuildEventTeamId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
@@ -243,6 +316,9 @@ namespace MiRs.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("MobLevel")
+                        .HasColumnType("int");
+
                     b.Property<string>("Mobname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -296,7 +372,11 @@ namespace MiRs.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("name")
+                    b.Property<string>("Domain")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -319,8 +399,9 @@ namespace MiRs.DataAccess.Migrations
                     b.Property<int>("Levelnumber")
                         .HasColumnType("int");
 
-                    b.Property<int>("Unlock")
-                        .HasColumnType("int");
+                    b.Property<string>("Unlock")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UnlockDescription")
                         .IsRequired()

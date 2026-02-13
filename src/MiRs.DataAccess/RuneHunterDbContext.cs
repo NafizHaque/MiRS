@@ -186,6 +186,14 @@ namespace MiRs.DataAccess
             /// </summary>
             modelBuilder.Entity<GuildPermissions>()
                 .HasKey(u => u.Id);
+
+            /// <summary>
+            /// Configures the enum as string.
+            /// </summary>
+            modelBuilder.Entity<GuildPermissions>()
+                .Property(e => e.Type)
+                .HasConversion<string>();
+
         }
     }
 }

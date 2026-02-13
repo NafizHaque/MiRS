@@ -5,21 +5,18 @@
 namespace MiRs.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class eventpasswords : Migration
+    public partial class DiscPermResponseToken : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "EventPassword",
-                table: "GuildEvents",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
+            migrationBuilder.DropColumn(
+                name: "MessageId",
+                table: "GuildPermissions");
 
             migrationBuilder.AddColumn<string>(
-                name: "ParticipantPassword",
-                table: "GuildEvents",
+                name: "ResponseToken",
+                table: "GuildPermissions",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
@@ -29,12 +26,14 @@ namespace MiRs.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "EventPassword",
-                table: "GuildEvents");
+                name: "ResponseToken",
+                table: "GuildPermissions");
 
-            migrationBuilder.DropColumn(
-                name: "ParticipantPassword",
-                table: "GuildEvents");
+            migrationBuilder.AddColumn<decimal>(
+                name: "MessageId",
+                table: "GuildPermissions",
+                type: "decimal(20,0)",
+                nullable: true);
         }
     }
 }
