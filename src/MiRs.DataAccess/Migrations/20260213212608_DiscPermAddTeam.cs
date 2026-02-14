@@ -5,25 +5,24 @@
 namespace MiRs.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class LevelProgressUpdate : Migration
+    public partial class DiscPermAddTeam : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "GuildEventTeamId",
-                table: "GuildTeamCategoryLevelProgress",
+                name: "TeamId",
+                table: "GuildPermissions",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "GuildEventTeamId",
-                table: "GuildTeamCategoryLevelProgress");
+                name: "TeamId",
+                table: "GuildPermissions");
         }
     }
 }

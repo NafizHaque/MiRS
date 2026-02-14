@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MiRs.Domain.Entities.RuneHunter;
 
 namespace MiRs.Mediator.Models.RuneHunter.Game
 {
-    internal class GetRecentTeamLootResponse
+    public class GetRecentTeamLootResponse
     {
+        public string TeamName { get; set; } = string.Empty;
+
+        public IEnumerable<RHUserRawLoot> Loots { get; set; }
     }
 }

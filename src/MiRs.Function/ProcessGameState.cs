@@ -3,6 +3,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
+using MiRs.Mediator.Models.Discord;
 using MiRs.Mediator.Models.RuneHunter.Game;
 
 namespace MiRs.Function
@@ -12,7 +13,6 @@ namespace MiRs.Function
         private readonly AppSettings _appSettings;
         private readonly ILogger<ProcessGameState> _logger;
         private readonly ISender _mediator;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessGameState"/> class.
         /// </summary>
@@ -31,7 +31,7 @@ namespace MiRs.Function
         }
 
         [Function("UpdateGameState")]
-        public async Task Run([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer)
+        public async Task RunAsync([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer)
         {
             _logger.LogInformation("UpdateGameState function executed at: {executionTime}", DateTimeOffset.UtcNow);
 
@@ -43,7 +43,7 @@ namespace MiRs.Function
 
                 await _mediator.Send(new UpdateEventWinnersRequest());
 
-                _logger.LogInformation("UpdateGameState function completed at: {executionTime}", DateTimeOffset.UtcNow);
+                await _mediator.Send(new LatestTeamLootAlertRequest());
             }
             catch (Exception ex)
             {
@@ -51,8 +51,10 @@ namespace MiRs.Function
 
             if (myTimer.ScheduleStatus is not null)
             {
+                _logger.LogInformation("UpdateGameState function completed at: {executionTime}", DateTimeOffset.UtcNow);
                 _logger.LogInformation("Next timer schedule at: {nextSchedule}", myTimer.ScheduleStatus.Next);
             }
         }
+
     }
 }

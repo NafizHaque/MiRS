@@ -13,6 +13,7 @@ namespace MiRs.Interactors.Discord
     public class GuildPermissionsInteractor : RequestHandler<GuildPermissionsRequest, GuildPermissionsResponse>
     {
         private readonly IGenericSQLRepository<GuildPermissions> _perms;
+
         private readonly AppSettings _appSettings;
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace MiRs.Interactors.Discord
         {
             Logger.LogInformation((int)LoggingEvents.UpdateEventVerify, "Getting guild perms for: {guildId} ", request.GuildId);
 
-            result.GuildPermissions = (await _perms.Query(gp => gp.GuildId == request.GuildId)).FirstOrDefault();
+            result.GuildPermissions = (await _perms.Query(gp => gp.GuildId == request.GuildId && gp.Type == request.permissionType)).FirstOrDefault();
 
             return result;
         }

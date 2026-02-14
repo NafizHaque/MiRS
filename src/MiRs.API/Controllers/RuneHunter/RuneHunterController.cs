@@ -127,7 +127,8 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <summary>
         /// Register User Loot
         /// </summary>
-        /// <param name="username">Test.</param>
+        /// <param name="userId">userid.</param>
+        /// <param name="guildId">guildid.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
@@ -151,19 +152,20 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// Register User Loot
+        /// Get Team Loot
         /// </summary>
-        /// <param name="username">Test.</param>
+        /// <param name="userId">userid.</param>
+        /// <param name="guildId">guildid.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        /// <remarks>This call return user.</remarks>
+        /// <remarks>This call return Team Loot.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpGet("loot")]
-        public async Task<IActionResult> GetRecentTeamLoot(ulong userId, ulong guildId)
+        public async Task<IActionResult> GetLatestTeamLoot(ulong userId, ulong guildId, ulong? channelId, ulong? messageId)
         {
             try
             {
 
-                return Ok(await Mediator.Send(new GetEventTeamProgressForUserRequest { UserId = userId, GuildId = guildId }));
+                return Ok(await Mediator.Send(new GetRecentTeamLootRequest { UserId = userId, GuildId = guildId, ChannelId = channelId, MessageId = messageId }));
 
             }
             catch (BadRequestException ex)

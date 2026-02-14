@@ -89,6 +89,12 @@ namespace MiRs.Interactors.RuneHunter.Game
 
                         await _rhUserRawLoot.UpdateAsync(loot);
                     }
+
+                    foreach (UserEvents userEvent in currentUserEvents.UserCurrentEvents)
+                    {
+                        await _mediator.Send(new GetRecentTeamLootRequest { UserId = group.Key, GuildId = userEvent.GuildId });
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -169,32 +175,35 @@ namespace MiRs.Interactors.RuneHunter.Game
 
         private async Task<bool> LootUnlockCheck(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias)
         {
-            RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)).First();
+            RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 
-            // TODO: Yeah this needs moving too
-            string[] specialEncounters = { "Lunar Chest",
+            if (lootAlias is not null)
+            {
+                // TODO: Yeah this needs moving too
+                string[] specialEncounters = { "Lunar Chest",
                                         "Fortis Colosseum",
                                         "Tombs of Amascut",
                                         "Chambers of Xeric",
                                         "Theatre of Blood" };
 
-            string? matchedEncounter = specialEncounters
-                .FirstOrDefault(e => string.Equals(e, lootAlias.Mobname, StringComparison.OrdinalIgnoreCase));
+                string? matchedEncounter = specialEncounters
+                    .FirstOrDefault(e => string.Equals(e, lootAlias.Mobname, StringComparison.OrdinalIgnoreCase));
 
-            if (matchedEncounter is not null)
-            {
-                IEnumerable<GuildTeamCategoryLevelProgress> specialEncountersActive = _categoryProgressData
-                        .Where(c => string.Equals(c.Category.Name, "Armoury", StringComparison.OrdinalIgnoreCase))
-                        .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive);
-
-                if (!specialEncountersActive.Any())
+                if (matchedEncounter is not null)
                 {
-                    return false;
-                }
+                    IEnumerable<GuildTeamCategoryLevelProgress> specialEncountersActive = _categoryProgressData
+                            .Where(c => string.Equals(c.Category.Name, "Armoury", StringComparison.OrdinalIgnoreCase))
+                            .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive);
 
-                if (specialEncountersActive.Any(l => string.Equals(l.Level.Unlock, matchedEncounter, StringComparison.OrdinalIgnoreCase)))
-                {
-                    return true;
+                    if (!specialEncountersActive.Any())
+                    {
+                        return false;
+                    }
+
+                    if (specialEncountersActive.Any(l => string.Equals(l.Level.Unlock, matchedEncounter, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        return true;
+                    }
                 }
             }
 
