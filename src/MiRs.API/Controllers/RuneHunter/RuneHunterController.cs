@@ -156,6 +156,8 @@ namespace MiRs.API.Controllers.RuneHunter
         /// </summary>
         /// <param name="userId">userid.</param>
         /// <param name="guildId">guildid.</param>
+        /// <param name="channelId">guild channel id</param>
+        /// <param name="messageId">guild message id</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return Team Loot.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]

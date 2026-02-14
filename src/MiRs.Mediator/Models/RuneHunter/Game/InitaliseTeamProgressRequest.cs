@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using MiRs.Domain.Exceptions;
 
 namespace MiRs.Mediator.Models.RuneHunter.Game
 {
@@ -14,10 +13,7 @@ namespace MiRs.Mediator.Models.RuneHunter.Game
         /// Gets or sets the EventId.
         /// </summary>
         public int EventId { get; set; }
-        /// <summary>
-        /// validate the InitaliseTeamProgressRequest object.
-        /// </summary>
-        /// <exception cref="BadRequestException"> The custom exception type for bad requests.</exception>
+
         public void Validate()
         {
         }

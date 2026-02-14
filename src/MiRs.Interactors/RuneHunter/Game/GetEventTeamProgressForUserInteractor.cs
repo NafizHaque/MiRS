@@ -25,7 +25,9 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// Initializes a new instance of the <see cref="GetEventTeamProgressForUserInteractor"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
-        /// <param name="guildTeamRepository">The repo interface to SQL storage.</param>
+        /// <param name="guildevent">The repo interface to SQL storage.</param>
+        /// <param name="userToTeam">The repo interface to SQL storage.</param>
+        /// <param name="mapper">The mapper for entity to DTO .</param>
         /// <param name="appSettings">The app settings.</param>
         public GetEventTeamProgressForUserInteractor(
             ILogger<ProcessUserLootInteractor> logger,

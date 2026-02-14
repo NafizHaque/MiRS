@@ -33,8 +33,12 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// Initializes a new instance of the <see cref="ProcessUserLootInteractor"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
-        /// <param name="guildTeamRepository">The repo interface to SQL storage.</param>
+        /// <param name="rhUserRawLoot">The repo interface to SQL storage.</param>
+        /// <param name="levelTaskProgress">The repo interface to SQL storage.</param>
+        /// <param name="categoryProgress">The repo interface to SQL storage.</param>
+        /// <param name="rhLootAlias">The repo interface to SQL storage.</param>
         /// <param name="appSettings">The app settings.</param>
+        /// <param name="mediator">Isender mediatr interface.</param>
         public ProcessUserLootInteractor(
             ILogger<ProcessUserLootInteractor> logger,
             IGenericSQLRepository<RHUserRawLoot> rhUserRawLoot,
@@ -56,10 +60,9 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// <summary>
         /// Handles the request to process user loot.
         /// </summary>
-        /// <param name="request">The request to create Guild Team.</param>
-        /// <param name="result">User object that was created.</param>
+        /// <param name="request">The request to process user loot.</param>
+        /// <param name="result"></param>
         /// <param name="cancellationToken">The cancellation token for the request.</param>
-        /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<ProcessUserLootResponse> HandleRequest(ProcessUserLootRequest request, ProcessUserLootResponse result, CancellationToken cancellationToken)
         {
             Logger.LogInformation((int)LoggingEvents.GameProcessLoot, "Proocessing User Loot.");
@@ -107,6 +110,10 @@ namespace MiRs.Interactors.RuneHunter.Game
             return result;
         }
 
+        /// <summary>Assigns the user loot to team progress.</summary>
+        /// <param name="loot">The loot.</param>
+        /// <param name="runescapeLootAlias">The runescape loot alias.</param>
+        /// <param name="userEvent">The user event.</param>
         private async Task AssignUserLootToTeams(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias, UserEvents userEvent)
         {
             IList<GuildTeamLevelTaskProgress> levelTasksProgress = (await _levelTaskProgress.GetAllEntitiesAsync(t => t.IsComplete == false && t.GuildEventTeamId == userEvent.EventTeam.Id, default, lt => lt.Include(ltt => ltt.LevelTask))).ToList();
@@ -173,6 +180,12 @@ namespace MiRs.Interactors.RuneHunter.Game
             }
         }
 
+        /// <summary>Loots the unlock check.</summary>
+        /// <param name="loot">The loot.</param>
+        /// <param name="runescapeLootAlias">The runescape loot alias.</param>
+        /// <returns>
+        /// The boolean value of LootUnlockCheck
+        /// </returns>
         private async Task<bool> LootUnlockCheck(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias)
         {
             RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
@@ -231,6 +244,12 @@ namespace MiRs.Interactors.RuneHunter.Game
 
         }
 
+        /// <summary>Calculates the loot multiplier.</summary>
+        /// <param name="loot">The loot.</param>
+        /// <param name="runescapeLootAlias">The runescape loot alias.</param>
+        /// <returns>
+        /// The RHUserRawLoot with multiplied quantity
+        /// </returns>
         private async Task<RHUserRawLoot> CalculateLootMultiplier(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias)
         {
             RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
@@ -255,6 +274,11 @@ namespace MiRs.Interactors.RuneHunter.Game
             return updatedUserLoot;
         }
 
+        /// <summary>Gets the category multiplier.</summary>
+        /// <param name="category">The category.</param>
+        /// <returns>
+        /// The multiplier value
+        /// </returns>
         private async Task<double> GetCategoryMultiplier(LootAliasSkillingCategories category)
         {
             if (!_categoryProgressData.Any())

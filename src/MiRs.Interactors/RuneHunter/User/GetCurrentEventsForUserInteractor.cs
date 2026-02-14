@@ -42,7 +42,7 @@ namespace MiRs.Interactors.RuneHunter.User
         /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<GetCurrentEventsForUserResponse> HandleRequest(GetCurrentEventsForUserRequest request, GetCurrentEventsForUserResponse result, CancellationToken cancellationToken)
         {
-            Logger.LogInformation((int)LoggingEvents.CreateGuildTeam, "Return current Guild Events for User. User Id: {userId}", request.UserId);
+            Logger.LogInformation((int)LoggingEvents.CurrentUserEvents, "Get current user events. User Id: {userId}", request.UserId);
 
             IList<RHUser> userWithEvents = (await _userRepository.GetAllEntitiesAsync(
                 u => u.UserId == request.UserId,

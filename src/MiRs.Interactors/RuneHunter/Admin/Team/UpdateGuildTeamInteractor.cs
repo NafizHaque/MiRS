@@ -40,13 +40,12 @@ namespace MiRs.Interactors.RuneHunter.Admin.Team
         /// <summary>
         /// Handles the request to unlink Team from Event.
         /// </summary>
-        /// <param name="request">The request to create Guild Team.</param>
-        /// <param name="result">User object that was created.</param>
+        /// <param name="request">The request to unlink team from event.</param>
+        /// <param name="result"></param>
         /// <param name="cancellationToken">The cancellation token for the request.</param>
-        /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<UpdateGuildTeamResponse> HandleRequest(UpdateGuildTeamRequest request, UpdateGuildTeamResponse result, CancellationToken cancellationToken)
         {
-            Logger.LogInformation((int)LoggingEvents.CreateGuildTeam, "Updating Team details. Team Id: {teamId} ", request.TeamToBeUpdated.Id);
+            Logger.LogInformation((int)LoggingEvents.UpdateGuildTeam, "Updating Team details. Team Id: {teamId} ", request.TeamToBeUpdated.Id);
 
             GuildTeam entityToBeUpdated = (await _guildTeamRepository.Query(t => t.Id == request.TeamToBeUpdated.Id)).FirstOrDefault();
 

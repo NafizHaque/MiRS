@@ -33,12 +33,12 @@ namespace MiRs.Interactors.RuneHunter.Admin.Team
         }
 
         /// <summary>
-        /// Handles the request to create a Guild team.
+        /// Handles the request to Get Guild teams.
         /// </summary>
-        /// <param name="request">The request to create Guild Team.</param>
-        /// <param name="result">User object that was created.</param>
+        /// <param name="request">The request to get guild teams.</param>
+        /// <param name="result">List Teams object that was queried.</param>
         /// <param name="cancellationToken">The cancellation token for the request.</param>
-        /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
+        /// <returns>Returns the List Teams object that is queried.</returns>
         protected override async Task<GetGuildTeamsResponse> HandleRequest(GetGuildTeamsRequest request, GetGuildTeamsResponse result, CancellationToken cancellationToken)
         {
             Logger.LogInformation((int)LoggingEvents.GetGuildTeam, "Retrieving Guild Team. Guild Id: {guildId}", request.GuildId);

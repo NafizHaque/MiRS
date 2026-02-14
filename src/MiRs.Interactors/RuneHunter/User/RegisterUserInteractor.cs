@@ -1,12 +1,4 @@
-﻿using MiRs.Domain.Entities.User;
-using MiRS.Gateway.RunescapeClient;
-using MiRs.Mediator.Models.RuneUser;
-using MiRs.Mediator;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MiRs.Mediator;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
@@ -52,11 +44,11 @@ namespace MiRs.Interactors.RuneHunter.User
         /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<RegisterUserResponse> HandleRequest(RegisterUserRequest request, RegisterUserResponse result, CancellationToken cancellationToken)
         {
-            Logger.LogInformation((int)LoggingEvents.CreateGuildTeam, "Creating User. User Id: {userId}, UserName: {username} ", request.rhUserToBeCreated.UserId, request.rhUserToBeCreated.Username);
+            Logger.LogInformation((int)LoggingEvents.RegisterUser, "Creating User. User Id: {userId}, UserName: {username} ", request.rhUserToBeCreated.UserId, request.rhUserToBeCreated.Username);
 
             IEnumerable<RHUser> usersInTable = await _rhUserRepository.GetAllEntitiesAsync();
 
-            if(usersInTable.Any(u => u.UserId == request.rhUserToBeCreated.UserId))
+            if (usersInTable.Any(u => u.UserId == request.rhUserToBeCreated.UserId))
             {
                 throw new BadRequestException($"User: <@{request.rhUserToBeCreated.UserId}> Already Exists!");
             }

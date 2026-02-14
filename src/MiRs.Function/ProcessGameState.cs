@@ -30,6 +30,7 @@ namespace MiRs.Function
             _mediator = mediator;
         }
 
+
         [Function("UpdateGameState")]
         public async Task RunAsync([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer)
         {
