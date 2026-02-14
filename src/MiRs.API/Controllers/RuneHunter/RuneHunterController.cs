@@ -10,7 +10,7 @@ using System.Net;
 namespace MiRs.API.Controllers.RuneHunter
 {
     /// <summary>
-    /// This controller contains any calls relating to users.
+    /// This controller contains any calls relating to Rune hunter game.
     /// </summary>
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
@@ -27,7 +27,7 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <summary>
         /// Register User Loot
         /// </summary>
-        /// <param name="username">Test.</param>
+        /// <param name="loot">users loot from runelite.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
@@ -51,7 +51,7 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// /Initialise team progress
+        /// Initialise team progress
         /// </summary>
         /// <param name="teamid">teamid.</param>
         /// <param name="eventid">eventid.</param>
@@ -125,7 +125,7 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// Register User Loot
+        /// Get Event Team Progress
         /// </summary>
         /// <param name="userId">userid.</param>
         /// <param name="guildId">guildid.</param>
@@ -152,7 +152,7 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// Get Team Loot
+        /// Get lastest Team Loot that has been processed
         /// </summary>
         /// <param name="userId">userid.</param>
         /// <param name="guildId">guildid.</param>

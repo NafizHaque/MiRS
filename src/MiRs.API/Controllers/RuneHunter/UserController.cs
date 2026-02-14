@@ -72,39 +72,14 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// User to Join a Team
+        /// Get current Events for User
         /// </summary>
-        /// <param name="userid">user id.</param>
-        /// <param name="guildid">the discord server id.</param>
-        /// <param name="teamname">Team name to join.</param>
-        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
-        [HttpPost("JoinTeam")]
-        public async Task<IActionResult> JoinTeam(ulong userid, ulong guildid, string teamname)
-        {
-            try
-            {
-                return Ok(await Mediator.Send(new JoinTeamRequest { UserId = userid, GuildId = guildid, Teamname = teamname }));
-
-            }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(ex.CustomErrorMessage);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// User to Join a Team
-        /// </summary>
-        /// <param name="username">Test.</param>
+        /// <param name="userid">Test.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
-        [HttpGet("CurrentUserEvents")]
+        [HttpGet]
+        [Route("CurrentUserEvents")]
         public async Task<IActionResult> CurrentEventsForUser(ulong userid)
         {
             try

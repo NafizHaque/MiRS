@@ -8,7 +8,7 @@ using System.Net;
 namespace MiRs.API.Controllers.RuneHunter
 {
     /// <summary>
-    /// This controller contains any calls relating to event management.
+    /// This controller contains any calls relating to Team management.
     /// </summary>
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
@@ -73,7 +73,7 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// Edit Guild Team
+        /// Update Guild Team 
         /// </summary>
         /// <param name="guildTeam">The Guild Team to be updated.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
@@ -95,35 +95,5 @@ namespace MiRs.API.Controllers.RuneHunter
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
-
-        /// <summary>
-        /// Add User To Team Guild
-        /// </summary>
-        /// <param name="userids"> list of userids.</param>
-        /// <param name="guildId">the discord server Id.</param>
-        /// <param name="teamId">the event team Id.</param>
-        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
-        [HttpPost]
-        [Route("usertoteam")]
-        public async Task<IActionResult> AddUserToTeamInGuild(ulong[] userids, ulong guildId, int teamId)
-        {
-            try
-            {
-                // return Ok(await Mediator.Send(new adduser { UserId = userid, Teamname = teamname }));
-
-                throw new NotImplementedException();
-
-            }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(ex.CustomErrorMessage);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
     }
 }

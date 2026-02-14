@@ -7,7 +7,7 @@ using System.Net;
 namespace MiRs.API.Controllers.RuneHunter
 {
     /// <summary>
-    /// This controller contains any calls relating to event management.
+    /// This controller contains any calls relating to Generic  management.
     /// </summary>
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
