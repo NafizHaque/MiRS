@@ -6,7 +6,6 @@ using MiRS.Gateway.DataAccess;
 using Moq;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
-using MiRs.Mediator.Models.RuneHunter.Admin.Event;
 using MiRs.Interactors.RuneHunter.Admin.Event;
 
 namespace MiRs.Tests.RuneHunter.Admin
@@ -61,21 +60,6 @@ namespace MiRs.Tests.RuneHunter.Admin
                     return Task.FromResult(result);
                 });
 
-            AddGuildTeamToEventInteractor addGuildTeamToEventInteractor = new AddGuildTeamToEventInteractor(
-                                                                                _logger.Object,
-                                                                                _guildTeamEventRepository.Object,
-                                                                                _guildTeamRepository.Object,
-                                                                                _guildEventRepository.Object,
-                                                                                _appSettings.Object);
-
-            AddGuildTeamToEventRequest addGuildTeamToEventRequest = new AddGuildTeamToEventRequest()
-            {
-                EventId = 2001,
-                TeamId = 1001
-            };
-
-            //Act
-            AddGuildTeamToEventResponse response = await addGuildTeamToEventInteractor.Handle(addGuildTeamToEventRequest, CancellationToken.None);
 
             //Assert
             _guildTeamEventRepository.Verify(

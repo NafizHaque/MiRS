@@ -31,7 +31,7 @@ namespace MiRs.Function
         }
 
         [Function("UpdateGameState")]
-        public async Task Run([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer)
+        public async Task RunAsync([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer)
         {
             _logger.LogInformation("UpdateGameState function executed at: {executionTime}", DateTimeOffset.UtcNow);
 

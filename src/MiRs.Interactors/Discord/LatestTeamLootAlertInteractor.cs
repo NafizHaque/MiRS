@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
@@ -20,7 +19,6 @@ namespace MiRs.Interactors.Discord
     public class LatestTeamLootAlertInteractor : RequestHandler<LatestTeamLootAlertRequest, LatestTeamLootAlertResponse>
     {
         private readonly AppSettings _appSettings;
-        private readonly ISender _mediator;
         private readonly IDiscordBotClient _discordBotClient;
         private readonly IGenericSQLRepository<GuildTeam> _guildTeamRepository;
         private readonly IGenericSQLRepository<GuildPermissions> _perms;
@@ -35,14 +33,14 @@ namespace MiRs.Interactors.Discord
             ILogger<CreateGuildTeamInteractor> logger,
             IGenericSQLRepository<GuildTeam> guildTeamRepository,
             IDiscordBotClient discordBotClient,
-            ISender mediator,
+            IGenericSQLRepository<GuildPermissions> perms,
             IOptions<AppSettings> appSettings)
             : base(logger)
         {
             _guildTeamRepository = guildTeamRepository;
             _appSettings = appSettings.Value;
             _discordBotClient = discordBotClient;
-            _mediator = mediator;
+            _perms = perms;
 
         }
 
