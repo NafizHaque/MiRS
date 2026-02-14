@@ -1,6 +1,6 @@
 ﻿using MiRs.Domain.Entities.User;
 using MiRs.Domain.Entities.User.Skills.Skill_Object;
-using MiRs.Interfaces.Helpers;
+using MiRs.Helpers;
 using System.Text.Json;
 
 namespace MiRs.Domain.Mappers

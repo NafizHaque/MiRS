@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace MiRs.Interfaces.Helpers
+namespace MiRs.Helpers
 {
     public interface IJsonSeraliserDefaultOptions
     {

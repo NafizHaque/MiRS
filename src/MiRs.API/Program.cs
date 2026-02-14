@@ -5,7 +5,6 @@ using Microsoft.OpenApi.Models;
 using MiRs.DataAccess;
 using MiRs.Domain.Mappers;
 using MiRs.Interactors;
-using MiRs.Interfaces.Helpers;
 using MiRs.RunescapeClient;
 using MiRs.DiscordClient;
 using MiRs.Utils.Helpers;
@@ -13,6 +12,7 @@ using MiRS.Gateway.DataAccess;
 using MiRS.Gateway.DiscordBotClient;
 using MiRS.Gateway.RunescapeClient;
 using System.Reflection;
+using MiRs.Helpers;
 
 namespace MiRs.API
 {

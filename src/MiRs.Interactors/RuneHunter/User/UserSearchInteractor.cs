@@ -23,7 +23,7 @@ namespace MiRs.Interactors.RuneHunter.User
         /// <param name="configRepository">The repo interface to table storage for config data.</param>
         /// <param name="appSettings">The app settings.</param>
         public UserSearchInteractor(
-            ILogger<JoinTeamInteractor> logger,
+            ILogger<UserSearchInteractor> logger,
             IGenericSQLRepository<RHUser> rhUserRepository,
             IOptions<AppSettings> appSettings)
             : base(logger)
