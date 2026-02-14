@@ -75,16 +75,16 @@ namespace MiRs.Interactors.RuneHunter.Game
             result.TeamName = eventTeam.Team.TeamName;
 
             //Move into its own method later
-            GuildPermissions guildPermissions = (await _perms.Query(gp => (gp.TeamId == eventTeam.Team.Id && gp.Type == PermissionType.Team) || gp.ResponseToken == "request.ResponseToken")).FirstOrDefault();
+            GuildPermissions guildPermissions = (await _perms.Query(gp => (gp.TeamId == eventTeam.Team.Id && gp.Type == PermissionType.Team) || gp.MessageId == request.MessageId)).FirstOrDefault();
 
-            if (guildPermissions is null && request.ResponseId.HasValue && !string.IsNullOrWhiteSpace(request.ResponseToken))
+            if (guildPermissions is null && request.ChannelId.HasValue && request.MessageId.HasValue)
             {
                 await _perms.AddAsync(new GuildPermissions
                 {
                     GuildId = request.GuildId,
-                    ChannelId = (ulong)request.ResponseId,
+                    ChannelId = (ulong)request.ChannelId,
                     Type = PermissionType.Team,
-                    ResponseToken = request.ResponseToken,
+                    MessageId = request.MessageId,
                     TeamId = eventTeam.Team.Id,
                 });
             }

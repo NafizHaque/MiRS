@@ -36,7 +36,7 @@ namespace MiRs.Function
         }
 
         [Function("InitialiseEventData")]
-        public async Task RunAsync([TimerTrigger("0,30 * * * *")] TimerInfo myTimer)
+        public async Task RunAsync([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer)
         {
             _logger.LogInformation("InitialiseEventData function executed at: {executionTime}", DateTime.Now);
 
@@ -65,8 +65,6 @@ namespace MiRs.Function
                     }
                 }
 
-                _logger.LogInformation("InitialiseEventData function executed at: {executionTime}", DateTime.Now);
-
             }
             catch (Exception ex)
             {
@@ -76,6 +74,7 @@ namespace MiRs.Function
 
             if (myTimer.ScheduleStatus is not null)
             {
+                _logger.LogInformation("InitialiseEventData function executed at: {executionTime}", DateTime.Now);
                 _logger.LogInformation("Next timer schedule at: {nextSchedule}", myTimer.ScheduleStatus.Next);
             }
         }

@@ -44,8 +44,6 @@ namespace MiRs.Function
                 await _mediator.Send(new UpdateEventWinnersRequest());
 
                 await _mediator.Send(new LatestTeamLootAlertRequest());
-
-                _logger.LogInformation("UpdateGameState function completed at: {executionTime}", DateTimeOffset.UtcNow);
             }
             catch (Exception ex)
             {
@@ -53,6 +51,7 @@ namespace MiRs.Function
 
             if (myTimer.ScheduleStatus is not null)
             {
+                _logger.LogInformation("UpdateGameState function completed at: {executionTime}", DateTimeOffset.UtcNow);
                 _logger.LogInformation("Next timer schedule at: {nextSchedule}", myTimer.ScheduleStatus.Next);
             }
         }

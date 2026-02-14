@@ -6,8 +6,8 @@
 
         public ulong GuildId { get; set; }
 
-        public ulong ResponseId { get; set; }
+        public ulong ChannelId { get; set; }
 
-        public string ResponseToken { get; set; } = string.Empty;
+        public ulong MessageId { get; set; }
     }
 }

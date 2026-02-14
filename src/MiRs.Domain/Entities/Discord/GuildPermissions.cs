@@ -10,10 +10,11 @@ namespace MiRs.Domain.Entities.Discord
 
         public ulong ChannelId { get; set; }
 
-        public string ResponseToken { get; set; }
+        public PermissionType Type { get; set; }
+
+        public ulong? MessageId { get; set; }
 
         public int? TeamId { get; set; }
 
-        public PermissionType Type { get; set; }
     }
 }

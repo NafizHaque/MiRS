@@ -70,8 +70,8 @@ namespace MiRs.Interactors.Discord
                 {
                     UserId = guildTeam.UsersInTeam.FirstOrDefault().UserId,
                     GuildId = guildTeam.GuildId,
-                    ResponseId = teamPerms.ChannelId,
-                    ResponseToken = teamPerms.ResponseToken,
+                    ChannelId = teamPerms.ChannelId,
+                    MessageId = teamPerms.MessageId.Value,
                 });
             }
 
