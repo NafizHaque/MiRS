@@ -9,6 +9,10 @@ namespace MiRs.Mediator.Models.RuneHunter.Game
 
         public ulong GuildId { get; set; }
 
+        public ulong? ResponseId { get; set; }
+
+        public string? ResponseToken { get; set; }
+
         public void Validate()
         {
             if (UserId <= 0)

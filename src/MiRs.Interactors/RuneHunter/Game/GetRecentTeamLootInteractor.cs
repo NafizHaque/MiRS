@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.Discord;
+using MiRs.Domain.Entities.Discord.Enums;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Exceptions;
 using MiRs.Domain.Logging;
@@ -72,6 +73,21 @@ namespace MiRs.Interactors.RuneHunter.Game
             result.Loots = (await _rhUserRawLoot.Query(ul => userIds.Contains(ul.UserId) && ul.Processed)).OrderByDescending(l => l.DateLogged).Take(50).ToList();
 
             result.TeamName = eventTeam.Team.TeamName;
+
+            //Move into its own method later
+            GuildPermissions guildPermissions = (await _perms.Query(gp => (gp.TeamId == eventTeam.Team.Id && gp.Type == PermissionType.Team) || gp.ResponseToken == "request.ResponseToken")).FirstOrDefault();
+
+            if (guildPermissions is null && request.ResponseId.HasValue && !string.IsNullOrWhiteSpace(request.ResponseToken))
+            {
+                await _perms.AddAsync(new GuildPermissions
+                {
+                    GuildId = request.GuildId,
+                    ChannelId = (ulong)request.ResponseId,
+                    Type = PermissionType.Team,
+                    ResponseToken = request.ResponseToken,
+                    TeamId = eventTeam.Team.Id,
+                });
+            }
 
             return result;
         }

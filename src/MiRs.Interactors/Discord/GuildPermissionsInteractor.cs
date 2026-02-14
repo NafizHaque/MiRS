@@ -13,6 +13,7 @@ namespace MiRs.Interactors.Discord
     public class GuildPermissionsInteractor : RequestHandler<GuildPermissionsRequest, GuildPermissionsResponse>
     {
         private readonly IGenericSQLRepository<GuildPermissions> _perms;
+
         private readonly AppSettings _appSettings;
 
         /// <summary>

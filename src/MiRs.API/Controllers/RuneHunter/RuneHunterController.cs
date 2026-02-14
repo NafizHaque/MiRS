@@ -160,12 +160,12 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <remarks>This call return Team Loot.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpGet("loot")]
-        public async Task<IActionResult> GetLatestTeamLoot(ulong userId, ulong guildId)
+        public async Task<IActionResult> GetLatestTeamLoot(ulong userId, ulong guildId, ulong? responseId, string? token)
         {
             try
             {
 
-                return Ok(await Mediator.Send(new GetRecentTeamLootRequest { UserId = userId, GuildId = guildId }));
+                return Ok(await Mediator.Send(new GetRecentTeamLootRequest { UserId = userId, GuildId = guildId, ResponseId = responseId, ResponseToken = token }));
 
             }
             catch (BadRequestException ex)

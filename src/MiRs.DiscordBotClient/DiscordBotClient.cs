@@ -1,7 +1,8 @@
-﻿using MiRs.Domain.Entities.RuneHunter;
-using MiRS.Gateway.DiscordBotClient;
-using Flurl.Http;
+﻿using Flurl.Http;
+using MiRs.Domain.DTOs.Discord;
 using MiRs.Domain.Entities.Discord;
+using MiRs.Domain.Entities.RuneHunter;
+using MiRS.Gateway.DiscordBotClient;
 
 namespace MiRs.DiscordClient
 {
@@ -17,6 +18,14 @@ namespace MiRs.DiscordClient
                    Team = team,
                    Perms = guildPermissions,
                });
+        }
+
+        public async Task LatestTeamLootAlert(LootAlertDto lootAlertDto)
+        {
+            await "https://localhost:7265/v1/"
+               .WithHeader("Content-Type", "application/json")
+               .AppendPathSegment($"rest/lootupdate")
+               .PostJsonAsync(lootAlertDto);
         }
 
     }

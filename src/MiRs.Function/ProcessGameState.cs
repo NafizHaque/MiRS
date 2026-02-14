@@ -3,6 +3,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
+using MiRs.Mediator.Models.Discord;
 using MiRs.Mediator.Models.RuneHunter.Game;
 
 namespace MiRs.Function
@@ -12,7 +13,6 @@ namespace MiRs.Function
         private readonly AppSettings _appSettings;
         private readonly ILogger<ProcessGameState> _logger;
         private readonly ISender _mediator;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessGameState"/> class.
         /// </summary>
@@ -43,6 +43,8 @@ namespace MiRs.Function
 
                 await _mediator.Send(new UpdateEventWinnersRequest());
 
+                await _mediator.Send(new LatestTeamLootAlertRequest());
+
                 _logger.LogInformation("UpdateGameState function completed at: {executionTime}", DateTimeOffset.UtcNow);
             }
             catch (Exception ex)
@@ -54,5 +56,6 @@ namespace MiRs.Function
                 _logger.LogInformation("Next timer schedule at: {nextSchedule}", myTimer.ScheduleStatus.Next);
             }
         }
+
     }
 }
