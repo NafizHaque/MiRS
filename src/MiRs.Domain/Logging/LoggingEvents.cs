@@ -26,6 +26,11 @@
         UpdateGuildTeam = 1003,
 
         /// <summary>
+        /// The event id to be used when logging calls related to get latest team loot.
+        /// </summary>
+        GetLatestTeamLoot = 1003,
+
+        /// <summary>
         /// The event id to be used when logging calls related to creating Guild Teams.
         /// </summary>
         GetGuildEvent = 1101,
@@ -41,14 +46,19 @@
         GetTeamsFromEvent = 1103,
 
         /// <summary>
-        /// The event id to be used when logging calls related to updating Guild Teams.
+        /// The event id to be used when logging calls related to event update verify.
         /// </summary>
         UpdateEventVerify = 1104,
 
         /// <summary>
         /// The event id to be used when logging calls related to creating event team progress.
         /// </summary>
-        InitialiseEventTeamProgress = 1105,
+        InitialiseEventTeamProgress = 1300,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to get event team progress.
+        /// </summary>
+        GetEventTeamProgress = 1301,
 
         /// <summary>
         /// The event id to be used when logging calls related to registering user.

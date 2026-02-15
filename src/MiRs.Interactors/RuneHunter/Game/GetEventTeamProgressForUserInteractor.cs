@@ -52,9 +52,9 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<GetEventTeamProgressForUserResponse> HandleRequest(GetEventTeamProgressForUserRequest request, GetEventTeamProgressForUserResponse result, CancellationToken cancellationToken)
         {
-            Logger.LogInformation((int)LoggingEvents.GameGetMetadata, "Retrieving current game Categories, Levels and Tasks.");
+            Logger.LogInformation((int)LoggingEvents.GetEventTeamProgress, "Retrieving event team progress by user: {userid} and guild {guildid}.", request.UserId, request.GuildId);
 
-            IList<GuildEvent> activeGuildEvents = (await _guildevent.GetAllEntitiesAsync(ge => ge.GuildId == request.GuildId && ge.EventActive == true, default,
+            IList<GuildEvent> activeGuildEvents = (await _guildevent.QueryWithInclude(ge => ge.GuildId == request.GuildId && ge.EventActive == true, default,
                                                                 ge => ge.Include(ge => ge.EventTeams)
                                                                             .ThenInclude(et => et.CategoryProgresses)
                                                                                 .ThenInclude(cp => cp.CategoryLevelProcess)

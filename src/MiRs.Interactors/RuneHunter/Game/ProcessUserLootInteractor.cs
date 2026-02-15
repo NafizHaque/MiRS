@@ -69,7 +69,7 @@ namespace MiRs.Interactors.RuneHunter.Game
 
             IList<RHUserRawLoot> unprocessedUserLoot = (await _rhUserRawLoot.Query(l => l.Processed == false)).ToList();
 
-            IList<RunescapeLootAlias> runescapeLootAlias = (await _rhLootAlias.GetAllEntitiesAsync()).ToList();
+            IList<RunescapeLootAlias> runescapeLootAlias = (await _rhLootAlias.QueryWithInclude()).ToList();
 
             IEnumerable<IGrouping<ulong, RHUserRawLoot>> groupedLoot = unprocessedUserLoot.GroupBy(l => l.UserId);
 
@@ -116,9 +116,9 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// <param name="userEvent">The user event.</param>
         private async Task AssignUserLootToTeams(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias, UserEvents userEvent)
         {
-            IList<GuildTeamLevelTaskProgress> levelTasksProgress = (await _levelTaskProgress.GetAllEntitiesAsync(t => t.IsComplete == false && t.GuildEventTeamId == userEvent.EventTeam.Id, default, lt => lt.Include(ltt => ltt.LevelTask))).ToList();
+            IList<GuildTeamLevelTaskProgress> levelTasksProgress = (await _levelTaskProgress.QueryWithInclude(t => t.IsComplete == false && t.GuildEventTeamId == userEvent.EventTeam.Id, default, lt => lt.Include(ltt => ltt.LevelTask))).ToList();
 
-            _categoryProgressData = (await _categoryProgress.GetAllEntitiesAsync(
+            _categoryProgressData = (await _categoryProgress.QueryWithInclude(
               t => t.GuildEventTeamId == userEvent.EventTeam.Id,
               default,
               cp => cp.Include(c => c.Category)

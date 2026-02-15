@@ -46,7 +46,7 @@ namespace MiRs.Interactors.RuneHunter.Game
         {
             Logger.LogInformation((int)LoggingEvents.GameStateUpdate, "Updating Event Game Stated.");
 
-            IList<GuildTeamCategoryLevelProgress> levelProgress = (await _levelProgress.GetAllEntitiesAsync(t => t.IsComplete == false, default, lt => lt.Include(ltt => ltt.LevelTaskProgress))).ToList();
+            IList<GuildTeamCategoryLevelProgress> levelProgress = (await _levelProgress.QueryWithInclude(t => t.IsComplete == false, default, lt => lt.Include(ltt => ltt.LevelTaskProgress))).ToList();
 
             foreach (GuildTeamCategoryLevelProgress level in levelProgress)
             {
@@ -63,7 +63,7 @@ namespace MiRs.Interactors.RuneHunter.Game
                 }
             }
 
-            IList<GuildTeamCategoryProgress> categoryProgress = (await _categoryProgress.GetAllEntitiesAsync(t => t.IsComplete == false, default, lt => lt.Include(ltt => ltt.CategoryLevelProcess))).ToList();
+            IList<GuildTeamCategoryProgress> categoryProgress = (await _categoryProgress.QueryWithInclude(t => t.IsComplete == false, default, lt => lt.Include(ltt => ltt.CategoryLevelProcess))).ToList();
 
             foreach (GuildTeamCategoryProgress cat in categoryProgress)
             {

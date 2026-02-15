@@ -59,7 +59,7 @@ namespace MiRs.Interactors.Discord
 
             foreach (GuildPermissions teamPerms in TeamsAndPerms)
             {
-                GuildTeam guildTeam = (await _guildTeamRepository.GetAllEntitiesAsync(g => g.Id == teamPerms.TeamId, default, gt => gt.Include(gt => gt.UsersInTeam))).FirstOrDefault();
+                GuildTeam guildTeam = (await _guildTeamRepository.QueryWithInclude(g => g.Id == teamPerms.TeamId, default, gt => gt.Include(gt => gt.UsersInTeam))).FirstOrDefault();
 
                 if (guildTeam == null)
                 {

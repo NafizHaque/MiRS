@@ -44,7 +44,7 @@ namespace MiRs.Interactors.RuneHunter.User
         {
             Logger.LogInformation((int)LoggingEvents.CurrentUserEvents, "Get current user events. User Id: {userId}", request.UserId);
 
-            IList<RHUser> userWithEvents = (await _userRepository.GetAllEntitiesAsync(
+            IList<RHUser> userWithEvents = (await _userRepository.QueryWithInclude(
                 u => u.UserId == request.UserId,
                 default,
                 q => q.Include(utt => utt.UserToTeams!)

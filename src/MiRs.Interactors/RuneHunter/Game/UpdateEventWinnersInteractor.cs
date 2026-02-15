@@ -62,7 +62,7 @@ namespace MiRs.Interactors.RuneHunter.Game
 
             DateTimeOffset currentTimeUtc = DateTimeOffset.UtcNow;
 
-            List<GuildEvent> gameEvents = (await _guildEventRepository.GetAllEntitiesAsync(e => e.EventActive, default,
+            List<GuildEvent> gameEvents = (await _guildEventRepository.QueryWithInclude(e => e.EventActive, default,
                                                     ge => ge.Include(ge => ge.EventTeams).ThenInclude(et => et.CategoryProgresses).ThenInclude(cp => cp.CategoryLevelProcess).ThenInclude(cl => cl.LevelTaskProgress)
                                                               .Include(ge => ge.EventTeams).ThenInclude(et => et.CategoryProgresses).ThenInclude(c => c.Category)
                                                               .Include(ge => ge.EventTeams).ThenInclude(t => t.Team))).ToList();

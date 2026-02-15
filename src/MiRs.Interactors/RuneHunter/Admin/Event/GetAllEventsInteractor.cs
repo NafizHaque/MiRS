@@ -50,7 +50,7 @@ namespace MiRs.Interactors.RuneHunter.Admin.Event
 
             foreach (GuildEvent gameEvent in gameEvents)
             {
-                IList<GuildEventTeam> teamsfromEvent = (await _guildTeamEventRepository.GetAllEntitiesAsync(e => e.EventId == gameEvent.Id, default, eg => eg.Include(egt => egt.Team).ThenInclude(utt => utt.UsersInTeam).ThenInclude(u => u.User))).ToList();
+                IList<GuildEventTeam> teamsfromEvent = (await _guildTeamEventRepository.QueryWithInclude(e => e.EventId == gameEvent.Id, default, eg => eg.Include(egt => egt.Team).ThenInclude(utt => utt.UsersInTeam).ThenInclude(u => u.User))).ToList();
 
                 int playerCount = teamsfromEvent
                     .Where(tfe => tfe.Team != null)

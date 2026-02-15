@@ -46,7 +46,7 @@ namespace MiRs.Interactors.RuneHunter.User
         {
             Logger.LogInformation((int)LoggingEvents.RegisterUser, "Creating User. User Id: {userId}, UserName: {username} ", request.rhUserToBeCreated.UserId, request.rhUserToBeCreated.Username);
 
-            IEnumerable<RHUser> usersInTable = await _rhUserRepository.GetAllEntitiesAsync();
+            IEnumerable<RHUser> usersInTable = await _rhUserRepository.QueryWithInclude();
 
             if (usersInTable.Any(u => u.UserId == request.rhUserToBeCreated.UserId))
             {

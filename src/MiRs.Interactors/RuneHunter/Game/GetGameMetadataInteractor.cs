@@ -43,7 +43,7 @@ namespace MiRs.Interactors.RuneHunter.Game
         {
             Logger.LogInformation((int)LoggingEvents.GameGetMetadata, "Retrieving current game Categories, Levels and Tasks.");
 
-            IList<Category> categories = (await _category.GetAllEntitiesAsync(c => true, default, c => c.Include(l => l.Level).ThenInclude(t => t.LevelTasks))).ToList();
+            IList<Category> categories = (await _category.QueryWithInclude(c => true, default, c => c.Include(l => l.Level).ThenInclude(t => t.LevelTasks))).ToList();
 
             result.Categories = categories.Select(c => new CategoryDto
             {

@@ -77,6 +77,12 @@ namespace MiRs.DataAccess
                 .HasForeignKey(ut => ut.TeamId);
 
             /// <summary>
+            /// Configures the primary key for GuildEventTeam.
+            /// </summary>
+            modelBuilder.Entity<GuildEventTeam>()
+                .HasKey(ut => ut.Id);
+
+            /// <summary>
             /// Configures the one-to-many relationship between GuildEvent and GuildEventTeam.
             /// </summary>
             modelBuilder.Entity<GuildEventTeam>()
@@ -135,6 +141,12 @@ namespace MiRs.DataAccess
                 .WithOne(p => p.CategoryLevelProgress)
                 .HasForeignKey(p => p.CategoryLevelProcessId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            /// <summary>
+            /// Configures The Primary Key.
+            /// </summary>
+            modelBuilder.Entity<GuildTeamLevelTaskProgress>()
+                .HasKey(gte => gte.Id);
 
             /// <summary>
             /// Configures GuildTeamLevelTaskProgress entity and its relationships.

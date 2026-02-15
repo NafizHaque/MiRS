@@ -42,7 +42,7 @@ namespace MiRs.Function
 
             try
             {
-                IEnumerable<GuildEvent> gameEvents = (await _guildEventRepository.GetAllEntitiesAsync(ge => ge.EventStart >= DateTimeOffset.UtcNow.AddMinutes(-5) && ge.EventStart <= DateTimeOffset.UtcNow && !ge.EventActive, default, ge => ge.Include(ge => ge.EventTeams))).ToList();
+                IEnumerable<GuildEvent> gameEvents = (await _guildEventRepository.QueryWithInclude(ge => ge.EventStart >= DateTimeOffset.UtcNow.AddMinutes(-5) && ge.EventStart <= DateTimeOffset.UtcNow && !ge.EventActive, default, ge => ge.Include(ge => ge.EventTeams))).ToList();
 
                 if (!gameEvents.Any())
                 {

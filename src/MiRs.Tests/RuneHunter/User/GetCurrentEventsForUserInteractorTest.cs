@@ -46,7 +46,7 @@ namespace MiRs.Tests.RuneHunter.User
             //Arrange
 
             _rhUserRepository
-                .Setup(r => r.GetAllEntitiesAsync(
+                .Setup(r => r.QueryWithInclude(
                     It.IsAny<Expression<Func<RHUser, bool>>>(),
                     It.IsAny<CancellationToken>(),
                     It.IsAny<Func<IQueryable<RHUser>, IQueryable<RHUser>>>()))

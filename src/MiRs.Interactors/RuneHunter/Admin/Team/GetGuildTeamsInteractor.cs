@@ -43,7 +43,7 @@ namespace MiRs.Interactors.RuneHunter.Admin.Team
         {
             Logger.LogInformation((int)LoggingEvents.GetGuildTeam, "Retrieving Guild Team. Guild Id: {guildId}", request.GuildId);
 
-            IList<GuildTeam> allGuildTeams = (await _guildTeamRepository.GetAllEntitiesAsync(g => g.GuildId == request.GuildId, default, gt => gt.Include(gt => gt.UsersInTeam).ThenInclude(u => u.User))).ToList();
+            IList<GuildTeam> allGuildTeams = (await _guildTeamRepository.QueryWithInclude(g => g.GuildId == request.GuildId, default, gt => gt.Include(gt => gt.UsersInTeam).ThenInclude(u => u.User))).ToList();
 
             result.GuildTeams = allGuildTeams.Select(tfe => new GameTeam
             {
