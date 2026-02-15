@@ -70,8 +70,6 @@ namespace MiRs.Interactors.RuneHunter.Game
                                                                                 .ThenInclude(cp => cp.CategoryLevelProcess)
                                                                                     .ThenInclude(clp => clp.Level))).ToList();
 
-            IList<GuildTeamCategoryProgress> progresses;
-
             if (!activeGuildEvents.Any() || !activeGuildEvents.SelectMany(ge => ge.EventTeams).Any())
             {
                 throw new BadRequestException("Cannot find any current events or teams in guild");

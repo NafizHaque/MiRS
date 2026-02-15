@@ -112,7 +112,7 @@ namespace MiRs.DataAccess
         /// Returns a set of results from a table including its relations, based on the provided query filters and include filters.
         /// </summary>
         /// <param name="filter">The filter to run against the table data.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="cancellation Token">The cancellation token.</param>
         /// <param name="includeFunc">include functionm to retrieve related table data.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task<IQueryable<TEntity>> QueryWithInclude(

@@ -175,9 +175,6 @@ namespace MiRs.Interactors.RuneHunter.Game
 
         private async Task<GuildTeam?> GetWinningEventTeamForActive(GuildEvent guildEvent)
         {
-
-            GuildTeam winingTeam;
-
             foreach (GuildEventTeam eventTeam in guildEvent.EventTeams)
             {
                 if (eventTeam.CategoryProgresses.All(cp => cp.IsComplete))

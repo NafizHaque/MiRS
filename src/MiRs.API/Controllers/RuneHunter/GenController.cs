@@ -42,7 +42,7 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost("ping")]
-        public async Task<IActionResult> PingConnection()
+        public IActionResult PingConnection()
         {
             try
             {

@@ -50,20 +50,25 @@ namespace MiRs.API.Controllers.RuneHunter
         /// User Search
         /// </summary>
         /// <param name="search">the search term.</param>
+        /// <param name="cancellationToken">The cancellation token</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return users.</remarks>
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpGet]
-        public async Task<IActionResult> UserSearch(string search)
+        public async Task<IActionResult> UserSearch(string search, CancellationToken cancellationToken)
         {
             try
             {
-                return Ok(await Mediator.Send(new UserSearchRequest { Searchkey = search }));
+                return Ok(await Mediator.Send(new UserSearchRequest { Searchkey = search }, cancellationToken));
 
             }
             catch (BadRequestException ex)
             {
                 return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (OperationCanceledException)
+            {
+                return StatusCode(StatusCodes.Status499ClientClosedRequest, "Request Aborted");
             }
             catch (Exception ex)
             {
