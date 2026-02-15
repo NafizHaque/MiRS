@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MiRs.Interfaces\MiRs.Interfaces.csproj" />
+    <ProjectReference Include="..\MiRs.Interfaces\MiRs.Helpers.csproj" />
   </ItemGroup>
 
 </Project>

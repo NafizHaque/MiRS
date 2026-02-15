@@ -27,14 +27,16 @@ namespace MiRs.Interactors.RuneHunter.Game
         private readonly AppSettings _appSettings;
         private readonly ISender _mediator;
 
-        private IEnumerable<GuildTeamCategoryProgress> _categoryProgressData;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessUserLootInteractor"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
-        /// <param name="guildTeamRepository">The repo interface to SQL storage.</param>
+        /// <param name="rhUserRawLoot">The repo interface to SQL storage.</param>
+        /// <param name="levelTaskProgress">The repo interface to SQL storage.</param>
+        /// <param name="categoryProgress">The repo interface to SQL storage.</param>
+        /// <param name="rhLootAlias">The repo interface to SQL storage.</param>
         /// <param name="appSettings">The app settings.</param>
+        /// <param name="mediator">Isender mediatr interface.</param>
         public ProcessUserLootInteractor(
             ILogger<ProcessUserLootInteractor> logger,
             IGenericSQLRepository<RHUserRawLoot> rhUserRawLoot,
@@ -56,17 +58,16 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// <summary>
         /// Handles the request to process user loot.
         /// </summary>
-        /// <param name="request">The request to create Guild Team.</param>
-        /// <param name="result">User object that was created.</param>
+        /// <param name="request">The request to process user loot.</param>
+        /// <param name="result"></param>
         /// <param name="cancellationToken">The cancellation token for the request.</param>
-        /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<ProcessUserLootResponse> HandleRequest(ProcessUserLootRequest request, ProcessUserLootResponse result, CancellationToken cancellationToken)
         {
             Logger.LogInformation((int)LoggingEvents.GameProcessLoot, "Proocessing User Loot.");
 
             IList<RHUserRawLoot> unprocessedUserLoot = (await _rhUserRawLoot.Query(l => l.Processed == false)).ToList();
 
-            IList<RunescapeLootAlias> runescapeLootAlias = (await _rhLootAlias.GetAllEntitiesAsync()).ToList();
+            IList<RunescapeLootAlias> runescapeLootAlias = (await _rhLootAlias.QueryWithInclude()).ToList();
 
             IEnumerable<IGrouping<ulong, RHUserRawLoot>> groupedLoot = unprocessedUserLoot.GroupBy(l => l.UserId);
 
@@ -82,7 +83,7 @@ namespace MiRs.Interactors.RuneHunter.Game
                     {
                         foreach (UserEvents userEvent in currentUserEvents.UserCurrentEvents)
                         {
-                            await AssignUserLootToTeams(loot, runescapeLootAlias, userEvent);
+                            await AssignUserLootToTeamsForEvent(loot, runescapeLootAlias, userEvent);
                         }
 
                         loot.Processed = true;
@@ -102,39 +103,40 @@ namespace MiRs.Interactors.RuneHunter.Game
                 Logger.LogError((int)LoggingEvents.GameProcessLoot, ex.Message);
             }
 
-            Logger.LogInformation((int)LoggingEvents.GameProcessLoot, "Loot ({totalLoot}) to be processed.", unprocessedUserLoot.Count());
+            Logger.LogInformation((int)LoggingEvents.GameProcessLoot, "Loot ({totalLoot}) to be processed.", unprocessedUserLoot.Count);
 
             return result;
         }
 
-        private async Task AssignUserLootToTeams(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias, UserEvents userEvent)
+        /// <summary>Assigns the user loot to team progress for a given event.</summary>
+        /// <param name="loot">The loot.</param>
+        /// <param name="runescapeLootAlias">The runescape loot alias.</param>
+        /// <param name="userEvent">The user event.</param>
+        private async Task AssignUserLootToTeamsForEvent(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias, UserEvents userEvent)
         {
-            IList<GuildTeamLevelTaskProgress> levelTasksProgress = (await _levelTaskProgress.GetAllEntitiesAsync(t => t.IsComplete == false && t.GuildEventTeamId == userEvent.EventTeam.Id, default, lt => lt.Include(ltt => ltt.LevelTask))).ToList();
+            IList<GuildTeamLevelTaskProgress> incompleteLevelTaskProgress = (await _levelTaskProgress.QueryWithInclude(t => t.IsComplete == false && t.GuildEventTeamId == userEvent.EventTeam.Id, default,
+                lt => lt.Include(ltt => ltt.LevelTask))).ToList();
 
-            _categoryProgressData = (await _categoryProgress.GetAllEntitiesAsync(
-              t => t.GuildEventTeamId == userEvent.EventTeam.Id,
-              default,
-              cp => cp.Include(c => c.Category)
-                      .Include(lp => lp.CategoryLevelProcess)
-                          .ThenInclude(l => l.Level)))
-              .ToList();
+            IEnumerable<GuildTeamCategoryProgress> categoryProgressData = (await _categoryProgress.QueryWithInclude(t => t.GuildEventTeamId == userEvent.EventTeam.Id, default,
+                cp => cp.Include(c => c.Category).Include(lp => lp.CategoryLevelProcess!)
+                                                    .ThenInclude(l => l.Level))).ToList();
 
-            if (!levelTasksProgress.Any())
+            if (!incompleteLevelTaskProgress.Any() || !categoryProgressData.Any())
             {
-                Logger.LogError((int)LoggingEvents.GameProcessLoot, "No levelTasksProgress for event: {userEvent.EventTeam.Id} could be found!", userEvent.EventTeam.Id);
+                Logger.LogError((int)LoggingEvents.GameProcessLoot, "No incompleteLevelTaskProgress or progress data for event team: {userEvent.EventTeam.Id} could be found!", userEvent.EventTeam.Id);
 
                 return;
             }
 
-            int minLevel = levelTasksProgress.Min(t => t.LevelTask.Levelnumber);
+            int minLevel = incompleteLevelTaskProgress.Min(t => t.LevelTask.Levelnumber);
 
-            List<GuildTeamLevelTaskProgress> lowestIncompleteTasks = levelTasksProgress
+            List<GuildTeamLevelTaskProgress> lowestIncompleteTasks = incompleteLevelTaskProgress
                 .Where(t => t.LevelTask.Levelnumber == minLevel)
                 .ToList();
 
-            bool lootUnlockCheck = await LootUnlockCheck(loot, runescapeLootAlias);
+            bool lootUnlockCheck = LootUnlockCheck(loot, runescapeLootAlias, categoryProgressData);
 
-            RHUserRawLoot userMultipliedLoot = await CalculateLootMultiplier(loot, runescapeLootAlias);
+            RHUserRawLoot userMultipliedLoot = CalculateLootMultiplier(loot, runescapeLootAlias, categoryProgressData);
 
             foreach (GuildTeamLevelTaskProgress taskProgress in lowestIncompleteTasks)
             {
@@ -173,7 +175,13 @@ namespace MiRs.Interactors.RuneHunter.Game
             }
         }
 
-        private async Task<bool> LootUnlockCheck(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias)
+        /// <summary>Loots the unlock check.</summary>
+        /// <param name="loot">The loot.</param>
+        /// <param name="runescapeLootAlias">The runescape loot alias.</param>
+        /// <returns>
+        /// The boolean value of LootUnlockCheck
+        /// </returns>
+        private bool LootUnlockCheck(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias, IEnumerable<GuildTeamCategoryProgress> categoryProgressData)
         {
             RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 
@@ -191,7 +199,7 @@ namespace MiRs.Interactors.RuneHunter.Game
 
                 if (matchedEncounter is not null)
                 {
-                    IEnumerable<GuildTeamCategoryLevelProgress> specialEncountersActive = _categoryProgressData
+                    IEnumerable<GuildTeamCategoryLevelProgress> specialEncountersActive = categoryProgressData
                             .Where(c => string.Equals(c.Category.Name, "Armoury", StringComparison.OrdinalIgnoreCase))
                             .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive);
 
@@ -212,9 +220,9 @@ namespace MiRs.Interactors.RuneHunter.Game
                 return true;
             }
 
-            IEnumerable<GuildTeamCategoryLevelProgress> MonsterLevelsActive = _categoryProgressData
-            .Where(c => string.Equals(c.Category.Name, "Training Area", StringComparison.OrdinalIgnoreCase))
-            .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive);
+            IEnumerable<GuildTeamCategoryLevelProgress> MonsterLevelsActive = categoryProgressData
+                .Where(c => string.Equals(c.Category.Name, "Training Area", StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive);
 
             if (MonsterLevelsActive.Any())
             {
@@ -231,9 +239,17 @@ namespace MiRs.Interactors.RuneHunter.Game
 
         }
 
-        private async Task<RHUserRawLoot> CalculateLootMultiplier(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias)
+        /// <summary>Calculates the loot multiplier.</summary>
+        /// <param name="loot">The loot.</param>
+        /// <param name="runescapeLootAlias">The runescape loot alias.</param>
+        /// <returns>
+        /// The RHUserRawLoot with multiplied quantity
+        /// </returns>
+        private RHUserRawLoot CalculateLootMultiplier(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias, IEnumerable<GuildTeamCategoryProgress> categoryProgressData)
         {
-            RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+            RunescapeLootAlias lootAlias = runescapeLootAlias
+                .Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
 
             if (lootAlias is null)
             {
@@ -249,15 +265,20 @@ namespace MiRs.Interactors.RuneHunter.Game
 
             RHUserRawLoot updatedUserLoot = new RHUserRawLoot
             {
-                Quantity = (int)Math.Ceiling((double)loot.Quantity * (await GetCategoryMultiplier(category))),
+                Quantity = (int)Math.Ceiling((double)loot.Quantity * GetCategoryMultiplier(category, categoryProgressData)),
             };
 
             return updatedUserLoot;
         }
 
-        private async Task<double> GetCategoryMultiplier(LootAliasSkillingCategories category)
+        /// <summary>Gets the category multiplier.</summary>
+        /// <param name="category">The category.</param>
+        /// <returns>
+        /// The multiplier value
+        /// </returns>
+        private double GetCategoryMultiplier(LootAliasSkillingCategories category, IEnumerable<GuildTeamCategoryProgress> categoryProgressData)
         {
-            if (!_categoryProgressData.Any())
+            if (!categoryProgressData.Any())
                 return 1.0;
 
             Dictionary<LootAliasSkillingCategories, string> categoryMap = new Dictionary<LootAliasSkillingCategories, string>
@@ -274,14 +295,14 @@ namespace MiRs.Interactors.RuneHunter.Game
             if (!categoryMap.TryGetValue(category, out string guildName))
                 return 1.0;
 
-            return RetrieveMultiplierValue(_categoryProgressData, guildName);
+            return RetrieveMultiplierValue(categoryProgressData, guildName);
         }
 
         private double RetrieveMultiplierValue(IEnumerable<GuildTeamCategoryProgress> categoriesProgress, string catName)
         {
             IEnumerable<GuildTeamCategoryLevelProgress> levelsProgressActive = categoriesProgress
-                                    .Where(c => string.Equals(c.Category.Name, catName, StringComparison.OrdinalIgnoreCase))
-                                    .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive);
+                .Where(c => string.Equals(c.Category.Name, catName, StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive);
 
             if (!levelsProgressActive.Any())
             {

@@ -25,7 +25,9 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// Initializes a new instance of the <see cref="GetEventTeamProgressForUserInteractor"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
-        /// <param name="guildTeamRepository">The repo interface to SQL storage.</param>
+        /// <param name="guildevent">The repo interface to SQL storage.</param>
+        /// <param name="userToTeam">The repo interface to SQL storage.</param>
+        /// <param name="mapper">The mapper for entity to DTO .</param>
         /// <param name="appSettings">The app settings.</param>
         public GetEventTeamProgressForUserInteractor(
             ILogger<ProcessUserLootInteractor> logger,
@@ -50,9 +52,9 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<GetEventTeamProgressForUserResponse> HandleRequest(GetEventTeamProgressForUserRequest request, GetEventTeamProgressForUserResponse result, CancellationToken cancellationToken)
         {
-            Logger.LogInformation((int)LoggingEvents.GameGetMetadata, "Retrieving current game Categories, Levels and Tasks.");
+            Logger.LogInformation((int)LoggingEvents.GetEventTeamProgress, "Retrieving event team progress by user: {userid} and guild {guildid}.", request.UserId, request.GuildId);
 
-            IList<GuildEvent> activeGuildEvents = (await _guildevent.GetAllEntitiesAsync(ge => ge.GuildId == request.GuildId && ge.EventActive == true, default,
+            IList<GuildEvent> activeGuildEvents = (await _guildevent.QueryWithInclude(ge => ge.GuildId == request.GuildId && ge.EventActive == true, default,
                                                                 ge => ge.Include(ge => ge.EventTeams)
                                                                             .ThenInclude(et => et.CategoryProgresses)
                                                                                 .ThenInclude(cp => cp.CategoryLevelProcess)
@@ -67,8 +69,6 @@ namespace MiRs.Interactors.RuneHunter.Game
                                                                             .ThenInclude(et => et.CategoryProgresses)
                                                                                 .ThenInclude(cp => cp.CategoryLevelProcess)
                                                                                     .ThenInclude(clp => clp.Level))).ToList();
-
-            IList<GuildTeamCategoryProgress> progresses;
 
             if (!activeGuildEvents.Any() || !activeGuildEvents.SelectMany(ge => ge.EventTeams).Any())
             {

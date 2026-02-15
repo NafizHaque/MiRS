@@ -26,7 +26,10 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// Initializes a new instance of the <see cref="GetRecentTeamLootInteractor"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
-        /// <param name="guildTeamRepository">The repo interface to SQL storage.</param>
+        /// <param name="guildevent">The repo interface to SQL storage.</param>
+        /// <param name="userToTeam">The repo interface to SQL storage.</param>
+        /// <param name="rhUserRawLoot">The repo interface to SQL storage.</param>
+        /// <param name="perms">The repo interface to SQL storage.</param>
         /// <param name="appSettings">The app settings.</param>
         public GetRecentTeamLootInteractor(
             ILogger<ProcessUserLootInteractor> logger,
@@ -45,17 +48,17 @@ namespace MiRs.Interactors.RuneHunter.Game
         }
 
         /// <summary>
-        /// Handles the request to update game state.
+        /// Handles the request to Get latest team loot.
         /// </summary>
         /// <param name="request">The request to create Guild Team.</param>
-        /// <param name="result">User object that was created.</param>
+        /// <param name="result">The response for latest loot and team names.</param>
         /// <param name="cancellationToken">The cancellation token for the request.</param>
-        /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
+        /// <returns>Returns the RHUserRawLoot object with Team name.</returns>
         protected override async Task<GetRecentTeamLootResponse> HandleRequest(GetRecentTeamLootRequest request, GetRecentTeamLootResponse result, CancellationToken cancellationToken)
         {
-            Logger.LogInformation((int)LoggingEvents.GameGetMetadata, "Get Teams Loot for current guild event by User Id and Guild Id.");
+            Logger.LogInformation((int)LoggingEvents.GetLatestTeamLoot, "Get Teams Loot for current guild event by User Id: {userid} and Guild Id: {guildid.", request.UserId, request.GuildId);
 
-            GuildEvent activeGuildEvent = (await _guildevent.GetAllEntitiesAsync(ge => ge.GuildId == request.GuildId && ge.EventActive == true, default,
+            GuildEvent activeGuildEvent = (await _guildevent.QueryWithInclude(ge => ge.GuildId == request.GuildId && ge.EventActive == true, default,
                                                                                     ge => ge.Include(et => et.EventTeams)
                                                                                             .ThenInclude(t => t.Team)
                                                                                             .ThenInclude(ut => ut.UsersInTeam))).FirstOrDefault();

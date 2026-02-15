@@ -4,10 +4,19 @@ using MiRs.Domain.Exceptions;
 
 namespace MiRs.Mediator.Models.RuneHunter.Game
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class UpdateGameMetadataRequest : IRequest<UpdateGameMetadataResponse>, IValidatable
     {
+        /// <summary>
+        /// Gets or sets the categories.
+        /// </summary>
         public IEnumerable<CategoryDto> Categories { get; set; }
 
+        /// <summary>
+        /// Validate method used to impliment Validations on request arguments.
+        /// </summary>
         public void Validate()
         {
             if (Categories is null || !Categories.Any())

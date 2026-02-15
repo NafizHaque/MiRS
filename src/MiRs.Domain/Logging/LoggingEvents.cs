@@ -23,6 +23,16 @@
         /// <summary>
         /// The event id to be used when logging calls related to creating Guild Teams.
         /// </summary>
+        UpdateGuildTeam = 1003,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to get latest team loot.
+        /// </summary>
+        GetLatestTeamLoot = 1003,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to creating Guild Teams.
+        /// </summary>
         GetGuildEvent = 1101,
 
         /// <summary>
@@ -36,9 +46,19 @@
         GetTeamsFromEvent = 1103,
 
         /// <summary>
-        /// The event id to be used when logging calls related to creating Guild Teams.
+        /// The event id to be used when logging calls related to event update verify.
         /// </summary>
         UpdateEventVerify = 1104,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to creating event team progress.
+        /// </summary>
+        InitialiseEventTeamProgress = 1300,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to get event team progress.
+        /// </summary>
+        GetEventTeamProgress = 1301,
 
         /// <summary>
         /// The event id to be used when logging calls related to registering user.
@@ -54,6 +74,11 @@
         /// The event id to be used when logging calls related to registering user.
         /// </summary>
         UserSearch = 2002,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to get current user events.
+        /// </summary>
+        CurrentUserEvents = 2003,
 
         /// <summary>
         /// The event id to be used when logging calls related to logging user loot.
@@ -73,6 +98,16 @@
         /// <summary>
         /// The event id to be used when logging calls related to game getting meta data.
         /// </summary>
-        GameGetMetadata = 3004,
+        GameGetMetadata = 3003,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to game updating meta data.
+        /// </summary>
+        GameUpdateMetadata = 3004,
+
+        /// <summary>
+        /// The event id to be used when logging calls related to game updating event winners.
+        /// </summary>
+        GameUpdateEventWinners = 3005,
     }
 }

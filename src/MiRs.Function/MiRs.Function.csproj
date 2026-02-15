@@ -31,7 +31,7 @@
     <ProjectReference Include="..\MiRs.Domain\MiRs.Domain.csproj" />
     <ProjectReference Include="..\MiRS.Gateway\MiRS.Gateway.csproj" />
     <ProjectReference Include="..\MiRs.Interactors\MiRs.Interactors.csproj" />
-    <ProjectReference Include="..\MiRs.Interfaces\MiRs.Interfaces.csproj" />
+    <ProjectReference Include="..\MiRs.Interfaces\MiRs.Helpers.csproj" />
     <ProjectReference Include="..\MiRs.RunescapeClient\MiRs.RuneClient.csproj" />
   </ItemGroup>
 

@@ -7,7 +7,7 @@ using System.Net;
 namespace MiRs.API.Controllers.RuneHunter
 {
     /// <summary>
-    /// This controller contains any calls relating to event management.
+    /// This controller contains any calls relating to Generic  management.
     /// </summary>
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
@@ -42,7 +42,7 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost("ping")]
-        public async Task<IActionResult> PingConnection()
+        public IActionResult PingConnection()
         {
             try
             {

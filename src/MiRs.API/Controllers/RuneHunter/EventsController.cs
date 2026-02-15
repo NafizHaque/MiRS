@@ -194,7 +194,7 @@ namespace MiRs.API.Controllers.RuneHunter
         }
 
         /// <summary>
-        /// Add Guild Team to Event
+        /// Verify password for Event update
         /// </summary>
         /// <param name="eventid">the event id.</param>
         /// <param name="guildid">the guild id.</param>

@@ -21,7 +21,8 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// Initializes a new instance of the <see cref="UpdateGameStateInteractor"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
-        /// <param name="guildTeamRepository">The repo interface to SQL storage.</param>
+        /// <param name="levelProgress">The repo interface to SQL storage.</param>
+        /// <param name="categoryProgress">The repo interface to SQL storage.</param>
         /// <param name="appSettings">The app settings.</param>
         public UpdateGameStateInteractor(
             ILogger<ProcessUserLootInteractor> logger,
@@ -38,15 +39,14 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// <summary>
         /// Handles the request to update game state.
         /// </summary>
-        /// <param name="request">The request to create Guild Team.</param>
-        /// <param name="result">User object that was created.</param>
+        /// <param name="request">The request to update game state.</param>
+        /// <param name="result"></param>
         /// <param name="cancellationToken">The cancellation token for the request.</param>
-        /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<UpdateGameStateResponse> HandleRequest(UpdateGameStateRequest request, UpdateGameStateResponse result, CancellationToken cancellationToken)
         {
             Logger.LogInformation((int)LoggingEvents.GameStateUpdate, "Updating Event Game Stated.");
 
-            IList<GuildTeamCategoryLevelProgress> levelProgress = (await _levelProgress.GetAllEntitiesAsync(t => t.IsComplete == false, default, lt => lt.Include(ltt => ltt.LevelTaskProgress))).ToList();
+            IList<GuildTeamCategoryLevelProgress> levelProgress = (await _levelProgress.QueryWithInclude(t => t.IsComplete == false, default, lt => lt.Include(ltt => ltt.LevelTaskProgress))).ToList();
 
             foreach (GuildTeamCategoryLevelProgress level in levelProgress)
             {
@@ -63,7 +63,7 @@ namespace MiRs.Interactors.RuneHunter.Game
                 }
             }
 
-            IList<GuildTeamCategoryProgress> categoryProgress = (await _categoryProgress.GetAllEntitiesAsync(t => t.IsComplete == false, default, lt => lt.Include(ltt => ltt.CategoryLevelProcess))).ToList();
+            IList<GuildTeamCategoryProgress> categoryProgress = (await _categoryProgress.QueryWithInclude(t => t.IsComplete == false, default, lt => lt.Include(ltt => ltt.CategoryLevelProcess))).ToList();
 
             foreach (GuildTeamCategoryProgress cat in categoryProgress)
             {

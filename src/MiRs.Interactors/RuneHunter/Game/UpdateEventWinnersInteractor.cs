@@ -29,7 +29,8 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// Initializes a new instance of the <see cref="UpdateEventWinnersInteractor"/> class.
         /// </summary>
         /// <param name="logger">The logging interface.</param>
-        /// <param name="guildTeamRepository">The repo interface to SQL storage.</param>
+        /// <param name="guildEventRepository">The repo interface to SQL storage.</param>
+        /// <param name="eventArchiveRepository">The repo interface to SQL storage.</param>
         /// <param name="appSettings">The app settings.</param>
         public UpdateEventWinnersInteractor(
             ILogger<ProcessUserLootInteractor> logger,
@@ -50,19 +51,18 @@ namespace MiRs.Interactors.RuneHunter.Game
         }
 
         /// <summary>
-        /// Handles the request to update game state.
+        /// Handles the request to update event winners.
         /// </summary>
-        /// <param name="request">The request to create Guild Team.</param>
-        /// <param name="result">User object that was created.</param>
+        /// <param name="request">The request to update event winners.</param>
+        /// <param name="result"></param>
         /// <param name="cancellationToken">The cancellation token for the request.</param>
-        /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<UpdateEventWinnersResponse> HandleRequest(UpdateEventWinnersRequest request, UpdateEventWinnersResponse result, CancellationToken cancellationToken)
         {
-            Logger.LogInformation((int)LoggingEvents.GameGetMetadata, "Retrieving current game Categories, Levels and Tasks.");
+            Logger.LogInformation((int)LoggingEvents.GameUpdateEventWinners, "Updating Event Team winners.");
 
             DateTimeOffset currentTimeUtc = DateTimeOffset.UtcNow;
 
-            List<GuildEvent> gameEvents = (await _guildEventRepository.GetAllEntitiesAsync(e => e.EventActive, default,
+            List<GuildEvent> gameEvents = (await _guildEventRepository.QueryWithInclude(e => e.EventActive, default,
                                                     ge => ge.Include(ge => ge.EventTeams).ThenInclude(et => et.CategoryProgresses).ThenInclude(cp => cp.CategoryLevelProcess).ThenInclude(cl => cl.LevelTaskProgress)
                                                               .Include(ge => ge.EventTeams).ThenInclude(et => et.CategoryProgresses).ThenInclude(c => c.Category)
                                                               .Include(ge => ge.EventTeams).ThenInclude(t => t.Team))).ToList();
@@ -109,8 +109,6 @@ namespace MiRs.Interactors.RuneHunter.Game
 
                 }
             }
-
-            // await _context.SaveChangesAsync();
 
             return result;
         }
@@ -177,9 +175,6 @@ namespace MiRs.Interactors.RuneHunter.Game
 
         private async Task<GuildTeam?> GetWinningEventTeamForActive(GuildEvent guildEvent)
         {
-
-            GuildTeam winingTeam;
-
             foreach (GuildEventTeam eventTeam in guildEvent.EventTeams)
             {
                 if (eventTeam.CategoryProgresses.All(cp => cp.IsComplete))

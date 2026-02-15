@@ -66,7 +66,7 @@ namespace MiRS.Gateway.DataAccess
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<IQueryable<TEntity>> GetAllEntitiesAsync(
+        Task<IQueryable<TEntity>> QueryWithInclude(
             Expression<Func<TEntity, bool>>? filter = null,
             CancellationToken cancellationToken = default,
             Func<IQueryable<TEntity>, IQueryable<TEntity>>? includeFunc = null);

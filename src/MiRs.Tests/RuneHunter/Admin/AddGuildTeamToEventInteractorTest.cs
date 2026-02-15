@@ -60,7 +60,6 @@ namespace MiRs.Tests.RuneHunter.Admin
                     return Task.FromResult(result);
                 });
 
-
             //Assert
             _guildTeamEventRepository.Verify(
                 r => r.AddAsync(It.IsAny<GuildEventTeam>(),

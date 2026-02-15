@@ -37,12 +37,11 @@ namespace MiRs.Interactors.RuneHunter.Game
         }
 
         /// <summary>
-        /// Handles the request to create a Guild team.
+        /// Handles the request to create user raw loot.
         /// </summary>
-        /// <param name="request">The request to create Guild Team.</param>
-        /// <param name="result">User object that was created.</param>
+        /// <param name="request">The request to create the user raw loot.</param>
+        /// <param name="result"></param>
         /// <param name="cancellationToken">The cancellation token for the request.</param>
-        /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<LogUserLootResponse> HandleRequest(LogUserLootRequest request, LogUserLootResponse result, CancellationToken cancellationToken)
         {
             Logger.LogInformation((int)LoggingEvents.GameLogLoot, "Logging User Loot.");

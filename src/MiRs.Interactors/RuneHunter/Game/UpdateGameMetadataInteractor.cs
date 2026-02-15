@@ -43,17 +43,16 @@ namespace MiRs.Interactors.RuneHunter.Game
         }
 
         /// <summary>
-        /// Handles the request to update game state.
+        /// Handles the request to update game metadata.
         /// </summary>
-        /// <param name="request">The request to create Guild Team.</param>
-        /// <param name="result">User object that was created.</param>
+        /// <param name="request">The request to update game metadata.</param>
+        /// <param name="result"></param>
         /// <param name="cancellationToken">The cancellation token for the request.</param>
-        /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<UpdateGameMetadataResponse> HandleRequest(UpdateGameMetadataRequest request, UpdateGameMetadataResponse result, CancellationToken cancellationToken)
         {
-            Logger.LogInformation((int)LoggingEvents.GameGetMetadata, "Retrieving current game Categories, Levels and Tasks.");
+            Logger.LogInformation((int)LoggingEvents.GameUpdateMetadata, "Update current game Categories, Levels and Tasks.");
 
-            IList<Category> currentGameCategories = (await _category.GetAllEntitiesAsync(c => true, default, c => c.Include(c => c.Level).ThenInclude(l => l.LevelTasks))).ToList();
+            IList<Category> currentGameCategories = (await _category.QueryWithInclude(c => true, default, c => c.Include(c => c.Level).ThenInclude(l => l.LevelTasks))).ToList();
 
             foreach (CategoryDto catUpsert in request.Categories)
             {

@@ -45,7 +45,7 @@ namespace MiRs.Interactors.RuneHunter.Admin.Event
         {
             Logger.LogInformation((int)LoggingEvents.GetTeamsFromEvent, "Retrieving Teams from Event. Event Id: {eventId}", request.EventId);
 
-            IList<GuildEventTeam> teamsfromEvent = (await _guildEventTeamRepository.GetAllEntitiesAsync(e => e.EventId == request.EventId, default, eg => eg.Include(egt => egt.Team).ThenInclude(utt => utt.UsersInTeam).ThenInclude(u => u.User))).ToList();
+            IList<GuildEventTeam> teamsfromEvent = (await _guildEventTeamRepository.QueryWithInclude(e => e.EventId == request.EventId, default, eg => eg.Include(egt => egt.Team).ThenInclude(utt => utt.UsersInTeam).ThenInclude(u => u.User))).ToList();
 
             result.GuildTeams = teamsfromEvent.Select(tfe => new GameTeam
             {

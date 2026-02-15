@@ -1,12 +1,13 @@
-﻿using MiRs.Mediator.Models.RuneHunter.Game;
-using MiRs.Mediator;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
-using MiRs.Domain.Exceptions;
-using MiRS.Gateway.DataAccess;
 using MiRs.Domain.Entities.RuneHunterData;
+using MiRs.Domain.Exceptions;
+using MiRs.Domain.Logging;
+using MiRs.Mediator;
+using MiRs.Mediator.Models.RuneHunter.Game;
+using MiRS.Gateway.DataAccess;
 
 namespace MiRs.Interactors.RuneHunter.Game
 {
@@ -56,12 +57,13 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// <summary>
         /// Handles the request to Initalise Team Progress.
         /// </summary>
-        /// <param name="request">The request to create Guild Team.</param>
-        /// <param name="result">User object that was created.</param>
+        /// <param name="request">The request to initialise team progress.</param>
+        /// <param name="result"></param>
         /// <param name="cancellationToken">The cancellation token for the request.</param>
-        /// <returns>Returns the user object that is created, if user is not created returns null.</returns>
         protected override async Task<InitaliseTeamProgressResponse> HandleRequest(InitaliseTeamProgressRequest request, InitaliseTeamProgressResponse result, CancellationToken cancellationToken)
         {
+            Logger.LogInformation((int)LoggingEvents.InitialiseEventTeamProgress, "Initialise team: {team} for event: {event}.", request.TeamId, request.EventId);
+
             int guildEventTeamId = (await _guildEventTeam.Query(et => et.EventId == request.EventId && et.TeamId == request.TeamId)).Select(i => i.Id).FirstOrDefault();
 
             if (guildEventTeamId <= 0)
