@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Development Files
+appsettings.Development.json
+
+# Azure Blob Storage local
+__blobstorage__/
+azurite_workspace/
