@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiRs.API.ApiDTOs;
 using MiRs.Domain.Entities.RuneHunter;
@@ -11,6 +12,7 @@ namespace MiRs.API.Controllers.RuneHunter
     /// <summary>
     /// This controller contains any calls relating to event management.
     /// </summary>
+    [Authorize]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
     public class EventsController : ApiControllerBase

@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiRs.Domain.Entities.RuneHunter;
 using MiRs.Domain.Exceptions;
@@ -10,6 +11,7 @@ namespace MiRs.API.Controllers.RuneHunter
     /// <summary>
     /// This controller contains any calls relating to Team management.
     /// </summary>
+    [Authorize]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
     public class TeamsController : ApiControllerBase

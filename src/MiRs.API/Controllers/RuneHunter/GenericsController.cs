@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiRs.Domain.Exceptions;
 using MiRs.Mediator.Models.Discord;
@@ -9,9 +10,10 @@ namespace MiRs.API.Controllers.RuneHunter
     /// <summary>
     /// This controller contains any calls relating to Generic  management.
     /// </summary>
+    [Authorize]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
-    public class GenController : ApiControllerBase
+    public class GenericsController : ApiControllerBase
     {
         /// <summary>
         /// Get Guild Permissions

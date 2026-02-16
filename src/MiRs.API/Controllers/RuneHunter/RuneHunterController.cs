@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiRs.API.ApiDTOs;
 using MiRs.Domain.DTOs.RuneHunter;
@@ -12,6 +13,7 @@ namespace MiRs.API.Controllers.RuneHunter
     /// <summary>
     /// This controller contains any calls relating to Rune hunter game.
     /// </summary>
+    [Authorize]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
     public class RuneHunterController : ApiControllerBase
@@ -30,6 +32,7 @@ namespace MiRs.API.Controllers.RuneHunter
         /// <param name="loot">users loot from runelite.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         /// <remarks>This call return user.</remarks>
+        [AllowAnonymous]
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost("loot")]
         public async Task<IActionResult> UserLootLogging([FromBody] RuneLoot loot)
