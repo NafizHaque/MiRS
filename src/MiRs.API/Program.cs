@@ -1,7 +1,8 @@
-using Asp.Versioning;
+﻿using Asp.Versioning;
 using Flurl.Http;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MiRs.DataAccess;
 using MiRs.DiscordClient;
@@ -28,7 +29,11 @@ namespace MiRs.API
             string azure_client_id = azureAd["ClientId"];
             string azure_authority = azureAd["Authority"];
 
+            IConfigurationSection azureAdExternal = builder.Configuration.GetSection("AzureAdExternal");
 
+            string ext_t_id = azureAdExternal["TenantId"];
+            string ext_c_id = azureAdExternal["ClientId"];
+            string ext_a = azureAdExternal["Authority"];
 
             builder.Services.AddDbContext<RuneHunterDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -71,7 +76,7 @@ namespace MiRs.API
                             TokenUrl = new Uri($"https://login.microsoftonline.com/{azure_tenant_id}/oauth2/v2.0/token"),
                             Scopes = new Dictionary<string, string>
                             {
-                                { $"api://{azure_client_id}/Admin.Access", "Access API as admin user" }
+                                { $"api://{azure_client_id}/Admin.Access", "Access API as admin user" },
                             }
                         }
                     }
@@ -92,11 +97,25 @@ namespace MiRs.API
                 options.CustomSchemaIds(x => x.FullName);
             });
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+            builder.Services.AddAuthentication()
+                .AddJwtBearer("MainTenant", options =>
                 {
                     options.Authority = azure_authority;
                     options.Audience = azure_client_id;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                    };
+                })
+                .AddJwtBearer("ExternalId", options =>
+                {
+                    options.Authority = ext_a;
+                    options.Audience = ext_c_id;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                    };
+
                 });
 
             FlurlHttp.Clients.WithDefaults(builder =>
@@ -120,7 +139,13 @@ namespace MiRs.API
 
             builder.Services.AddMediatRContracts();
 
-            builder.Services.AddAuthorization();
+            builder.Services.AddAuthorization(options =>
+            {
+                options.DefaultPolicy = new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes("MainTenant", "ExternalId")
+                    .RequireAuthenticatedUser()
+                    .Build();
+            });
 
             builder.Services.AddCors(options =>
             {
@@ -152,6 +177,8 @@ namespace MiRs.API
             app.UseHttpsRedirection();
 
             app.UseCors("DevCors");
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
