@@ -6,6 +6,8 @@ using MiRs.Domain.Logging;
 using MiRs.Mediator;
 using MiRs.Mediator.Models.RuneHunter.Admin.Event;
 using MiRS.Gateway.DataAccess;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace MiRs.Interactors.RuneHunter.Admin.Event
 {
@@ -43,7 +45,14 @@ namespace MiRs.Interactors.RuneHunter.Admin.Event
 
             GuildEvent currentEvent = (await _guildEventRepository.Query(e => e.Id == request.EventId && e.GuildId == request.GuildId)).FirstOrDefault() ?? new GuildEvent();
 
-            if (currentEvent.EventPassword == request.EventPassword)
+            string password = Convert.ToBase64String(Rfc2898DeriveBytes.Pbkdf2(
+            Encoding.UTF8.GetBytes(request.EventPassword),
+            Encoding.UTF8.GetBytes(_appSettings.PasswordSalt),
+            100000,
+            HashAlgorithmName.SHA256,
+            outputLength: 32));
+
+            if (currentEvent.EventPassword == password)
             {
                 result.Verfied = true;
             }
