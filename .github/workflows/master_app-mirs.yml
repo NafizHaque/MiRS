@@ -58,4 +58,4 @@ jobs:
         with:
           app-name: ${{ env.AZURE_FUNC_NAME }}
           package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myfunc'
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
