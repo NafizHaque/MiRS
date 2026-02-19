@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - '*'
 env:
   AZURE_WEBAPP_NAME: app-mirs
   AZURE_FUNC_NAME: func-mirs
@@ -49,16 +46,15 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: 'Run Azure webapp deploy action using publish profile credentials'
+      - name: Deploy Azure Web App 
         uses: azure/webapps-deploy@v2
         with: 
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
 
-      - name: Deploy Azure Functions
-        uses: Azure/functions-action@v1
+      - name: Deploy Azure Functions W/ Publish Profile Credentials
+        uses: Azure/functions-action@v1.4.7
         with:
           app-name: ${{ env.AZURE_FUNC_NAME }}
           package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myfunc'
-       
-          
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }
