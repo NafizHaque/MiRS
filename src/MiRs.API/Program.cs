@@ -36,7 +36,14 @@ namespace MiRs.API
             string ext_a = azureAdExternal["Authority"];
 
             builder.Services.AddDbContext<RuneHunterDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(300),
+                        errorNumbersToAdd: null
+                    );
+                }));
 
             // Add services to the container.
             builder.Services.AddControllers();
