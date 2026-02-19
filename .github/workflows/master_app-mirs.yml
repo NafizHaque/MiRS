@@ -1,6 +1,7 @@
 name: Deploy ASP.NET Core app to Azure Web App
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
