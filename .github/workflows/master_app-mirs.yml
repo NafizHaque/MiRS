@@ -8,9 +8,10 @@ on:
     branches:
       - '*'
 env:
-  AZURE_WEBAPP_NAME: app-mirs   # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '8.0.x'             # set this to the dot net version to use
+  AZURE_WEBAPP_NAME: app-mirs
+  AZURE_FUNC_NAME: func-mirs
+  AZURE_WEBAPP_PACKAGE_PATH: '.'
+  DOTNET_VERSION: '8.0.x'
 
 jobs:
   build-and-deploy:
@@ -19,24 +20,27 @@ jobs:
       id-token: write
       contents: read
     steps:
-
-      # Checkout the repo
       - uses: actions/checkout@v3
-      
-      # Setup .NET Core SDK
+
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }} 
       
-      # Run dotnet build and publish
-      - name: dotnet build and publish
+      - name: dotnet build and publish Api
         working-directory: ./src/MiRs.API
         run: |
           dotnet restore
           dotnet build --configuration Release
           dotnet publish -c Release -o '../../${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp' 
-          
+         
+      - name: dotnet build and publish functions
+        working-directory: ./src/MiRs.Function
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet publish -c Release -o '../../${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myfunc'
+
     
       - name: Login to Azure
         uses: azure/login@v2
@@ -50,5 +54,11 @@ jobs:
         with: 
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
+
+      - name: Deploy Azure Functions
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ env.AZURE_FUNC_NAME }}
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myfunc'
        
           
