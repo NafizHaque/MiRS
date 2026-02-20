@@ -35,6 +35,8 @@ namespace MiRs.API
             string ext_c_id = azureAdExternal["ClientId"];
             string ext_a = azureAdExternal["Authority"];
 
+            IConfigurationSection mirsDomains = builder.Configuration.GetSection("MiRsApps");
+
             builder.Services.AddDbContext<RuneHunterDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sqlOptions =>
                 {
@@ -156,10 +158,13 @@ namespace MiRs.API
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("DevCors", policy =>
+                options.AddPolicy("AppCors", policy =>
                 {
                     policy
-                        .AllowAnyOrigin()
+                        .WithOrigins(
+                            mirsDomains["WebsiteDomain"],
+                            mirsDomains["DiscordBotDomain"]
+                        )
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
