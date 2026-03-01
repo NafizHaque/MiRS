@@ -188,7 +188,7 @@ namespace MiRs.API
 
             app.UseHttpsRedirection();
 
-            app.UseCors("DevCors");
+            app.UseCors("AppCors");
 
             app.UseAuthentication();
 
