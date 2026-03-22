@@ -29,6 +29,7 @@ namespace MiRs.API.Controllers.RuneHunter
         /// </summary>
         /// <param name="rhUser">User object details.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        [AllowAnonymous]
         [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
         [HttpPost]
         public async Task<IActionResult> RegisterUser([FromBody] RHUser rhUser)

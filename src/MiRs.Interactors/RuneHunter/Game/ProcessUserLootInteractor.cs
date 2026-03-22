@@ -83,7 +83,10 @@ namespace MiRs.Interactors.RuneHunter.Game
                     {
                         foreach (UserEvents userEvent in currentUserEvents.UserCurrentEvents)
                         {
-                            await AssignUserLootToTeamsForEvent(loot, runescapeLootAlias, userEvent);
+                            if (userEvent.EventStart <= loot.DateLogged && userEvent.EventEnd >= loot.DateLogged)
+                            {
+                                await AssignUserLootToTeamsForEvent(loot, runescapeLootAlias, userEvent);
+                            }
                         }
 
                         loot.Processed = true;
