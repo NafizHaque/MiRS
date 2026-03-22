@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MiRs.DataAccess;
 using MiRs.DiscordClient;
+using MiRs.Domain.Configurations;
 using MiRs.Domain.Mappers;
 using MiRs.Helpers;
 using MiRs.Interactors;
@@ -36,6 +37,12 @@ namespace MiRs.API
             string ext_a = azureAdExternal["Authority"];
 
             IConfigurationSection mirsDomains = builder.Configuration.GetSection("MiRsApps");
+
+            builder.Services.Configure<AppSettings>(options =>
+            {
+                options.DiscordBotDomain =
+                    builder.Configuration["MiRsApps:DiscordBotDomain"];
+            });
 
             builder.Services.AddDbContext<RuneHunterDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sqlOptions =>

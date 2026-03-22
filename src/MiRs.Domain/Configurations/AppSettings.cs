@@ -15,5 +15,9 @@
         /// </summary>
         public string PasswordSalt { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or Sets the DiscordBotUrl.
+        /// </summary>
+        public string DiscordBotDomain { get; set; } = string.Empty;
     }
 }

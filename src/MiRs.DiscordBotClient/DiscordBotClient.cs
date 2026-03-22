@@ -1,4 +1,6 @@
 ﻿using Flurl.Http;
+using Microsoft.Extensions.Options;
+using MiRs.Domain.Configurations;
 using MiRs.Domain.DTOs.Discord;
 using MiRs.Domain.Entities.Discord;
 using MiRs.Domain.Entities.RuneHunter;
@@ -11,6 +13,13 @@ namespace MiRs.DiscordClient
     /// </summary>
     public class DiscordBotClient : IDiscordBotClient
     {
+        private readonly AppSettings _appSettings;
+
+        public DiscordBotClient(IOptions<AppSettings> appSettings)
+        {
+            _appSettings = appSettings.Value;
+        }
+
         /// <summary>
         /// The call to send Event Team winner webhook.
         /// </summary>
@@ -18,7 +27,7 @@ namespace MiRs.DiscordClient
         /// <param name="guildPermissions">the message permissions for the guild</param>
         public async Task SendEventWinningTeam(GuildTeam team, GuildPermissions guildPermissions)
         {
-            await "https://localhost:7265/v1/"
+            await _appSettings.DiscordBotDomain
                .WithHeader("Content-Type", "application/json")
                .AppendPathSegment($"rest")
                .PostJsonAsync(new
@@ -34,7 +43,7 @@ namespace MiRs.DiscordClient
         /// <param name="lootAlertDto">The alert to tell discord loot has been updated</param>
         public async Task LatestTeamLootAlert(LootAlertDto lootAlertDto)
         {
-            await "https://localhost:7265/v1/"
+            await _appSettings.DiscordBotDomain
                .WithHeader("Content-Type", "application/json")
                .AppendPathSegment($"rest/lootupdate")
                .PostJsonAsync(lootAlertDto);
