@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MiRs.DataAccess;
 using MiRs.DiscordClient;
+using MiRs.Domain.Configurations;
 using MiRs.Domain.Mappers;
 using MiRs.Helpers;
 using MiRs.Interactors;
@@ -20,6 +21,12 @@ builder.ConfigureFunctionsWebApplication();
 
 builder.Services.AddDbContext<RuneHunterDbContext>(options =>
     options.UseSqlServer(builder.Configuration["DefaultConnection"]));
+
+builder.Services.Configure<AppSettings>(options =>
+{
+    options.DiscordBotDomain =
+        builder.Configuration["DiscordBotDomain"];
+});
 
 builder.Services.AddSingleton<IJsonSeraliserDefaultOptions, JsonSeraliserDefaultOptions>();
 
