@@ -142,16 +142,20 @@ namespace MiRs.DataAccess
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task AddWithIdentityInsertAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
+            IExecutionStrategy strategy = _context.Database.CreateExecutionStrategy();
 
-            await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Users ON");
+            await strategy.ExecuteAsync(async () =>
+            {
+                await using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
 
-            _dbSet.Add(entity);
-            await _context.SaveChangesAsync();
+                // All EF operations go here
+                await _dbSet.AddAsync(entity);
+                await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Users ON");
+                await _context.SaveChangesAsync();
+                await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Users OFF");
 
-            await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Users OFF");
-
-            await transaction.CommitAsync();
+                await transaction.CommitAsync();
+            });
         }
     }
 }
