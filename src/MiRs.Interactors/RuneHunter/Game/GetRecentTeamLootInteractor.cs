@@ -56,7 +56,7 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// <returns>Returns the RHUserRawLoot object with Team name.</returns>
         protected override async Task<GetRecentTeamLootResponse> HandleRequest(GetRecentTeamLootRequest request, GetRecentTeamLootResponse result, CancellationToken cancellationToken)
         {
-            Logger.LogInformation((int)LoggingEvents.GetLatestTeamLoot, "Get Teams Loot for current guild event by User Id: {userid} and Guild Id: {guildid.", request.UserId, request.GuildId);
+            Logger.LogInformation((int)LoggingEvents.GetLatestTeamLoot, "Get Teams Loot for current guild event by User Id: {userid} and Guild Id: {guildid}.", request.UserId, request.GuildId);
 
             GuildEvent activeGuildEvent = (await _guildevent.QueryWithInclude(ge => ge.GuildId == request.GuildId && ge.EventActive == true, default,
                                                                                     ge => ge.Include(et => et.EventTeams)
