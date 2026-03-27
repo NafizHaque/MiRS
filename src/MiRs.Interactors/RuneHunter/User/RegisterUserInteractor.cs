@@ -1,12 +1,12 @@
-﻿using MiRs.Mediator;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
-using MiRS.Gateway.DataAccess;
-using MiRs.Domain.Logging;
 using MiRs.Domain.Exceptions;
+using MiRs.Domain.Logging;
+using MiRs.Mediator;
 using MiRs.Mediator.Models.RuneHunter.User;
+using MiRS.Gateway.DataAccess;
 
 namespace MiRs.Interactors.RuneHunter.User
 {
@@ -46,7 +46,7 @@ namespace MiRs.Interactors.RuneHunter.User
         {
             Logger.LogInformation((int)LoggingEvents.RegisterUser, "Creating User. User Id: {userId}, UserName: {username} ", request.rhUserToBeCreated.UserId, request.rhUserToBeCreated.Username);
 
-            IEnumerable<RHUser> usersInTable = await _rhUserRepository.QueryWithInclude();
+            IEnumerable<RHUser> usersInTable = await _rhUserRepository.Query(u => true);
 
             if (usersInTable.Any(u => u.UserId == request.rhUserToBeCreated.UserId))
             {
