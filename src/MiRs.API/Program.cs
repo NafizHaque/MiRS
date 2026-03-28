@@ -43,6 +43,14 @@ namespace MiRs.API
 
             builder.Services.Configure<AppSettings>(options =>
             {
+                options.BlacklistedSources =
+                    builder.Configuration
+                    .GetSection("BlacklistedSources")
+                    .Get<List<string>>();
+            });
+
+            builder.Services.Configure<AppSettings>(options =>
+            {
                 options.DiscordBotDomain =
                     builder.Configuration["MiRsApps:DiscordBotDomain"];
             });
