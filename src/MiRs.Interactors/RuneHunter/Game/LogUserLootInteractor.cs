@@ -1,14 +1,14 @@
-﻿using MiRs.Mediator;
-using MiRs.Mediator.Models.RuneHunter.Game;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.Entities.RuneHunter;
-using MiRS.Gateway.DataAccess;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using MiRs.Domain.Logging;
-using System.Text.RegularExpressions;
 using MiRs.Domain.Exceptions;
+using MiRs.Domain.Logging;
 using MiRs.Interactors.RuneHunter.Admin.Team;
+using MiRs.Mediator;
+using MiRs.Mediator.Models.RuneHunter.Game;
+using MiRS.Gateway.DataAccess;
+using System.Text.RegularExpressions;
 
 namespace MiRs.Interactors.RuneHunter.Game
 {
@@ -55,6 +55,7 @@ namespace MiRs.Interactors.RuneHunter.Game
                 throw new BadRequestException($"Loot message is malformed! Does not follow Regex pattern!");
             }
 
+
             string UsernameFromLootLogged = match.Groups[1].Value;
 
             RHUserRawLoot userLoot = new RHUserRawLoot
@@ -65,6 +66,12 @@ namespace MiRs.Interactors.RuneHunter.Game
                 Mobname = match.Groups[5].Value,
                 MobLevel = string.IsNullOrEmpty(match.Groups[4].Value) ? 0 : int.Parse(match.Groups[4].Value),
             };
+
+            if (_appSettings.BlacklistedSources.Any(b => userLoot.Mobname.IndexOf(b, StringComparison.OrdinalIgnoreCase) >= 0))
+            {
+                Logger.LogInformation("Loot is blacklisted! {loot} ", userLoot.Mobname);
+                throw new BadRequestException("Loot is blacklisted!");
+            }
 
             RHUser? usersInTable = (await _rhUserRepository.Query(u =>
                 u.Runescapename.ToLower() == UsernameFromLootLogged.ToLower()))

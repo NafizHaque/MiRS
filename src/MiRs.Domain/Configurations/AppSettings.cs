@@ -19,5 +19,10 @@
         /// Gets or Sets the DiscordBotUrl.
         /// </summary>
         public string DiscordBotDomain { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or Sets the BlacklistedSources.
+        /// </summary>
+        public IEnumerable<string> BlacklistedSources { get; set; } = Enumerable.Empty<string>();
     }
 }
