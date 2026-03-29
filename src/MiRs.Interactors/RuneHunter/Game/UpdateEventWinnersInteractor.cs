@@ -177,7 +177,7 @@ namespace MiRs.Interactors.RuneHunter.Game
         {
             foreach (GuildEventTeam eventTeam in guildEvent.EventTeams)
             {
-                if (eventTeam.CategoryProgresses.All(cp => cp.IsComplete))
+                if (eventTeam.CategoryProgresses.Where(cp => string.Equals(cp.Category.Domain, "PvM", StringComparison.OrdinalIgnoreCase) || string.Equals(cp.Category.Domain, "Master", StringComparison.OrdinalIgnoreCase)).All(cp => cp.IsComplete))
                 {
 
                     guildEvent.EventActive = false;
