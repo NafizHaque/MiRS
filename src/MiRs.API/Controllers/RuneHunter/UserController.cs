@@ -104,5 +104,29 @@ namespace MiRs.API.Controllers.RuneHunter
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        /// <summary>
+        /// Get lastest User Loot that has been processed
+        /// </summary>
+        /// <param name="userId">userid.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>This call return User Loot.</remarks>
+        [ProducesResponseType(typeof(RHUser), StatusCodes.Status200OK)]
+        [HttpGet("loot")]
+        public async Task<IActionResult> GetLatestUserLoot(ulong userId)
+        {
+            try
+            {
+                return Ok(await Mediator.Send(new GetLatestUserLootRequest { UserId = userId, }));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.CustomErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }
