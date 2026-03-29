@@ -54,7 +54,7 @@ namespace MiRs.Interactors.RuneHunter.User
                 throw new BadRequestException($"User is not registered!");
             }
 
-            IList<RHUserRawLoot> userLoot = (await _rhUserRawLoot.Query(l => l.UserId == usersInTable.UserId && l.Processed == true)).OrderByDescending(l => l.DateLogged).Take(10).ToList();
+            IList<RHUserRawLoot> userLoot = (await _rhUserRawLoot.Query(l => l.UserId == usersInTable.UserId && l.Processed == true)).OrderByDescending(l => l.DateLogged).Take(5).ToList();
 
             result.Loots = userLoot;
 
