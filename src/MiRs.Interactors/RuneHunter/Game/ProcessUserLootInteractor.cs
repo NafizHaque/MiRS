@@ -160,8 +160,10 @@ namespace MiRs.Interactors.RuneHunter.Game
                 {
                     RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)).First();
 
-                    // REminder: add these to a config, hard coded string comparisons. 
-                    if (string.Equals(taskProgress.LevelTask.Name, lootAlias.Lootalias, StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(taskProgress.LevelTask.Name, lootAlias.Lootalias, StringComparison.OrdinalIgnoreCase) &&
+                        (string.Equals(loot.Mobname, lootAlias.Mobname, StringComparison.OrdinalIgnoreCase) ||
+                            lootAlias.Mobname.ToLower() == "any boss" ||
+                            lootAlias.Mobname.ToLower() == "skilling"))
                     {
                         taskProgress.Progress += userMultipliedLoot.Quantity;
                         taskProgress.LastUpdated = DateTimeOffset.UtcNow;
