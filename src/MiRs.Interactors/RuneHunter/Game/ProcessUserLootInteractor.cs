@@ -144,7 +144,7 @@ namespace MiRs.Interactors.RuneHunter.Game
             foreach (GuildTeamLevelTaskProgress taskProgress in lowestIncompleteTasks)
             {
 
-                if (string.Equals(taskProgress.LevelTask.Name, loot.Loot, StringComparison.OrdinalIgnoreCase) && lootUnlockCheck)
+                if (string.Equals(taskProgress.LevelTask.Name.Trim(), loot.Loot.Trim(), StringComparison.OrdinalIgnoreCase) && lootUnlockCheck)
                 {
 
                     taskProgress.Progress += userMultipliedLoot.Quantity;
@@ -156,9 +156,9 @@ namespace MiRs.Interactors.RuneHunter.Game
                         taskProgress.IsComplete = true;
                     }
                 }
-                else if (runescapeLootAlias.Any(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)) && lootUnlockCheck)
+                else if (runescapeLootAlias.Any(l => string.Equals(l.Lootname.Trim(), loot.Loot.Trim(), StringComparison.OrdinalIgnoreCase)) && lootUnlockCheck)
                 {
-                    RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)).First();
+                    RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname.Trim(), loot.Loot.Trim(), StringComparison.OrdinalIgnoreCase)).First();
 
                     if (string.Equals(taskProgress.LevelTask.Name, lootAlias.Lootalias, StringComparison.OrdinalIgnoreCase) &&
                         (string.Equals(loot.Mobname, lootAlias.Mobname, StringComparison.OrdinalIgnoreCase) ||
@@ -188,7 +188,7 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// </returns>
         private bool LootUnlockCheck(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias, IEnumerable<GuildTeamCategoryProgress> categoryProgressData)
         {
-            RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+            RunescapeLootAlias lootAlias = runescapeLootAlias.Where(l => string.Equals(l.Lootname.Trim(), loot.Loot.Trim(), StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 
             if (lootAlias is not null)
             {
@@ -200,12 +200,12 @@ namespace MiRs.Interactors.RuneHunter.Game
                                         "Theatre of Blood" };
 
                 string? matchedEncounter = specialEncounters
-                    .FirstOrDefault(e => string.Equals(e, lootAlias.Mobname, StringComparison.OrdinalIgnoreCase));
+                    .FirstOrDefault(e => string.Equals(e.Trim(), lootAlias.Mobname.Trim(), StringComparison.OrdinalIgnoreCase));
 
                 if (matchedEncounter is not null)
                 {
                     IEnumerable<GuildTeamCategoryLevelProgress> specialEncountersActive = categoryProgressData
-                            .Where(c => string.Equals(c.Category.Name, "Armoury", StringComparison.OrdinalIgnoreCase))
+                            .Where(c => string.Equals(c.Category.Name.Trim(), "Armoury", StringComparison.OrdinalIgnoreCase))
                             .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive);
 
                     if (!specialEncountersActive.Any())
@@ -226,7 +226,7 @@ namespace MiRs.Interactors.RuneHunter.Game
             }
 
             IEnumerable<GuildTeamCategoryLevelProgress> MonsterLevelsActive = categoryProgressData
-                .Where(c => string.Equals(c.Category.Name, "Training Area", StringComparison.OrdinalIgnoreCase))
+                .Where(c => string.Equals(c.Category.Name.Trim(), "Training Area", StringComparison.OrdinalIgnoreCase))
                 .FirstOrDefault().CategoryLevelProcess.Where(lp => lp.IsActive);
 
             if (MonsterLevelsActive.Any())
@@ -253,7 +253,7 @@ namespace MiRs.Interactors.RuneHunter.Game
         private RHUserRawLoot CalculateLootMultiplier(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias, IEnumerable<GuildTeamCategoryProgress> categoryProgressData)
         {
             RunescapeLootAlias lootAlias = runescapeLootAlias
-                .Where(l => string.Equals(l.Lootname, loot.Loot, StringComparison.OrdinalIgnoreCase))
+                .Where(l => string.Equals(l.Lootname.Trim(), loot.Loot.Trim(), StringComparison.OrdinalIgnoreCase))
                 .FirstOrDefault();
 
             if (lootAlias is null)
