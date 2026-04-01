@@ -117,8 +117,14 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// <param name="userEvent">The user event.</param>
         private async Task AssignUserLootToTeamsForEvent(RHUserRawLoot loot, IEnumerable<RunescapeLootAlias> runescapeLootAlias, UserEvents userEvent)
         {
-            IList<GuildTeamLevelTaskProgress> incompleteLevelTaskProgress = (await _levelTaskProgress.QueryWithInclude(t => t.IsComplete == false && t.GuildEventTeamId == userEvent.EventTeam.Id, default,
-                lt => lt.Include(ltt => ltt.LevelTask))).ToList();
+            IList<GuildTeamLevelTaskProgress> incompleteLevelTaskProgress =
+                (await _levelTaskProgress.QueryWithInclude(
+                    t => !t.IsComplete && t.GuildEventTeamId == userEvent.EventTeam.Id,
+                    default,
+                    lt => lt
+                        .Include(x => x.LevelTask)
+                        .Include(x => x.CategoryLevelProgress)
+                )).ToList();
 
             IEnumerable<GuildTeamCategoryProgress> categoryProgressData = (await _categoryProgress.QueryWithInclude(t => t.GuildEventTeamId == userEvent.EventTeam.Id, default,
                 cp => cp.Include(c => c.Category).Include(lp => lp.CategoryLevelProcess!)
@@ -131,11 +137,21 @@ namespace MiRs.Interactors.RuneHunter.Game
                 return;
             }
 
-            int minLevel = incompleteLevelTaskProgress.Min(t => t.LevelTask.Levelnumber);
+            IList<GuildTeamLevelTaskProgress> lowestIncompleteTasks = incompleteLevelTaskProgress
+                .GroupBy(x => x.CategoryLevelProgress.CategoryProgressId)
+                .SelectMany(group =>
+                {
+                    int minLevel = group.Min(t => t.LevelTask.Levelnumber);
 
-            List<GuildTeamLevelTaskProgress> lowestIncompleteTasks = incompleteLevelTaskProgress
-                .Where(t => t.LevelTask.Levelnumber == minLevel)
+                    return group.Where(t => t.LevelTask.Levelnumber == minLevel);
+                })
                 .ToList();
+
+            //int minLevel = incompleteLevelTaskProgress.Min(t => t.LevelTask.Levelnumber);
+
+            //List<GuildTeamLevelTaskProgress> lowestIncompleteTasks = incompleteLevelTaskProgress
+            //    .Where(t => t.LevelTask.Levelnumber == minLevel)
+            //    .ToList();
 
             bool lootUnlockCheck = LootUnlockCheck(loot, runescapeLootAlias, categoryProgressData);
 
