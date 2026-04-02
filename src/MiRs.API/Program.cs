@@ -48,7 +48,7 @@ namespace MiRs.API
 
             builder.Services.Configure<AppSettings>(options =>
             {
-                options.BlacklistedSources =
+                options.WhitelistedSources =
                     builder.Configuration
                     .GetSection("WhitelistedSources")
                     .Get<List<string>>();
