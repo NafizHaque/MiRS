@@ -67,7 +67,7 @@ namespace MiRs.Interactors.RuneHunter.Game
                 MobLevel = string.IsNullOrEmpty(match.Groups[4].Value) ? 0 : int.Parse(match.Groups[4].Value),
             };
 
-            if (_appSettings.BlacklistedSources.Any(b => userLoot.Mobname.IndexOf(b, StringComparison.OrdinalIgnoreCase) >= 0))
+            if (_appSettings.BlacklistedSources.Any(b => userLoot.Mobname.IndexOf(b, StringComparison.OrdinalIgnoreCase) >= 0) && !_appSettings.WhitelistedSources.Any(w => string.Equals(w, userLoot.Mobname, StringComparison.OrdinalIgnoreCase)))
             {
                 Logger.LogInformation("Loot is blacklisted! {loot} ", userLoot.Mobname);
                 throw new BadRequestException("Loot is blacklisted!");

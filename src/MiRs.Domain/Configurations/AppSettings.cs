@@ -24,5 +24,11 @@
         /// Gets or Sets the BlacklistedSources.
         /// </summary>
         public IEnumerable<string> BlacklistedSources { get; set; } = Enumerable.Empty<string>();
+
+
+        /// <summary>
+        /// Gets or Sets the WhitelistedSources.
+        /// </summary>
+        public IEnumerable<string> WhitelistedSources { get; set; } = Enumerable.Empty<string>();
     }
 }
