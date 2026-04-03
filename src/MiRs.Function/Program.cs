@@ -20,7 +20,11 @@ FunctionsApplicationBuilder builder = FunctionsApplication.CreateBuilder(args);
 builder.ConfigureFunctionsWebApplication();
 
 builder.Services.AddDbContext<RuneHunterDbContext>(options =>
-    options.UseSqlServer(builder.Configuration["DefaultConnection"]));
+    options.UseSqlServer(builder.Configuration["DefaultConnection"], sqlOptions =>
+        sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 3,
+            maxRetryDelay: TimeSpan.FromSeconds(2),
+            errorNumbersToAdd: null)));
 
 builder.Services.Configure<AppSettings>(options =>
 {

@@ -44,7 +44,7 @@ namespace MiRs.Interactors.RuneHunter.Game
         /// <param name="cancellationToken">The cancellation token for the request.</param>
         protected override async Task<LogUserLootResponse> HandleRequest(LogUserLootRequest request, LogUserLootResponse result, CancellationToken cancellationToken)
         {
-            Logger.LogInformation((int)LoggingEvents.GameLogLoot, "Logging User Loot.");
+            Logger.LogInformation((int)LoggingEvents.GameLogLoot, "Logging User Loot:");
 
             string pattern = @"\*\*(.*?)\*\* - Just got \*\*(?:(\d+)x\s+)?(.+?)\*\* from (?:lvl (\d+) )?\*\*(.*?)\*\*";
 
@@ -85,6 +85,8 @@ namespace MiRs.Interactors.RuneHunter.Game
             userLoot.UserId = usersInTable.UserId;
 
             userLoot.DateLogged = DateTimeOffset.UtcNow;
+
+            Logger.LogInformation((int)LoggingEvents.GameLogLoot, "User: {user} Loot Added: {loot}.", userLoot.Username, userLoot.Loot);
 
             await _rhUserRawLoot.AddAsync(userLoot);
 
