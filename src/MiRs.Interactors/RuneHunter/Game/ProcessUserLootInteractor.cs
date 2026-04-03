@@ -171,6 +171,11 @@ namespace MiRs.Interactors.RuneHunter.Game
                         taskProgress.Progress = taskProgress.LevelTask.Goal;
                         taskProgress.IsComplete = true;
                     }
+
+                    if (taskProgress.Progress == taskProgress.LevelTask.Goal)
+                    {
+                        taskProgress.IsComplete = true;
+                    }
                 }
                 else if (runescapeLootAlias.Any(l => string.Equals(l.Lootname.Trim(), loot.Loot.Trim(), StringComparison.OrdinalIgnoreCase)) && lootUnlockCheck)
                 {
@@ -187,6 +192,11 @@ namespace MiRs.Interactors.RuneHunter.Game
                         if (taskProgress.Progress > taskProgress.LevelTask.Goal)
                         {
                             taskProgress.Progress = taskProgress.LevelTask.Goal;
+                            taskProgress.IsComplete = true;
+                        }
+
+                        if (taskProgress.Progress == taskProgress.LevelTask.Goal)
+                        {
                             taskProgress.IsComplete = true;
                         }
                     }
