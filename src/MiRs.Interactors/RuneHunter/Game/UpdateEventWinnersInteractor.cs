@@ -77,9 +77,15 @@ namespace MiRs.Interactors.RuneHunter.Game
                 //GuildPermissionsResponse perm = await _mediator.Send(new GuildPermissionsRequest { GuildId = ge.GuildId, permissionType = Domain.Entities.Discord.Enums.PermissionType.Admin });
                 GuildPermissions perm = (await _perms.Query(p => p.GuildId == ge.GuildId && p.Type == PermissionType.Admin)).FirstOrDefault();
 
+                Logger.LogInformation((int)LoggingEvents.GameUpdateEventWinners, "Perms id channel: {perms}", perm.ChannelId);
+
                 GuildTeam winningTeam = await GetWinningEventTeamForExpired(ge);
 
+                Logger.LogInformation((int)LoggingEvents.GameUpdateEventWinners, "Winning Team: {team}", winningTeam.Id);
+
                 await _discordBotClient.SendEventWinningTeam(winningTeam, perm);
+
+                Logger.LogInformation((int)LoggingEvents.GameUpdateEventWinners, "sent message");
 
                 IList<int> teamIds = ge.EventTeams.Select(et => et.TeamId).ToList();
 

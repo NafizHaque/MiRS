@@ -351,7 +351,7 @@ namespace MiRs.Interactors.RuneHunter.Game
 
             if (!double.TryParse(highestLevelActive.Level.Unlock, out double multiplier))
             {
-                Logger.LogError((int)LoggingEvents.GameProcessLoot, "Multiplier could not be concerted to double: levelId: {levelid}", highestLevelActive.LevelId);
+                Logger.LogError((int)LoggingEvents.GameProcessLoot, "Multiplier could not be converted to double: levelId: {levelid}", highestLevelActive.LevelId);
             }
 
             return multiplier;
