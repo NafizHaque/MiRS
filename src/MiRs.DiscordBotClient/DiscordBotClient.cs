@@ -29,7 +29,7 @@ namespace MiRs.DiscordClient
         {
             await _appSettings.DiscordBotDomain
                .WithHeader("Content-Type", "application/json")
-               .AppendPathSegment($"v1/rest")
+               .AppendPathSegment($"v1/rest/")
                .PostJsonAsync(new
                {
                    Team = team,
