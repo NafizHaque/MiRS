@@ -1,4 +1,5 @@
-﻿using Flurl.Http;
+﻿using Flurl;
+using Flurl.Http;
 using Microsoft.Extensions.Options;
 using MiRs.Domain.Configurations;
 using MiRs.Domain.DTOs.Discord;
@@ -28,13 +29,13 @@ namespace MiRs.DiscordClient
         public async Task SendEventWinningTeam(GuildTeam team, GuildPermissions guildPermissions)
         {
             await _appSettings.DiscordBotDomain
-               .WithHeader("Content-Type", "application/json")
-               .AppendPathSegment($"v1/rest/")
-               .PostJsonAsync(new
-               {
-                   Team = team,
-                   Perms = guildPermissions,
-               });
+                .AppendPathSegment("v1/Rest")
+                .SetQueryParams(new
+                {
+                    channelId = guildPermissions.ChannelId,
+                    winningTeamName = team.TeamName
+                })
+                .PostAsync();
         }
 
         /// <summary>
